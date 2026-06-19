@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NYC Street Explorer</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0f0f0f;
+      --surface:  #1a1a1a;
+      --border:   #2a2a2a;
+      --text:     #e8e8e8;
+      --muted:    #888;
+      --accent:   #c8a96e;
+      --green:    #4caf78;
+      --red:      #e05c5c;
+      --radius:   10px;
+    }
+
+    body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; min-height: 100vh; }
+
+    header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 18px 24px; border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    header h1 { font-size: 18px; font-weight: 600; letter-spacing: 0.02em; }
+    header span { font-size: 12px; color: var(--muted); margin-left: auto; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); transition: background 0.4s; }
+    .status-dot.ready { background: var(--green); }
+
+    nav { display: flex; gap: 4px; padding: 14px 24px; border-bottom: 1px solid var(--border); }
+    .tab-btn {
+      padding: 7px 16px; font-size: 13px; border-radius: var(--radius);
+      border: 1px solid transparent; background: transparent;
+      cursor: pointer; color: var(--muted); transition: all 0.15s;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { background: var(--surface); border-color: var(--border); color: var(--text); font-weight: 500; }
+
+    .panel { display: none; padding: 24px; max-width: 860px; margin: 0 auto; }
+    .panel.active { display: block; }
+
+    /* ── identify tab ── */
+    .drop-zone {
+      border: 1.5px dashed var(--border); border-radius: var(--radius);
+      padding: 3rem 2rem; text-align: center; cursor: pointer;
+      transition: border-color 0.2s; background: var(--surface);
+      position: relative;
+    }
+    .drop-zone:hover, .drop-zone.drag { border-color: var(--accent); }
+    .drop-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .drop-zone svg { width: 40px; height: 40px; color: var(--muted); margin-bottom: 10px; }
+    .drop-zone p { font-size: 14px; color: var(--muted); }
+    .drop-zone small { font-size: 12px; color: #555; }
+
+    #preview-section { margin-top: 16px; display: none; }
+    #preview-img {
+      width: 100%; max-height: 300px; object-fit: cover;
+      border-radius: var(--radius); border: 1px solid var(--border);
+    }
+    .id-btn {
+      margin-top: 12px; width: 100%; padding: 11px;
+      font-size: 14px; font-weight: 500; border-radius: var(--radius);
+      border: 1px solid var(--border); background: var(--surface);
+      cursor: pointer; color: var(--text); display: flex;
+      align-items: center; justify-content: center; gap: 8px;
+      transition: background 0.15s;
+    }
+    .id-btn:hover:not(:disabled) { background: #252525; }
+    .id-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    #result { display: none; margin-top: 20px; }
+    .result-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+    }
+    .rc-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 13px 16px; background: #1f1f1f;
+      border-bottom: 1px solid var(--border);
+    }
+    .rc-title { font-size: 15px; font-weight: 500; }
+    .conf-badge {
+      margin-left: auto; font-size: 11px; padding: 3px 9px;
+      border-radius: 99px; background: #1e3a28; color: var(--green);
+    }
+    .conf-badge.low { background: #3a1e1e; color: var(--red); }
+    .rc-body { padding: 16px; }
+    .rc-meta { font-size: 12px; color: var(--muted); margin-bottom: 10px; display: flex; gap: 16px; }
+    .rc-desc { font-size: 13px; color: #bbb; line-height: 1.75; }
+    .facts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+    .fact { background: #141414; border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; }
+    .fact label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 3px; }
+    .fact strong { font-size: 13px; }
+    .top5 { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .top5 h4 { font-size: 11px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
+    .bar-label { font-size: 12px; width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bar-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; }
+    .bar-fill { height: 4px; background: var(--accent); border-radius: 2px; transition: width 0.5s; }
+    .bar-pct { font-size: 11px; color: var(--muted); width: 38px; text-align: right; }
+
+    /* ── browse tab ── */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+    .lm-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .lm-card:hover { border-color: var(--accent); }
+    .lm-thumb {
+      height: 110px; background: #141414;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+    .lm-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .lm-thumb svg { width: 32px; height: 32px; color: #333; }
+    .lm-info { padding: 10px 12px; }
+    .lm-info h3 { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
+    .lm-info p { font-size: 11px; color: var(--muted); }
+    .lm-info small { font-size: 10px; color: #555; }
+
+    /* modal */
+    .modal-bg {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.75); z-index: 100;
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-bg.open { display: flex; }
+    .modal {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; max-width: 560px; width: 100%;
+      max-height: 85vh; overflow-y: auto;
+    }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 18px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--surface);
+    }
+    .modal-header h2 { font-size: 15px; font-weight: 500; }
+    .close-modal { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 20px; }
+    .modal-body { padding: 18px; }
+
+    /* ── manage tab ── */
+    .manage-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+    .manage-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px;
+    }
+    .manage-card h3 { font-size: 13px; font-weight: 500; margin-bottom: 10px; }
+    .angle-list { display: flex; flex-direction: column; gap: 6px; }
+    .angle-row {
+      display: flex; align-items: center; gap: 8px; font-size: 12px;
+      border: 1px dashed var(--border); border-radius: 6px; padding: 6px 8px;
+      cursor: pointer; position: relative; transition: border-color 0.15s;
+    }
+    .angle-row:hover { border-color: var(--accent); }
+    .angle-row input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .angle-dot { width: 6px; height: 6px; border-radius: 50%; background: #333; flex-shrink: 0; }
+    .angle-dot.filled { background: var(--green); }
+    .angle-name { color: var(--muted); flex: 1; }
+    .angle-check { font-size: 11px; color: var(--green); }
+
+    .spinner { animation: spin 0.75s linear infinite; display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .notice { font-size: 12px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 14px; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="status-dot" id="dot"></span>
+  <h1>NYC Street Explorer</h1>
+  <span id="api-status">Connecting…</span>
+</header>
+
+<nav>
+  <button class="tab-btn active" onclick="switchTab('identify')">Identify</button>
+  <button class="tab-btn" onclick="switchTab('browse')">Browse Sites</button>
+  <button class="tab-btn" onclick="switchTab('manage')">Manage Photos</button>
+</nav>
+
+<div id="tab-identify" class="panel active">
+  <div class="drop-zone" id="drop-zone">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9a2 2 0 0 1 2-2h.93a2 2 0 0 0 1.664-.89l.812-1.22A2 2 0 0 1 10.07 4h3.86a2 2 0 0 1 1.664.89l.812 1.22A2 2 0 0 0 18.07 7H19a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3"/></svg>
+    <p>Upload or drag a photo of a landmark</p>
+    <small>JPG, PNG, WEBP — any angle</small>
+    <input type="file" accept="image/*" id="file-input">
+  </div>
+
+  <div id="preview-section">
+    <img id="preview-img" alt="Uploaded photo">
+    <button class="id-btn" id="id-btn" onclick="runIdentify()">
+      &#9654; Identify this landmark
+    </button>
+  </div>
+
+  <div id="result"></div>
+</div>
+
+<div id="tab-browse" class="panel">
+  <div class="grid" id="browse-grid"></div>
+</div>
+
+<div id="tab-manage" class="panel">
+  <div class="notice">&#9432; Photos stored in-session. Swap in real NYC images here — they render in Browse and tell you which angles are covered before retraining.</div>
+  <div class="manage-grid" id="manage-grid"></div>
+</div>
+
+<!-- modal for landmark detail -->
+<div class="modal-bg" id="modal-bg" onclick="closeMaybeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-title"></h2>
+      <button class="close-modal" onclick="closeModal()">&#x2715;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+const API = 'http://localhost:5000';
+let landmarks = [];
+// in-session photo store: { landmark_id: { angle: dataURL } }
+const photoStore = {};
+
+// ── startup ──────────────────────────────────────────────────────────────────
+async function init() {
+  try {
+    const r = await fetch(`${API}/landmarks`);
+    landmarks = await r.json();
+    document.getElementById('dot').classList.add('ready');
+    document.getElementById('api-status').textContent = `${landmarks.length} sites loaded`;
+    renderBrowse();
+    renderManage();
+  } catch(e) {
+    document.getElementById('api-status').textContent = 'API offline — run: python backend/app.py';
+  }
+}
+
+// ── tabs ──────────────────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) =>
+    b.classList.toggle('active', ['identify','browse','manage'][i] === name));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+// ── file upload & preview ─────────────────────────────────────────────────────
+document.getElementById('file-input').onchange = e => {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    document.getElementById('preview-img').src = ev.target.result;
+    document.getElementById('preview-section').style.display = 'block';
+    document.getElementById('result').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+};
+
+const dz = document.getElementById('drop-zone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('drag');
+  const file = e.dataTransfer.files[0]; if (!file) return;
+  const fi = document.getElementById('file-input');
+  const dt = new DataTransfer(); dt.items.add(file); fi.files = dt.files;
+  fi.dispatchEvent(new Event('change'));
+});
+
+// ── identify ──────────────────────────────────────────────────────────────────
+async function runIdentify() {
+  const img = document.getElementById('preview-img');
+  if (!img.src || img.src === location.href) return;
+  const btn = document.getElementById('id-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner">&#8635;</span> Running model…';
+
+  try {
+    const resp = await fetch(`${API}/predict`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image: img.src })
+    });
+    const data = await resp.json();
+    renderResult(data);
+  } catch(e) {
+    document.getElementById('result').innerHTML =
+      `<div class="notice" style="color:var(--red)">&#9888; Could not reach API. Is <code>python backend/app.py</code> running?</div>`;
+    document.getElementById('result').style.display = 'block';
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '&#9654; Identify this landmark';
+}
+
+function renderResult(data) {
+  const el = document.getElementById('result');
+
+  if (!data.identified) {
+    el.innerHTML = `
+      <div class="result-card">
+        <div class="rc-header">
+          <span class="rc-title">No match found</span>
+          <span class="conf-badge low">${(data.confidence * 100).toFixed(1)}% confidence</span>
+        </div>
+        <div class="rc-body">
+          <p class="rc-desc">${data.message}</p>
+          ${renderTop5(data.top5)}
+        </div>
+      </div>`;
+    el.style.display = 'block';
+    return;
+  }
+
+  const info = data.info || {};
+  const facts = [
+    ['Style',    info.style],
+    ['Architect',info.architect],
+    ['Height',   info.height_ft ? info.height_ft + ' ft' : null],
+    ['Floors',   info.floors || null],
+    ['Year',     info.year_built],
+    ['Type',     info.type],
+  ].filter(([,v]) => v);
+
+  el.innerHTML = `
+    <div class="result-card">
+      <div class="rc-header">
+        <span class="rc-title">${data.name}</span>
+        <span class="conf-badge">${data.confidence_pct} confidence</span>
+      </div>
+      <div class="rc-body">
+        <div class="rc-meta">
+          <span>&#128205; ${info.street || '—'}</span>
+          <span>&#128197; ${info.year_built || '—'}</span>
+        </div>
+        <p class="rc-desc">${info.description || ''}</p>
+        ${info.fun_fact ? `<p class="rc-desc" style="margin-top:8px; color:var(--accent)">&#9733; ${info.fun_fact}</p>` : ''}
+        <div class="facts-grid">
+          ${facts.map(([k,v]) => `<div class="fact"><label>${k}</label><strong>${v}</strong></div>`).join('')}
+        </div>
+        ${renderTop5(data.top5)}
+      </div>
+    </div>`;
+  el.style.display = 'block';
+}
+
+function renderTop5(top5) {
+  if (!top5) return '';
+  const max = top5[0]?.confidence || 1;
+  return `
+    <div class="top5">
+      <h4>Model top-5 scores</h4>
+      ${top5.map(t => `
+        <div class="bar-row">
+          <span class="bar-label">${t.landmark_id}</span>
+          <div class="bar-track"><div class="bar-fill" style="width:${(t.confidence/max*100).toFixed(1)}%"></div></div>
+          <span class="bar-pct">${(t.confidence*100).toFixed(1)}%</span>
+        </div>`).join('')}
+    </div>`;
+}
+
+// ── browse ────────────────────────────────────────────────────────────────────
+function renderBrowse() {
+  const grid = document.getElementById('browse-grid');
+  grid.innerHTML = landmarks.map(lm => {
+    const thumb = getFirstPhoto(lm.id);
+    return `
+      <div class="lm-card" onclick="openModal('${lm.id}')">
+        <div class="lm-thumb">
+          ${thumb
+            ? `<img src="${thumb}" alt="${lm.name}">`
+            : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 9 4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="13.5" r="1.5"/></svg>`}
+        </div>
+        <div class="lm-info">
+          <h3>${lm.name}</h3>
+          <p>${lm.type} · ${lm.year_built}</p>
+          <small>${lm.street}</small>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── manage ────────────────────────────────────────────────────────────────────
+function renderManage() {
+  const grid = document.getElementById('manage-grid');
+  grid.innerHTML = landmarks.map(lm => {
+    const store = photoStore[lm.id] || {};
+    const angles = lm.angles || [];
+    return `
+      <div class="manage-card">
+        <h3>${lm.name}</h3>
+        <div class="angle-list">
+          ${angles.map(angle => {
+            const filled = !!store[angle];
+            return `
+              <label class="angle-row">
+                <span class="angle-dot ${filled ? 'filled' : ''}"></span>
+                <span class="angle-name">${angle.replace(/_/g,' ')}</span>
+                ${filled ? '<span class="angle-check">✓</span>' : ''}
+                <input type="file" accept="image/*" onchange="addPhoto('${lm.id}','${angle}',event)">
+              </label>`;
+          }).join('')}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function addPhoto(id, angle, event) {
+  const file = event.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    if (!photoStore[id]) photoStore[id] = {};
+    photoStore[id][angle] = ev.target.result;
+    renderManage();
+    renderBrowse();
+  };
+  reader.readAsDataURL(file);
+}
+
+function getFirstPhoto(id) {
+  const store = photoStore[id];
+  if (!store) return null;
+  return Object.values(store)[0] || null;
+}
+
+// ── modal ─────────────────────────────────────────────────────────────────────
+function openModal(id) {
+  const lm = landmarks.find(l => l.id === id); if (!lm) return;
+  const store = photoStore[id] || {};
+  const photos = lm.angles.map(a => store[a]).filter(Boolean);
+
+  document.getElementById('modal-title').textContent = lm.name;
+  document.getElementById('modal-body').innerHTML = `
+    ${photos.length ? `
+      <div style="display:flex;gap:8px;overflow-x:auto;margin-bottom:14px;">
+        ${photos.map(src => `<img src="${src}" style="height:120px;border-radius:6px;object-fit:cover;">`).join('')}
+      </div>` : ''}
+    <div style="font-size:12px;color:var(--muted);display:flex;gap:14px;margin-bottom:10px;">
+      <span>&#128205; ${lm.street}</span>
+      <span>&#128197; ${lm.year_built}</span>
+    </div>
+    <p style="font-size:13px;color:#bbb;line-height:1.75;">${lm.description}</p>
+    ${lm.fun_fact ? `<p style="margin-top:10px;font-size:12px;color:var(--accent)">&#9733; ${lm.fun_fact}</p>` : ''}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;">
+      ${[['Architect',lm.architect],['Style',lm.style],['Height',lm.height_ft+' ft'],['Floors',lm.floors]].map(([k,v]) =>
+        `<div class="fact"><label>${k}</label><strong>${v}</strong></div>`).join('')}
+    </div>`;
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modal-bg').classList.remove('open'); }
+function closeMaybeModal(e) { if (e.target === document.getElementById('modal-bg')) closeModal(); }
+
+// ── init ──────────────────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+*.zip
+.env
+data/images/
+data/raw/
+data/photos/
+models/landmark_classifier.keras
+models/checkpoint_phase1.keras
+models/training_curves.png
+models/confusion_matrix.png
+models/training_history.json
+.venv/
+updated_files/

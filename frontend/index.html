@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pushkinskaya Street Explorer</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f0f0f; --surface: #1a1a1a; --border: #2a2a2a;
+      --text: #e8e8e8; --muted: #888; --accent: #c8a96e;
+      --green: #4caf78; --red: #e05c5c; --radius: 10px;
+    }
+    body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; min-height: 100vh; }
+    header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 18px 24px; border-bottom: 1px solid var(--border); background: var(--surface);
+    }
+    header h1 { font-size: 18px; font-weight: 600; letter-spacing: 0.02em; }
+    header span { font-size: 12px; color: var(--muted); margin-left: auto; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); transition: background 0.4s; }
+    .status-dot.ready { background: var(--green); }
+    nav { display: flex; gap: 4px; padding: 14px 24px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .tab-btn {
+      padding: 7px 16px; font-size: 13px; border-radius: var(--radius);
+      border: 1px solid transparent; background: transparent;
+      cursor: pointer; color: var(--muted); transition: all 0.15s;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { background: var(--surface); border-color: var(--border); color: var(--text); font-weight: 500; }
+    .panel { display: none; padding: 24px; max-width: 860px; margin: 0 auto; }
+    .panel.active { display: block; }
+    .drop-zone {
+      border: 1.5px dashed var(--border); border-radius: var(--radius);
+      padding: 3rem 2rem; text-align: center; cursor: pointer;
+      transition: border-color 0.2s; background: var(--surface); position: relative;
+    }
+    .drop-zone:hover, .drop-zone.drag { border-color: var(--accent); }
+    .drop-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .drop-zone svg { width: 40px; height: 40px; color: var(--muted); margin-bottom: 10px; }
+    .drop-zone p { font-size: 14px; color: var(--muted); }
+    .drop-zone small { font-size: 12px; color: #555; }
+    #preview-section { margin-top: 16px; display: none; }
+    #preview-img { width: 100%; max-height: 300px; object-fit: cover; border-radius: var(--radius); border: 1px solid var(--border); }
+    .id-btn {
+      margin-top: 12px; width: 100%; padding: 11px; font-size: 14px; font-weight: 500;
+      border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface);
+      cursor: pointer; color: var(--text); display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.15s;
+    }
+    .id-btn:hover:not(:disabled) { background: #252525; }
+    .id-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    #result { display: none; margin-top: 20px; }
+    .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .rc-header { display: flex; align-items: center; gap: 10px; padding: 13px 16px; background: #1f1f1f; border-bottom: 1px solid var(--border); }
+    .rc-title { font-size: 15px; font-weight: 500; }
+    .conf-badge { margin-left: auto; font-size: 11px; padding: 3px 9px; border-radius: 99px; background: #1e3a28; color: var(--green); }
+    .conf-badge.low { background: #3a1e1e; color: var(--red); }
+    .rc-body { padding: 16px; }
+    .rc-meta { font-size: 12px; color: var(--muted); margin-bottom: 10px; display: flex; gap: 16px; }
+    .rc-desc { font-size: 13px; color: #bbb; line-height: 1.75; }
+    .facts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+    .fact { background: #141414; border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; }
+    .fact label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 3px; }
+    .fact strong { font-size: 13px; }
+    .top5 { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .top5 h4 { font-size: 11px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
+    .bar-label { font-size: 12px; width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bar-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; }
+    .bar-fill { height: 4px; background: var(--accent); border-radius: 2px; transition: width 0.5s; }
+    .bar-pct { font-size: 11px; color: var(--muted); width: 38px; text-align: right; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+    .lm-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: border-color 0.15s; }
+    .lm-card:hover { border-color: var(--accent); }
+    .lm-thumb { height: 110px; background: #141414; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .lm-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .lm-thumb svg { width: 32px; height: 32px; color: #333; }
+    .lm-info { padding: 10px 12px; }
+    .lm-info h3 { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
+    .lm-info p { font-size: 11px; color: var(--muted); }
+    .lm-info small { font-size: 10px; color: #555; }
+    .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+    .modal-bg.open { display: flex; }
+    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; max-width: 560px; width: 100%; max-height: 85vh; overflow-y: auto; }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--surface); }
+    .modal-header h2 { font-size: 15px; font-weight: 500; }
+    .close-modal { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 20px; }
+    .modal-body { padding: 18px; }
+    .manage-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+    .manage-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+    .manage-card h3 { font-size: 13px; font-weight: 500; margin-bottom: 10px; }
+    .angle-list { display: flex; flex-direction: column; gap: 6px; }
+    .angle-row { display: flex; align-items: center; gap: 8px; font-size: 12px; border: 1px dashed var(--border); border-radius: 6px; padding: 6px 8px; cursor: pointer; position: relative; transition: border-color 0.15s; }
+    .angle-row:hover { border-color: var(--accent); }
+    .angle-row input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .angle-dot { width: 6px; height: 6px; border-radius: 50%; background: #333; flex-shrink: 0; }
+    .angle-dot.filled { background: var(--green); }
+    .angle-name { color: var(--muted); flex: 1; }
+    .angle-check { font-size: 11px; color: var(--green); }
+    .spinner { animation: spin 0.75s linear infinite; display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .notice { font-size: 12px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 14px; margin-bottom: 16px; }
+    #map { width: 100%; height: 420px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); }
+    .leaflet-popup-content-wrapper { background: var(--surface); color: var(--text); }
+    .leaflet-popup-tip { background: var(--surface); }
+    .guide-controls { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+    .guide-controls select, .guide-controls input[type=number] { background: #141414; border: 1px solid var(--border); color: var(--text); border-radius: 8px; padding: 8px 10px; font-size: 13px; }
+    .guide-btn { padding: 8px 16px; font-size: 13px; font-weight: 500; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    .guide-btn:hover { background: #252525; }
+    .guide-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .guide-btn.primary { background: #2a2316; border-color: var(--accent); color: var(--accent); }
+    .nearby-list, .route-list { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+    .nearby-item, .route-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .nearby-item:hover, .route-item:hover { border-color: var(--accent); }
+    .step-num { width: 24px; height: 24px; border-radius: 50%; background: #2a2316; color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+    .item-main { flex: 1; }
+    .item-main strong { font-size: 13px; display: block; }
+    .item-main span { font-size: 11px; color: var(--muted); }
+    .item-dist { font-size: 12px; color: var(--accent); white-space: nowrap; }
+    .speak-btn { background: none; border: 1px solid var(--border); border-radius: 6px; color: var(--muted); cursor: pointer; padding: 5px 10px; font-size: 12px; display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; }
+    .speak-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .speak-btn.speaking { color: var(--accent); border-color: var(--accent); }
+  </style>
+</head>
+<body>
+<header>
+  <span class="status-dot" id="dot"></span>
+  <h1>Pushkinskaya Street Explorer</h1>
+  <span id="api-status">Connecting...</span>
+</header>
+<nav>
+  <button class="tab-btn active" onclick="switchTab('identify')">Identify</button>
+  <button class="tab-btn" onclick="switchTab('browse')">Browse Sites</button>
+  <button class="tab-btn" onclick="switchTab('nearme')">Near Me</button>
+  <button class="tab-btn" onclick="switchTab('walk')">Plan a Walk</button>
+  <button class="tab-btn" onclick="switchTab('manage')">Manage Photos</button>
+</nav>
+
+<div id="tab-identify" class="panel active">
+  <div class="drop-zone" id="drop-zone">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9a2 2 0 0 1 2-2h.93a2 2 0 0 0 1.664-.89l.812-1.22A2 2 0 0 1 10.07 4h3.86a2 2 0 0 1 1.664.89l.812 1.22A2 2 0 0 0 18.07 7H19a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3"/></svg>
+    <p>Upload or drag a photo of a landmark</p>
+    <small>JPG, PNG, WEBP - any angle</small>
+    <input type="file" accept="image/*" id="file-input">
+  </div>
+  <div id="preview-section">
+    <img id="preview-img" alt="Uploaded photo">
+    <button class="id-btn" id="id-btn" onclick="runIdentify()">&#9654; Identify this landmark</button>
+  </div>
+  <div id="result"></div>
+</div>
+
+<div id="tab-browse" class="panel">
+  <div class="grid" id="browse-grid"></div>
+</div>
+
+<div id="tab-nearme" class="panel">
+  <div class="notice">&#128205; Uses real GPS and haversine distances to geocoded landmarks.</div>
+  <div class="guide-controls">
+    <button class="guide-btn primary" onclick="findNearby()">&#128205; Use my location</button>
+    <select id="radius-select">
+      <option value="300">Within 300 m</option>
+      <option value="500" selected>Within 500 m</option>
+      <option value="1000">Within 1 km</option>
+      <option value="2000">Within 2 km</option>
+    </select>
+  </div>
+  <div id="map-nearme" style="display:none;"><div id="map"></div></div>
+  <div class="nearby-list" id="nearby-list"></div>
+</div>
+
+<div id="tab-walk" class="panel">
+  <div class="notice">&#128694; Uses OSRM real walking times from geocoded landmark coordinates.</div>
+  <div class="guide-controls">
+    <label style="font-size:13px;color:var(--muted)">Time:</label>
+    <input type="number" id="walk-minutes" value="60" min="15" max="240" step="15" style="width:70px">
+    <span style="font-size:13px;color:var(--muted)">min</span>
+    <select id="walk-start"></select>
+    <button class="guide-btn primary" onclick="planWalk()">&#10148; Plan route</button>
+  </div>
+  <div id="walk-result"></div>
+</div>
+
+<div id="tab-manage" class="panel">
+  <div class="notice">&#9432; Photos stored in-session. Swap in real photos here.</div>
+  <div class="manage-grid" id="manage-grid"></div>
+</div>
+
+<div class="modal-bg" id="modal-bg" onclick="closeMaybeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-title"></h2>
+      <button class="close-modal" onclick="closeModal()">&#x2715;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const API = 'http://localhost:5000';
+let landmarks = [];
+const photoStore = {};
+
+async function init() {
+  try {
+    const r = await fetch(`${API}/landmarks`);
+    landmarks = await r.json();
+    document.getElementById('dot').classList.add('ready');
+    document.getElementById('api-status').textContent = `${landmarks.length} sites loaded`;
+    renderBrowse();
+    renderManage();
+    populateWalkStart();
+  } catch(e) {
+    document.getElementById('api-status').textContent = 'API offline -- run: python backend/app.py';
+  }
+}
+
+function populateWalkStart() {
+  const sel = document.getElementById('walk-start');
+  const geocoded = landmarks.filter(l => l.lat != null);
+  sel.innerHTML = geocoded.map(l => `<option value="${l.id}">${l.name}</option>`).join('');
+  if (geocoded.length === 0) sel.innerHTML = '<option value="">No geocoded landmarks</option>';
+}
+
+function switchTab(name) {
+  const names = ['identify','browse','nearme','walk','manage'];
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', names[i] === name));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+document.getElementById('file-input').onchange = e => {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    document.getElementById('preview-img').src = ev.target.result;
+    document.getElementById('preview-section').style.display = 'block';
+    document.getElementById('result').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+};
+const dz = document.getElementById('drop-zone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('drag');
+  const file = e.dataTransfer.files[0]; if (!file) return;
+  const fi = document.getElementById('file-input');
+  const dt = new DataTransfer(); dt.items.add(file); fi.files = dt.files;
+  fi.dispatchEvent(new Event('change'));
+});
+
+async function runIdentify() {
+  const img = document.getElementById('preview-img');
+  if (!img.src || img.src === location.href) return;
+  const btn = document.getElementById('id-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner">&#8635;</span> Running model...';
+  try {
+    const resp = await fetch(`${API}/predict`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image: img.src })
+    });
+    renderResult(await resp.json());
+  } catch(e) {
+    document.getElementById('result').innerHTML = '<div class="notice" style="color:var(--red)">&#9888; API unreachable.</div>';
+    document.getElementById('result').style.display = 'block';
+  }
+  btn.disabled = false;
+  btn.innerHTML = '&#9654; Identify this landmark';
+}
+
+function renderResult(data) {
+  const el = document.getElementById('result');
+  if (!data.identified) {
+    el.innerHTML = `<div class="result-card"><div class="rc-header"><span class="rc-title">No match found</span><span class="conf-badge low">${(data.confidence*100).toFixed(1)}%</span></div><div class="rc-body"><p class="rc-desc">${data.message}</p>${renderTop5(data.top5)}</div></div>`;
+    el.style.display = 'block'; return;
+  }
+  const info = data.info || {};
+  const facts = [['Style',info.style],['Architect',info.architect],['Height',info.height_ft?info.height_ft+' ft':null],['Floors',info.floors||null],['Year',info.year_built],['Type',info.type]].filter(([,v])=>v);
+  el.innerHTML = `<div class="result-card"><div class="rc-header"><span class="rc-title">${data.name}</span><span class="conf-badge">${data.confidence_pct}</span></div><div class="rc-body"><div class="rc-meta"><span>&#128205; ${info.street||'---'}</span><span>&#128197; ${info.year_built||'---'}</span></div><p class="rc-desc">${info.description||''}</p><button class="speak-btn" onclick="speakText('${(info.description||'').replace(/'/g,"\\'")}',this)">&#128266; Listen</button>${info.fun_fact?`<p class="rc-desc" style="margin-top:8px;color:var(--accent)">&#9733; ${info.fun_fact}</p>`:''}<div class="facts-grid">${facts.map(([k,v])=>`<div class="fact"><label>${k}</label><strong>${v}</strong></div>`).join('')}</div>${renderTop5(data.top5)}</div></div>`;
+  el.style.display = 'block';
+}
+
+function renderTop5(top5) {
+  if (!top5) return '';
+  const max = top5[0]?.confidence || 1;
+  return `<div class="top5"><h4>Model top-5 scores</h4>${top5.map(t => `<div class="bar-row"><span class="bar-label">${t.landmark_id}</span><div class="bar-track"><div class="bar-fill" style="width:${(t.confidence/max*100).toFixed(1)}%"></div></div><span class="bar-pct">${(t.confidence*100).toFixed(1)}%</span></div>`).join('')}</div>`;
+}
+
+function renderBrowse() {
+  document.getElementById('browse-grid').innerHTML = landmarks.map(lm => {
+    const thumb = getFirstPhoto(lm.id);
+    return `<div class="lm-card" onclick="openModal('${lm.id}')"><div class="lm-thumb">${thumb?`<img src="${thumb}">`:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 9 4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="13.5" r="1.5"/></svg>'}</div><div class="lm-info"><h3>${lm.name}</h3><p>${lm.type} · ${lm.year_built}</p><small>${lm.street}</small></div></div>`;
+  }).join('');
+}
+
+function renderManage() {
+  document.getElementById('manage-grid').innerHTML = landmarks.map(lm => {
+    const store = photoStore[lm.id] || {};
+    return `<div class="manage-card"><h3>${lm.name}</h3><div class="angle-list">${(lm.angles||[]).map(a => `<label class="angle-row"><span class="angle-dot ${store[a]?'filled':''}"></span><span class="angle-name">${a.replace(/_/g,' ')}</span>${store[a]?'<span class="angle-check">&#10003;</span>':''}<input type="file" accept="image/*" onchange="addPhoto('${lm.id}','${a}',event)"></label>`).join('')}</div></div>`;
+  }).join('');
+}
+
+function addPhoto(id, angle, event) {
+  const file = event.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    if (!photoStore[id]) photoStore[id] = {};
+    photoStore[id][angle] = ev.target.result;
+    renderManage(); renderBrowse();
+  };
+  reader.readAsDataURL(file);
+}
+
+let photoIds = [];
+fetch('/photos/available').then(r=>r.json()).then(ids => { photoIds = ids; renderBrowse(); });
+
+function getFirstPhoto(id) {
+  const store = photoStore[id];
+  if (store) { const v = Object.values(store)[0]; if (v) return v; }
+  if (photoIds.indexOf(id) !== -1) return '/photo/' + id;
+  return null;
+}
+
+function openModal(id) {
+  const lm = landmarks.find(l => l.id === id); if (!lm) return;
+  const store = photoStore[id] || {};
+  const photos = (lm.angles||[]).map(a => store[a]).filter(Boolean);
+  const serverPhoto = photoIds.indexOf(id) !== -1 ? '/photo/' + id : null;
+  document.getElementById('modal-title').textContent = lm.name;
+  document.getElementById('modal-body').innerHTML = `<div style="display:flex;gap:8px;overflow-x:auto;margin-bottom:14px;">${photos.length?photos.map(src=>`<img src="${src}" style="height:120px;border-radius:6px;object-fit:cover;">`).join(''):serverPhoto?`<img src="${serverPhoto}" style="height:120px;border-radius:6px;object-fit:cover;">`:''}</div><div style="font-size:12px;color:var(--muted);display:flex;gap:14px;margin-bottom:10px;"><span>&#128205; ${lm.street}</span><span>&#128197; ${lm.year_built}</span></div><p style="font-size:13px;color:#bbb;line-height:1.75;">${lm.description}</p><button class="speak-btn" onclick="speakText('${(lm.description+(lm.fun_fact?'. '+lm.fun_fact:'')).replace(/'/g,"\\'")}',this)">&#128266; Listen</button>${lm.fun_fact?`<p style="margin-top:10px;font-size:12px;color:var(--accent)">&#9733; ${lm.fun_fact}</p>`:''}<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;">${[['Architect',lm.architect],['Style',lm.style],['Height',lm.height_ft+' ft'],['Floors',lm.floors]].map(([k,v])=>`<div class="fact"><label>${k}</label><strong>${v}</strong></div>`).join('')}</div>`;
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modal-bg').classList.remove('open'); }
+function closeMaybeModal(e) { if (e.target === document.getElementById('modal-bg')) closeModal(); }
+
+init();
+
+let leafletMap = null;
+
+function findNearby() {
+  if (!navigator.geolocation) {
+    document.getElementById('nearby-list').innerHTML = '<div class="notice" style="color:var(--red)">Geolocation not supported.</div>';
+    return;
+  }
+  document.getElementById('nearby-list').innerHTML = '<div class="notice"><span class="spinner">&#8635;</span> Getting your location...</div>';
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+    const {latitude, longitude} = pos.coords;
+    const radius = document.getElementById('radius-select').value;
+    try {
+      const r = await fetch(`${API}/nearby?lat=${latitude}&lon=${longitude}&radius_m=${radius}`);
+      renderNearby(await r.json(), latitude, longitude);
+    } catch(e) {
+      document.getElementById('nearby-list').innerHTML = '<div class="notice" style="color:var(--red)">API unreachable.</div>';
+    }
+  }, (err) => {
+    document.getElementById('nearby-list').innerHTML = `<div class="notice" style="color:var(--red)">${err.message}. <button onclick="findNearbyDefault()" style="margin-left:8px;padding:4px 10px;border:1px solid var(--accent);background:transparent;color:var(--accent);border-radius:6px;cursor:pointer;">Use default location</button></div>`;
+  }, {enableHighAccuracy: false, timeout: 15000});
+}
+
+function findNearbyDefault() {
+  document.getElementById('nearby-list').innerHTML = '<div class="notice"><span class="spinner">&#8635;</span> Using default location...</div>';
+  const lat = 47.224, lon = 39.711;
+  const radius = document.getElementById('radius-select').value;
+  fetch(`${API}/nearby?lat=${lat}&lon=${lon}&radius_m=${radius}`).then(r=>r.json()).then(d=>renderNearby(d,lat,lon));
+}
+
+function renderNearby(data, userLat, userLon) {
+  const listEl = document.getElementById('nearby-list');
+  const mapWrap = document.getElementById('map-nearme');
+  if (data.count === 0) {
+    listEl.innerHTML = `<div class="notice">No geocoded landmarks within ${data.query.radius_m}m.</div>`;
+    mapWrap.style.display = 'none'; return;
+  }
+  listEl.innerHTML = data.landmarks.map(lm => `<div class="nearby-item" onclick="openModal('${lm.id}')"><div class="item-main"><strong>${lm.name}</strong><span>${lm.type} · ${lm.year_built}</span></div><div class="item-dist">${lm.distance_m<1000?Math.round(lm.distance_m)+' m':(lm.distance_m/1000).toFixed(1)+' km'}</div></div>`).join('');
+  mapWrap.style.display = 'block';
+  renderMap('map', userLat, userLon, data.landmarks);
+}
+
+function renderMap(elId, userLat, userLon, points) {
+  if (leafletMap) { leafletMap.remove(); leafletMap = null; }
+  leafletMap = L.map(elId).setView([userLat, userLon], 15);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; OpenStreetMap contributors', maxZoom: 19}).addTo(leafletMap);
+  L.marker([userLat, userLon], {icon: L.divIcon({className:'', html:'<div style="background:#4caf78;width:14px;height:14px;border-radius:50%;border:2px solid white;"></div>'})}).addTo(leafletMap).bindPopup('You are here');
+  points.forEach(lm => { L.marker([lm.lat, lm.lon]).addTo(leafletMap).bindPopup(`<strong>${lm.name}</strong><br>${Math.round(lm.distance_m)} m away`); });
+}
+
+async function planWalk() {
+  const resultEl = document.getElementById('walk-result');
+  resultEl.innerHTML = '<div class="notice"><span class="spinner">&#8635;</span> Loading planned route...</div>';
+  try {
+    const r = await fetch(`${API}/route`);
+    if (r.status === 404) {
+      const data = await r.json();
+      resultEl.innerHTML = `<div class="notice" style="color:var(--red)">No route computed yet. Run on server:<br><code>python plan_route.py --minutes ${document.getElementById('walk-minutes').value} --start ${document.getElementById('walk-start').value}</code></div>`;
+      return;
+    }
+    renderWalk(await r.json());
+  } catch(e) {
+    resultEl.innerHTML = '<div class="notice" style="color:var(--red)">API unreachable.</div>';
+  }
+}
+
+function renderWalk(route) {
+  const resultEl = document.getElementById('walk-result');
+  const stopsHtml = route.stops.map((s,i) => `<div class="route-item" onclick="openModal('${s.id}')"><div class="step-num">${i+1}</div><div class="item-main"><strong>${s.name}</strong></div></div>`).join('');
+  resultEl.innerHTML = `<div class="notice">&#128694; ${route.stops.length} stops · ${route.total_walking_minutes} min walking · ${route.total_minutes} min total</div><div id="map-walk"><div id="map" style="margin-bottom:14px;"></div></div><div class="route-list">${stopsHtml}</div>`;
+  if (route.stops.length > 0) renderRouteMap(route);
+}
+
+function renderRouteMap(route) {
+  if (leafletMap) { leafletMap.remove(); leafletMap = null; }
+  const first = route.stops[0];
+  leafletMap = L.map('map').setView([first.lat, first.lon], 15);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; OpenStreetMap contributors', maxZoom: 19}).addTo(leafletMap);
+  route.stops.forEach((s,i) => { L.marker([s.lat, s.lon]).addTo(leafletMap).bindPopup(`<strong>${i+1}. ${s.name}</strong>`); });
+  if (route.route_geometry) {
+    const latlngs = route.route_geometry.coordinates.map(c => [c[1], c[0]]);
+    L.polyline(latlngs, {color: '#c8a96e', weight: 3}).addTo(leafletMap);
+    leafletMap.fitBounds(latlngs);
+  }
+}
+
+let currentUtterance = null;
+function speakText(text, btnEl) {
+  if (!('speechSynthesis' in window)) { alert('TTS not supported in this browser.'); return; }
+  if (currentUtterance && speechSynthesis.speaking) { speechSynthesis.cancel(); btnEl.classList.remove('speaking'); btnEl.innerHTML = '&#128266; Listen'; currentUtterance = null; return; }
+  currentUtterance = new SpeechSynthesisUtterance(text);
+  currentUtterance.rate = 0.95;
+  currentUtterance.onend = () => { btnEl.classList.remove('speaking'); btnEl.innerHTML = '&#128266; Listen'; };
+  btnEl.classList.add('speaking');
+  btnEl.innerHTML = '&#9209; Stop';
+  speechSynthesis.speak(currentUtterance);
+}
+</script>
+</body>
+</html>

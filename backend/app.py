@@ -1,0 +1,242 @@
+"""
+backend/app.py
+--------------
+Step 4: run the REST API that the frontend calls.
+
+USAGE
+-----
+  python backend/app.py        (works from any working directory)
+
+ENDPOINTS
+---------
+  GET  /                          health check
+  GET  /landmarks                 all landmark metadata
+  GET  /landmarks/<id>             single landmark metadata
+  POST /predict                   { image: <base64 jpeg/png> }
+                                   returns { landmark_id, name, confidence, top5, info }
+"""
+
+import json
+import base64
+import io
+from pathlib import Path
+
+import numpy as np
+from flask import Flask, jsonify, request, send_from_directory, current_app
+from flask_cors import CORS
+from tensorflow import keras
+from PIL import Image
+
+# ── paths — anchored to project root, independent of CWD ─────────────────────
+PROJECT_ROOT     = Path(__file__).resolve().parent.parent
+MODELS_DIR       = PROJECT_ROOT / "models"
+DATA_DIR         = PROJECT_ROOT / "data"
+FRONTEND_DIR     = PROJECT_ROOT / "frontend"
+MODEL_PATH       = MODELS_DIR / "landmark_classifier.keras"
+CLASS_NAMES_PATH = MODELS_DIR / "class_names.json"
+LANDMARKS_PATH   = DATA_DIR / "landmarks.json"
+
+IMG_SIZE             = (224, 224)
+PORT                 = 5000
+HOST                 = "0.0.0.0"
+CONFIDENCE_THRESHOLD = 0.40   # predictions below this are reported as "unknown"
+# ────────────────────────────────────────────────────────────────────────────
+
+app = Flask(__name__, static_folder=str(FRONTEND_DIR))
+CORS(app)
+
+# Runtime state stored as app attributes to avoid module-level scoping issues.
+app.model           = None
+app.class_names     = []
+app.landmarks_by_id = {}
+
+
+def load_resources():
+    """Load model, class names, and landmark metadata into app state."""
+    print("Loading model...", end=" ", flush=True)
+    if MODEL_PATH.exists():
+        app.model = keras.models.load_model(MODEL_PATH)
+        print("done")
+    else:
+        print("not found")
+        print(f"  Expected at: {MODEL_PATH}")
+        print(f"  Run: python train.py")
+
+    if CLASS_NAMES_PATH.exists():
+        app.class_names = json.loads(CLASS_NAMES_PATH.read_text())
+    else:
+        print(f"  Warning: {CLASS_NAMES_PATH} not found. Run train.py first.")
+
+    if LANDMARKS_PATH.exists():
+        data = json.loads(LANDMARKS_PATH.read_text())
+        app.landmarks_by_id = {lm["id"]: lm for lm in data["landmarks"]}
+    else:
+        raise FileNotFoundError(f"landmarks.json not found at {LANDMARKS_PATH}")
+
+    print(f"Classes loaded: {len(app.class_names)}")
+    print(f"Landmarks in DB: {len(app.landmarks_by_id)}")
+
+
+def preprocess_image(image_bytes: bytes) -> np.ndarray:
+    """Decode, resize, normalise to [0,1], add batch dim."""
+    img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+    img = img.resize(IMG_SIZE, Image.LANCZOS)
+    arr = np.array(img, dtype=np.float32) / 255.0
+    return np.expand_dims(arr, axis=0)
+
+
+def decode_base64_image(b64_string: str) -> bytes:
+    """Handle both raw base64 and data-URI prefixed strings."""
+    if "," in b64_string:
+        b64_string = b64_string.split(",", 1)[1]
+    return base64.b64decode(b64_string)
+
+
+def haversine_m(lat1, lon1, lat2, lon2):
+    import math
+    R = 6_371_000
+    phi1, phi2 = math.radians(lat1), math.radians(lat2)
+    dphi = math.radians(lat2 - lat1)
+    dlambda = math.radians(lon2 - lon1)
+    a = math.sin(dphi / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(dlambda / 2) ** 2
+    return 2 * R * math.asin(math.sqrt(a))
+
+
+# ── routes ───────────────────────────────────────────────────────────────────
+@app.route("/")
+def health():
+    return jsonify({
+        "status": "ok",
+        "model_loaded": current_app.model is not None,
+        "classes": len(current_app.class_names),
+        "landmarks": len(current_app.landmarks_by_id),
+    })
+
+
+@app.route("/landmarks")
+def get_landmarks():
+    return jsonify(list(current_app.landmarks_by_id.values()))
+
+
+@app.route("/landmarks/<landmark_id>")
+def get_landmark(landmark_id: str):
+    lm = current_app.landmarks_by_id.get(landmark_id)
+    if lm is None:
+        return jsonify({"error": "Not found"}), 404
+    return jsonify(lm)
+
+
+@app.route("/nearby")
+def nearby():
+    try:
+        lat = float(request.args.get("lat"))
+        lon = float(request.args.get("lon"))
+    except (TypeError, ValueError):
+        return jsonify({"error": "Provide numeric lat and lon query params"}), 400
+    radius_m = float(request.args.get("radius_m", 500))
+    results = []
+    for lm in current_app.landmarks_by_id.values():
+        if lm.get("lat") is None or lm.get("lon") is None:
+            continue
+        dist = haversine_m(lat, lon, lm["lat"], lm["lon"])
+        if dist <= radius_m:
+            results.append({**lm, "distance_m": round(dist, 1)})
+    results.sort(key=lambda x: x["distance_m"])
+    return jsonify({"query": {"lat": lat, "lon": lon, "radius_m": radius_m}, "count": len(results), "landmarks": results})
+
+
+@app.route("/route")
+def get_route():
+    route_path = DATA_DIR / "planned_route.json"
+    if not route_path.exists():
+        return jsonify({"error": "No route planned yet.", "hint": "Run: python plan_route.py --minutes 60"}), 404
+    return jsonify(json.loads(route_path.read_text()))
+
+
+@app.route("/predict", methods=["POST"])
+def predict():
+    if current_app.model is None:
+        return jsonify({"error": "Model not loaded. Run train.py first."}), 503
+
+    body = request.get_json(silent=True)
+    if not body or "image" not in body:
+        return jsonify({"error": "Send JSON with key 'image' (base64 string)"}), 400
+
+    try:
+        img_bytes = decode_base64_image(body["image"])
+        tensor    = preprocess_image(img_bytes)
+    except Exception as e:
+        return jsonify({"error": f"Image decode failed: {e}"}), 400
+
+    probs = current_app.model.predict(tensor, verbose=0)[0]
+
+    top5_idx = np.argsort(probs)[::-1][:5]
+    top5 = [
+        {"landmark_id": current_app.class_names[i], "confidence": float(probs[i])}
+        for i in top5_idx
+    ]
+
+    best_id   = current_app.class_names[top5_idx[0]]
+    best_conf = float(probs[top5_idx[0]])
+
+    if best_conf < CONFIDENCE_THRESHOLD:
+        return jsonify({
+            "identified": False,
+            "message": "Confidence too low. Try a clearer photo or a different angle.",
+            "confidence": best_conf,
+            "top5": top5,
+        })
+
+    info = current_app.landmarks_by_id.get(best_id, {})
+    return jsonify({
+        "identified": True,
+        "landmark_id": best_id,
+        "name": info.get("name", best_id),
+        "confidence": best_conf,
+        "confidence_pct": f"{best_conf * 100:.1f}%",
+        "top5": top5,
+        "info": info,
+    })
+
+
+# ── serve photos ──────────────────────────────────────────────────────────────
+PHOTOS_DIR = DATA_DIR / "photos"
+_PHOTO_CACHE = None
+
+def _list_available_photos():
+    global _PHOTO_CACHE
+    if _PHOTO_CACHE is None:
+        _PHOTO_CACHE = {p.stem for p in PHOTOS_DIR.glob("*") if p.suffix.lower() in (".jpg", ".jpeg", ".png", ".webp")}
+    return _PHOTO_CACHE
+
+@app.route("/photo/<landmark_id>")
+def serve_photo(landmark_id: str):
+    for ext in (".jpg", ".jpeg", ".png", ".webp"):
+        p = PHOTOS_DIR / f"{landmark_id}{ext}"
+        if p.exists():
+            return send_from_directory(PHOTOS_DIR, p.name)
+    return jsonify({"error": "No photo for this landmark"}), 404
+
+@app.route("/photos/available")
+def photos_available():
+    return jsonify(list(_list_available_photos()))
+
+
+# ── serve frontend ────────────────────────────────────────────────────────────
+@app.route("/app")
+@app.route("/app/")
+def serve_frontend():
+    return send_from_directory(FRONTEND_DIR, "index.html")
+
+
+@app.route("/app/<path:filename>")
+def serve_static(filename):
+    return send_from_directory(FRONTEND_DIR, filename)
+
+
+# ── main ──────────────────────────────────────────────────────────────────────
+if __name__ == "__main__":
+    load_resources()
+    print(f"\nServer running at http://localhost:{PORT}")
+    print(f"Frontend: http://localhost:{PORT}/app")
+    app.run(host=HOST, port=PORT, debug=False, use_reloader=False)

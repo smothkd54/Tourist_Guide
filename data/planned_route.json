@@ -1,0 +1,84 @@
+{
+  "start": "pushkin_monument",
+  "minutes_budget": 60,
+  "visit_minutes_per_stop": 8,
+  "stops": [
+    {
+      "id": "pushkin_monument",
+      "name": "Monument to Alexander Pushkin",
+      "lat": 47.2245858,
+      "lon": 39.71166
+    },
+    {
+      "id": "kirov_monument",
+      "name": "Monument to S.M. Kirov",
+      "lat": 47.2245858,
+      "lon": 39.71166
+    },
+    {
+      "id": "pushkin_spheres",
+      "name": "Pushkin Decorative Spheres",
+      "lat": 47.2245858,
+      "lon": 39.71166
+    },
+    {
+      "id": "lyre_fountain",
+      "name": "Lyre Fountain",
+      "lat": 47.2245858,
+      "lon": 39.71166
+    },
+    {
+      "id": "mnatsakanova_house",
+      "name": "Mnatsakanova House",
+      "lat": 47.2245858,
+      "lon": 39.71166
+    },
+    {
+      "id": "kushnarev_house",
+      "name": "Kushnarev Revenue House",
+      "lat": 47.2245858,
+      "lon": 39.71166
+    },
+    {
+      "id": "memorial_nazi_victims",
+      "name": "Memorial to Nazi Victims 1943",
+      "lat": 47.2245858,
+      "lon": 39.71166
+    }
+  ],
+  "total_walking_minutes": 0.0,
+  "total_minutes": 56.0,
+  "route_geometry": {
+    "coordinates": [
+      [
+        39.71166,
+        47.224586
+      ],
+      [
+        39.71166,
+        47.224586
+      ],
+      [
+        39.71166,
+        47.224586
+      ],
+      [
+        39.71166,
+        47.224586
+      ],
+      [
+        39.71166,
+        47.224586
+      ],
+      [
+        39.71166,
+        47.224586
+      ],
+      [
+        39.71166,
+        47.224586
+      ]
+    ],
+    "type": "LineString"
+  }
+}
