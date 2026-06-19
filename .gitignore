@@ -4,8 +4,6 @@ __pycache__/
 *.zip
 .env
 data/images/
-data/raw/
-data/photos/
 models/landmark_classifier.keras
 models/checkpoint_phase1.keras
 models/training_curves.png
