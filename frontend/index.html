@@ -102,6 +102,7 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     .notice { font-size: 12px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 14px; margin-bottom: 16px; }
     #map { width: 100%; height: 420px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); }
+    #walk-map { width: 100%; height: 420px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); }
     .leaflet-popup-content-wrapper { background: var(--surface); color: var(--text); }
     .leaflet-popup-tip { background: var(--surface); }
     .guide-controls { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
@@ -156,9 +157,10 @@
 </div>
 
 <div id="tab-nearme" class="panel">
-  <div class="notice">&#128205; Uses real GPS and haversine distances to geocoded landmarks.</div>
+  <div class="notice">&#128205; If you're on Pushkinskaya Street right now, "Use my location" shows what's around you. Planning from Moscow or another country? <a href="#" onclick="switchTab('nearme'); showAllLandmarksMap(); return false;" style="color:var(--accent);">See the whole street on a map</a> instead.</div>
   <div class="guide-controls">
     <button class="guide-btn primary" onclick="findNearby()">&#128205; Use my location</button>
+    <button class="guide-btn" onclick="showAllLandmarksMap()">&#128506; Show full street map</button>
     <select id="radius-select">
       <option value="300">Within 300 m</option>
       <option value="500" selected>Within 500 m</option>
@@ -171,7 +173,7 @@
 </div>
 
 <div id="tab-walk" class="panel">
-  <div class="notice">&#128694; Uses OSRM real walking times from geocoded landmark coordinates.</div>
+  <div class="notice">&#128694; Real walking route using OSRM. Works from anywhere — no GPS needed, just pick a starting landmark and a time budget. Plan your route from Moscow or before you even land.</div>
   <div class="guide-controls">
     <label style="font-size:13px;color:var(--muted)">Time:</label>
     <input type="number" id="walk-minutes" value="60" min="15" max="240" step="15" style="width:70px">
@@ -349,36 +351,137 @@ function findNearby() {
   }
   document.getElementById('nearby-list').innerHTML = '<div class="notice"><span class="spinner">&#8635;</span> Getting your location...</div>';
   navigator.geolocation.getCurrentPosition(async (pos) => {
-    const {latitude, longitude} = pos.coords;
+    const {latitude, longitude, accuracy} = pos.coords;
     const radius = document.getElementById('radius-select').value;
     try {
       const r = await fetch(`${API}/nearby?lat=${latitude}&lon=${longitude}&radius_m=${radius}`);
-      renderNearby(await r.json(), latitude, longitude);
+      const accuracyWarning = buildAccuracyWarning(accuracy);
+      renderNearby(await r.json(), latitude, longitude, accuracyWarning);
     } catch(e) {
       document.getElementById('nearby-list').innerHTML = '<div class="notice" style="color:var(--red)">API unreachable.</div>';
     }
   }, (err) => {
-    document.getElementById('nearby-list').innerHTML = `<div class="notice" style="color:var(--red)">${err.message}. <button onclick="findNearbyDefault()" style="margin-left:8px;padding:4px 10px;border:1px solid var(--accent);background:transparent;color:var(--accent);border-radius:6px;cursor:pointer;">Use default location</button></div>`;
-  }, {enableHighAccuracy: false, timeout: 15000});
+    document.getElementById('nearby-list').innerHTML = `<div class="notice" style="color:var(--red)">${err.message}</div>
+      <div class="notice">Enter your coordinates manually instead, or look them up at
+      <a href="https://www.openstreetmap.org" target="_blank" style="color:var(--accent)">openstreetmap.org</a>:</div>
+      <div class="guide-controls">
+        <input type="number" id="manual-lat" placeholder="Latitude" step="0.0001" style="width:130px;">
+        <input type="number" id="manual-lon" placeholder="Longitude" step="0.0001" style="width:130px;">
+        <button class="guide-btn primary" onclick="useManualLocation()">Find nearby landmarks</button>
+      </div>`;
+  }, {enableHighAccuracy: true, timeout: 15000});
 }
 
-function findNearbyDefault() {
-  document.getElementById('nearby-list').innerHTML = '<div class="notice"><span class="spinner">&#8635;</span> Using default location...</div>';
-  const lat = 47.224, lon = 39.711;
+function buildAccuracyWarning(accuracy) {
+  if (accuracy == null) return '';
+  if (accuracy > 5000) {
+    return `<div class="notice" style="color:var(--red); margin-bottom:10px;">
+      &#9888; Location accuracy is approximately ${Math.round(accuracy/1000)} km. This usually means your
+      browser used Wi-Fi or IP-based positioning instead of real GPS, which can place you in the wrong
+      city entirely. If these results don't look right, enter your coordinates manually below.
+      <div class="guide-controls" style="margin-top:8px;">
+        <input type="number" id="manual-lat" placeholder="Latitude" step="0.0001" style="width:130px;">
+        <input type="number" id="manual-lon" placeholder="Longitude" step="0.0001" style="width:130px;">
+        <button class="guide-btn primary" onclick="useManualLocation()">Use these coordinates instead</button>
+      </div>
+    </div>`;
+  }
+  if (accuracy > 500) {
+    return `<div class="notice" style="color:var(--accent); margin-bottom:10px;">
+      Location accuracy is approximately ${Math.round(accuracy)} m -- nearby results may include a few misses.
+    </div>`;
+  }
+  return '';
+}
+
+async function useManualLocation() {
+  const lat = parseFloat(document.getElementById('manual-lat').value);
+  const lon = parseFloat(document.getElementById('manual-lon').value);
+  if (isNaN(lat) || isNaN(lon)) { alert('Enter valid numbers for both latitude and longitude.'); return; }
   const radius = document.getElementById('radius-select').value;
-  fetch(`${API}/nearby?lat=${lat}&lon=${lon}&radius_m=${radius}`).then(r=>r.json()).then(d=>renderNearby(d,lat,lon));
+  document.getElementById('nearby-list').innerHTML = '<div class="notice"><span class="spinner">&#8635;</span> Loading nearby landmarks...</div>';
+  try {
+    const r = await fetch(`${API}/nearby?lat=${lat}&lon=${lon}&radius_m=${radius}`);
+    renderNearby(await r.json(), lat, lon, '');
+  } catch(e) {
+    document.getElementById('nearby-list').innerHTML = '<div class="notice" style="color:var(--red)">API unreachable.</div>';
+  }
 }
 
-function renderNearby(data, userLat, userLon) {
+function renderNearby(data, userLat, userLon, warningHtml) {
+  warningHtml = warningHtml || '';
   const listEl = document.getElementById('nearby-list');
   const mapWrap = document.getElementById('map-nearme');
+
   if (data.count === 0) {
-    listEl.innerHTML = `<div class="notice">No geocoded landmarks within ${data.query.radius_m}m.</div>`;
-    mapWrap.style.display = 'none'; return;
+    const distM = data.nearest_landmark_distance_m;
+    const nearestName = data.nearest_landmark_name;
+
+    if (distM == null) {
+      listEl.innerHTML = warningHtml + `<div class="notice">No geocoded landmarks available yet.</div>`;
+      mapWrap.style.display = 'none';
+      return;
+    }
+
+    const distKm = distM / 1000;
+
+    if (distKm > 50) {
+      // Far away — Moscow, abroad, anywhere not in Rostov-on-Don. "Nearby"
+      // is the wrong frame entirely; show the whole street instead and
+      // point at trip planning rather than implying something's broken.
+      listEl.innerHTML = warningHtml + `
+        <div class="notice" style="color:var(--accent);">
+          &#9992; You're about ${distKm >= 1000 ? Math.round(distKm) : distKm.toFixed(0)} km from Pushkinskaya Street —
+          too far for "Near Me" to be useful right now. Here's the full street instead, or plan a route for when you arrive:
+        </div>
+        <div class="guide-controls" style="margin-bottom:10px;">
+          <button class="guide-btn primary" onclick="showAllLandmarksMap()">&#128506; See the whole street on a map</button>
+          <button class="guide-btn" onclick="switchTab('walk')">&#10148; Plan a walk for later</button>
+        </div>`;
+      mapWrap.style.display = 'none';
+      return;
+    }
+
+    if (distKm > 2) {
+      // Same city or nearby, but outside the current radius filter —
+      // different message than "far away": just widen the radius.
+      listEl.innerHTML = warningHtml + `
+        <div class="notice">
+          Nearest landmark (${nearestName}) is about ${distKm.toFixed(1)} km away — outside the
+          ${data.query.radius_m}m radius. Try a larger radius above, or
+          <button class="guide-btn" onclick="showAllLandmarksMap()" style="margin-left:6px;">see the whole street</button>.
+        </div>`;
+      mapWrap.style.display = 'none';
+      return;
+    }
+
+    // Genuinely close but just outside a tight radius — the old message
+    // is still the right one here.
+    listEl.innerHTML = warningHtml + `<div class="notice">No landmarks within ${data.query.radius_m}m — nearest is ${nearestName}, about ${Math.round(distM)} m away. Try a larger radius.</div>`;
+    mapWrap.style.display = 'none';
+    return;
   }
-  listEl.innerHTML = data.landmarks.map(lm => `<div class="nearby-item" onclick="openModal('${lm.id}')"><div class="item-main"><strong>${lm.name}</strong><span>${lm.type} · ${lm.year_built}</span></div><div class="item-dist">${lm.distance_m<1000?Math.round(lm.distance_m)+' m':(lm.distance_m/1000).toFixed(1)+' km'}</div></div>`).join('');
+
+  listEl.innerHTML = warningHtml + data.landmarks.map(lm => `<div class="nearby-item" onclick="openModal('${lm.id}')"><div class="item-main"><strong>${lm.name}</strong><span>${lm.type} · ${lm.year_built}</span></div><div class="item-dist">${lm.distance_m<1000?Math.round(lm.distance_m)+' m':(lm.distance_m/1000).toFixed(1)+' km'}</div></div>`).join('');
   mapWrap.style.display = 'block';
   renderMap('map', userLat, userLon, data.landmarks);
+}
+
+function showAllLandmarksMap() {
+  const geocoded = landmarks.filter(l => l.lat != null);
+  if (geocoded.length === 0) return;
+  const mapWrap = document.getElementById('map-nearme');
+  mapWrap.style.display = 'block';
+  const avgLat = geocoded.reduce((s,l) => s + l.lat, 0) / geocoded.length;
+  const avgLon = geocoded.reduce((s,l) => s + l.lon, 0) / geocoded.length;
+  if (leafletMap) { leafletMap.remove(); leafletMap = null; }
+  leafletMap = L.map('map').setView([avgLat, avgLon], 15);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; OpenStreetMap contributors', maxZoom: 19}).addTo(leafletMap);
+  geocoded.forEach(lm => {
+    L.marker([lm.lat, lm.lon]).addTo(leafletMap).bindPopup(`<strong>${lm.name}</strong>`).on('click', () => openModal(lm.id));
+  });
+  const bounds = geocoded.map(l => [l.lat, l.lon]);
+  leafletMap.fitBounds(bounds, { padding: [30, 30] });
 }
 
 function renderMap(elId, userLat, userLon, points) {
@@ -390,32 +493,34 @@ function renderMap(elId, userLat, userLon, points) {
 }
 
 async function planWalk() {
+  const start = document.getElementById('walk-start').value;
+  const minutes = document.getElementById('walk-minutes').value;
+  if (!start) { alert('Please select a starting landmark.'); return; }
   const resultEl = document.getElementById('walk-result');
-  resultEl.innerHTML = '<div class="notice"><span class="spinner">&#8635;</span> Loading planned route...</div>';
+  resultEl.innerHTML = '<div class="notice"><span class="spinner">&#8635;</span> Computing route...</div>';
   try {
-    const r = await fetch(`${API}/route`);
-    if (r.status === 404) {
-      const data = await r.json();
-      resultEl.innerHTML = `<div class="notice" style="color:var(--red)">No route computed yet. Run on server:<br><code>python plan_route.py --minutes ${document.getElementById('walk-minutes').value} --start ${document.getElementById('walk-start').value}</code></div>`;
-      return;
+    const r = await fetch(`${API}/plan?start=${start}&minutes=${minutes}`);
+    if (!r.ok) {
+      const err = await r.json();
+      throw new Error(err.error || 'Failed to plan route');
     }
     renderWalk(await r.json());
   } catch(e) {
-    resultEl.innerHTML = '<div class="notice" style="color:var(--red)">API unreachable.</div>';
+    resultEl.innerHTML = `<div class="notice" style="color:var(--red)">&#9888; ${e.message}</div>`;
   }
 }
 
 function renderWalk(route) {
   const resultEl = document.getElementById('walk-result');
   const stopsHtml = route.stops.map((s,i) => `<div class="route-item" onclick="openModal('${s.id}')"><div class="step-num">${i+1}</div><div class="item-main"><strong>${s.name}</strong></div></div>`).join('');
-  resultEl.innerHTML = `<div class="notice">&#128694; ${route.stops.length} stops · ${route.total_walking_minutes} min walking · ${route.total_minutes} min total</div><div id="map-walk"><div id="map" style="margin-bottom:14px;"></div></div><div class="route-list">${stopsHtml}</div>`;
+  resultEl.innerHTML = `<div class="notice">&#128694; ${route.stops.length} stops · ${route.total_walking_minutes} min walking · ${route.total_minutes} min total</div><div id="map-walk"><div id="walk-map" style="margin-bottom:14px;"></div></div><div class="route-list">${stopsHtml}</div>`;
   if (route.stops.length > 0) renderRouteMap(route);
 }
 
 function renderRouteMap(route) {
   if (leafletMap) { leafletMap.remove(); leafletMap = null; }
   const first = route.stops[0];
-  leafletMap = L.map('map').setView([first.lat, first.lon], 15);
+  leafletMap = L.map('walk-map').setView([first.lat, first.lon], 15);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; OpenStreetMap contributors', maxZoom: 19}).addTo(leafletMap);
   route.stops.forEach((s,i) => { L.marker([s.lat, s.lon]).addTo(leafletMap).bindPopup(`<strong>${i+1}. ${s.name}</strong>`); });
   if (route.route_geometry) {

@@ -22,9 +22,9 @@
         "pedestal_detail",
         "wide_boulevard"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "kirov_monument",
@@ -44,9 +44,9 @@
         "side_view",
         "night"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "chekhov_monument",
@@ -86,9 +86,9 @@
         "detail",
         "boulevard_context"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "pushkin_spheres",
@@ -107,9 +107,9 @@
         "night_illuminated",
         "bas_relief_closeup"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "lyre_fountain",
@@ -128,9 +128,9 @@
         "water_jets",
         "evening_lights"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "library_fountain",
@@ -149,9 +149,9 @@
         "water_jets",
         "library_backdrop"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "don_state_library",
@@ -171,9 +171,9 @@
         "interior_garden",
         "aerial"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "museum_fine_arts",
@@ -215,9 +215,9 @@
         "side_facade",
         "wide_street_view"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "kramer_mansion",
@@ -236,9 +236,9 @@
         "decorative_detail",
         "street_context"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "kramer_revenue_house",
@@ -257,9 +257,9 @@
         "street_view",
         "ornament_detail"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "spielrein_mansion",
@@ -382,9 +382,9 @@
         "plaster_detail",
         "entrance"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "kushnarev_house",
@@ -403,9 +403,9 @@
         "intersection_context",
         "ornament"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "reznichenko_house",
@@ -424,9 +424,9 @@
         "symmetric_composition",
         "entrance"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "bakulin_house",
@@ -445,9 +445,9 @@
         "full_building",
         "street_level"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "bostrikiny_house",
@@ -509,9 +509,9 @@
         "full_facade",
         "surrounding_context"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "rostov_medical_university",
@@ -530,9 +530,9 @@
         "building_sign",
         "street_context"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "sfeu_library",
@@ -551,9 +551,9 @@
         "library_sign",
         "architectural_detail"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "memorial_nazi_victims",
@@ -572,9 +572,9 @@
         "library_context",
         "floral_tributes"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "budyonny_bust",
@@ -593,9 +593,9 @@
         "pedestal_inscription",
         "boulevard_context"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "sholokhov_monument",
@@ -614,9 +614,9 @@
         "pedestal",
         "boulevard_context"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "lanterns_1904",
@@ -635,9 +635,9 @@
         "night_illumination",
         "lantern_against_building"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "gorky_park_gate",
@@ -656,9 +656,9 @@
         "park_entrance",
         "context_view"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "cathedral_nativity",
@@ -700,9 +700,9 @@
         "aerial",
         "theater_square_context"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "gorky_theater_fountain",
@@ -721,9 +721,9 @@
         "turtle_frog_detail",
         "theater_backdrop"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "underground_mosaics",
@@ -742,9 +742,9 @@
         "tunnel_view",
         "evening_light"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "musical_theater",
@@ -783,9 +783,9 @@
         "entrance",
         "architectural_detail"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "green_boulevard",
@@ -804,9 +804,9 @@
         "central_promenade",
         "tree_lined_perspective"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "school_49",
@@ -825,9 +825,9 @@
         "full_building",
         "street_context"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "cinema_house",
@@ -845,9 +845,9 @@
         "entrance",
         "sign"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "sorge_bust",
@@ -865,9 +865,9 @@
         "side",
         "pedestal"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "writers_busts",
@@ -906,9 +906,9 @@
         "entrance",
         "ornament"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "tkachenko_revenue_house",
@@ -925,9 +925,9 @@
         "facade",
         "entrance"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "sculpture_squirrel",
@@ -945,9 +945,9 @@
         "side",
         "closeup"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     },
     {
       "id": "pushkin_fairytale_sculptures",
@@ -966,9 +966,9 @@
         "firebird",
         "cat_scientist"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim"
+      "lat": null,
+      "lon": null,
+      "coordinate_source": "not found"
     }
   ]
 }
