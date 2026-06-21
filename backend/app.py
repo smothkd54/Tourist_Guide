@@ -22,6 +22,7 @@ import json
 import base64
 import io
 import logging
+import os
 from pathlib import Path
 
 import numpy as np
@@ -87,7 +88,8 @@ MAX_CONTENT_MB       = 10     # max request body size in MB
 
 app = Flask(__name__, static_folder=str(FRONTEND_DIR))
 app.config["MAX_CONTENT_LENGTH"] = MAX_CONTENT_MB * 1024 * 1024
-CORS(app, origins=["http://localhost:*", "http://127.0.0.1:*"])
+_cors_origins = os.environ.get("CORS_ORIGINS", "http://localhost:*|http://127.0.0.1:*")
+CORS(app, origins=[o.strip() for o in _cors_origins.split("|")])
 
 
 @app.errorhandler(413)

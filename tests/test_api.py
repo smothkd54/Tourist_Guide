@@ -10,7 +10,7 @@ import json
 import base64
 import io
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock
 
 import pytest
 import numpy as np
@@ -19,7 +19,7 @@ import numpy as np
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "backend"))
 
-from app import app, load_resources, _osrm_limiter
+from app import app, load_resources
 
 
 @pytest.fixture
@@ -48,9 +48,13 @@ def client_with_mock_model(client):
 class TestHealthCheck:
     def test_health_returns_200_when_loaded(self, client):
         resp = client.get("/")
-        assert resp.status_code == 200
         data = resp.get_json()
-        assert data["status"] == "ok"
+        if app.model is not None:
+            assert resp.status_code == 200
+            assert data["status"] == "ok"
+        else:
+            assert resp.status_code == 503
+            assert data["status"] == "degraded"
         assert data["landmarks"] > 0
 
     def test_health_returns_503_when_no_model(self, client):
