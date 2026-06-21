@@ -32,9 +32,9 @@ from pathlib import Path
 
 import numpy as np
 import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
-from tensorflow.keras.applications import EfficientNetB0
+import keras
+from keras import layers
+from keras.applications import EfficientNetB0
 import matplotlib.pyplot as plt
 
 # ── config ──────────────────────────────────────────────────────────────────

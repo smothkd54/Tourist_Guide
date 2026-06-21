@@ -17,8 +17,7 @@ from pathlib import Path
 
 import numpy as np
 from PIL import Image
-import tensorflow as tf
-from tensorflow import keras
+import keras
 
 # ── config ──────────────────────────────────────────────────────────────────
 MODELS_DIR   = Path("models")

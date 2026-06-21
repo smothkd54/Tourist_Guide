@@ -97,7 +97,7 @@ def main():
     landmarks = load_landmarks_with_coords()
 
     if len(landmarks) < 2:
-        print("Need at least 2 geocoded landmarks. Run geocode_landmarks.py first.")
+        print("Need at least 2 geocoded landmarks. Ensure landmarks in data/landmarks.json have 'lat' and 'lon' fields.")
         sys.exit(1)
 
     print(f"{len(landmarks)} landmarks with coordinates.")

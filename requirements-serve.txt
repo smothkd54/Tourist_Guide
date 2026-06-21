@@ -1,0 +1,17 @@
+# requirements-serve.txt — slim production dependencies for Docker
+# Used by: Dockerfile, production deployments
+# For full training dependencies, use requirements.txt instead.
+
+tensorflow>=2.19.0,<2.23
+numpy>=1.26.4
+
+# Image processing
+pillow==10.4.0
+
+# API server
+flask==3.0.3
+flask-cors==4.0.1
+requests>=2.21.0
+
+# Production WSGI server
+gunicorn==22.0.0

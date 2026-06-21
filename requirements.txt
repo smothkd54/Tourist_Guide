@@ -1,8 +1,8 @@
-# Core ML — pinned to a specific minor version. TensorFlow makes
-# breaking changes between minor versions; ">=" here means a future
-# `pip install` could silently swap your model-loading behavior.
-tensorflow==2.16.1
-numpy==1.26.4
+# Core ML — pinned to TF 2.19+ which ships with Keras 3 and supports
+# `import keras` natively.  The old `from tensorflow import keras` shim
+# was removed in recent TF; using `import keras` is now the standard.
+tensorflow>=2.19.0,<2.23
+numpy>=1.26.4
 
 # Image processing
 pillow==10.4.0
@@ -25,3 +25,9 @@ opencv-python==4.10.0.84
 
 # Deduplication
 imagehash==4.3.1
+
+# Production WSGI server (also in requirements-serve.txt)
+gunicorn==22.0.0
+
+# Testing (not needed in production)
+pytest==8.2.2

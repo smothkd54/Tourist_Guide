@@ -22,9 +22,20 @@
         "pedestal_detail",
         "wide_boulevard"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
+      "lat": 47.22601,
+      "lon": 39.719028,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/16437561/2a0000019a066338062b43e4d14fb039e7aa/L_height",
+        "https://avatars.mds.yandex.net/get-altay/4667561/2a0000017753c173ef827d20dd58bbe9b5a8/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16444693/2a0000019a06632e3562f120113d1a0816fa/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16312016/2a0000019be1864e232566846350f180ccf6/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10702775/2a0000018ce0652dfef03b8e76efd15dab23/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9284964/2a00000189ba92863f89b53eea8b49bd0f7b/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15388054/2a0000019bfc7999dd0884380622eec93b8a/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/18806283/2a0000019e3c437cddadd4fbb71213f3dc56/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10233337/2a0000018fe6d9d3faa16d9e00b92ce8e759/XXXL"
+      ]
     },
     {
       "id": "kirov_monument",
@@ -44,9 +55,16 @@
         "side_view",
         "night"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
+      "lat": 47.232356,
+      "lon": 39.745351,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/14402637/2a00000193ef40af530201c4b3e5cba7223c/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14451083/2a00000193ef40a74a337266ddbd5a19b1fd/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14246212/2a00000198a5528d558037cb93928dce976c/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5598654/2a0000017d92d83c83563c1659846b276cfd/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/2390040/2a0000017642464363ae0b12a66072d0c73f/XXXL"
+      ]
     },
     {
       "id": "chekhov_monument",
@@ -67,7 +85,13 @@
       ],
       "lat": 47.2269012,
       "lon": 39.7227921,
-      "coordinate_source": "nominatim"
+      "coordinate_source": "nominatim",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/2029876/2a00000172671bb836db4d013e45d2a4588f/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14329771/2a0000019369fc854200b5c27c839283e3c9/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14337779/2a00000196620fb6f56c3c414048660a74c3/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/4336915/2a000001775e10aa22528b153b6f64146c04/XXXL"
+      ]
     },
     {
       "id": "vysotsky_monument",
@@ -86,9 +110,14 @@
         "detail",
         "boulevard_context"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim (Pushkinskaya ul., Rostov-on-Don)"
+      "lat": 47.227385,
+      "lon": 39.725112,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/2408158/2a000001704954eabae57b2cd5ffb1b1848e/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/13851722/2a000001964e4394741a311c81a2fed1fb3b/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/4719974/2a0000017947233aaae0620cf9d5d01b5c49/XXXL"
+      ]
     },
     {
       "id": "pushkin_spheres",
@@ -107,9 +136,9 @@
         "night_illuminated",
         "bas_relief_closeup"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
+      "lat": 47.2284695,
+      "lon": 39.7310698,
+      "coordinate_source": "manual (Yandex Maps)"
     },
     {
       "id": "lyre_fountain",
@@ -128,9 +157,19 @@
         "water_jets",
         "evening_lights"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
+      "lat": 47.227532,
+      "lon": 39.725968,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/14917207/2a0000019aa56bb63e202052b1f9cb788d11/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16338459/2a0000019aa56b70d40ea8cbad607fa1dca7/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/4380921/2a000001779c9ef8c6bc88565edd28877b7a/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/6928818/2a000001841d1911fb6614b00487703ebcdd/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/19541413/2a0000019e35ea5ad7940fac7b53d4a3b5a6/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5473371/2a0000017d9d227d1b8272e13cada174d9ff/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/6527792/2a000001841d18f80bb6804444670c8e06d1/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/3219045/2a000001764217d8f412d522b6156405b7ea/XXXL"
+      ]
     },
     {
       "id": "library_fountain",
@@ -149,9 +188,45 @@
         "water_jets",
         "library_backdrop"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim (Pushkinskaya ul., 175a, Rostov-on-Don)"
+      "lat": 47.2279142,
+      "lon": 39.7266879,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/4404605/2a0000017b1ce5601e928a70622a60a6d128/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1886119/2a0000016ae309fc737f6e31afcfd55b741c/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/11371852/2a0000018cb6c457db2fd99093f74943a2a2/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1777247/2a0000016ae30a141520d23ce7b81d92091d/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5554141/2a000001831d12c6ba2d93e68795cb26d22d/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10239151/2a0000019166b21a5d4907f63919521f36da/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1871297/2a0000016ae30a7a203889df4b8bee85c262/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14021027/2a00000193bf76259526f2a1dab42ac63aff/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1908863/2a0000016ae30a88c51559ab15b2310ffa15/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/12800836/2a00000190738cd110f59ef8f60c039adf33/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14102738/2a0000019560c48cf2378ef7da52cc8c4e79/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/6334827/2a000001820ea99322cc9155017845c16db1/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/11395677/2a0000018da1393020d6ff0669b0a7c26508/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/4042551/2a0000017f4d894ae95f316356b2976fb7b6/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/12548008/2a00000190738ccf456d2fd0c9ab7916ee94/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/11374564/2a00000192dc9503e7ce8b8fc05f038ece45/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10768168/2a00000190738cd09f9dc2fadf59f9142696/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/7631654/2a00000184d8fe3ae9e92733c8f166837a45/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/8072793/2a00000184d8fdca1845e404ffd3b6e1dfd4/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/176734/2a00000184d8fe5101aec2f496df31e2e22d/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9954022/2a000001889c02dc9d2e4e1fc14eb23d9e06/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/6363798/2a00000190e59d731352a2101b744d462264/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/13207207/2a0000019203fdff9bb955d9ada36750ef2a/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5445147/2a0000017d6c6f99114df686d07ccfa50ecf/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5455550/2a0000018457216f6e41797f0b06357cb2c5/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/4303652/2a000001782fc02e62b48035da1d8f117a76/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/12448848/2a0000019c8a6643f360df164c1fcb968274/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16474107/2a00000199842954770838bc96c987010eab/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/2812564/2a0000017267024be952640c2908746a1e5a/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14540779/2a00000193ef80463da8d2f4a3cba6b076fc/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/19871159/2a0000019bd0ef36814d683e5d8107c00093/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14296532/2a0000019d91cbad5989c6e230e79bd3976d/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/11487452/2a00000191d65d9779526c2302650e20cf28/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14264437/2a00000192cd96143c543d295963ca1e70f0/XXXL"
+      ]
     },
     {
       "id": "don_state_library",
@@ -171,9 +246,33 @@
         "interior_garden",
         "aerial"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim (Pushkinskaya ul., 175a, Rostov-on-Don)"
+      "lat": 47.2279142,
+      "lon": 39.7266879,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/897342/2a0000018af996ae09988c486daff6d79f12/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/13457355/2a0000018f1bf03005ae1d1e4cb59d8c8836/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5445147/2a0000017d6c6f99114df686d07ccfa50ecf/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/19708557/2a0000019cddb827f22719501132fd5c3cb0/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10963046/2a0000018cac6f68c08a0d6ef4088afb8339/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9833880/2a000001907381733153ef6a4c078931991b/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10456159/2a0000018af25cf507c9265f2bb6b9e33f21/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/7659180/2a000001847c8f6cc8f287cb18ebc527b88d/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14922087/2a00000194a3ee1b7e93841a33d862f23319/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/19519244/2a0000019e42145ef3e99eb271f98b002053/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10869107/2a0000018b2b06f499953aeb7b60c718dfda/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/18748915/2a0000019c18888779134cf2732e534097a6/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/11411122/2a0000018dd7537c947e636351e6cfcdcc8e/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10845257/2a0000018a89d0333393dbdbfa5432fec680/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/19847861/2a0000019e421483a833c3ebf69e9d8c1e22/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/13206609/2a0000018f85f0688a7d87b506fd638f4167/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/11048854/2a0000018b1adfba13f9b70098f90183ef58/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10376970/2a0000018dd7543c0ee35d13eeb3bdeaed0c/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/19534558/2a0000019cddb8272af900fc137e45a9be71/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14635327/2a00000196ee9cb3457924d4ac2228dbebe9/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10216747/2a0000018a5acd56e34f51a62b05598d9f66/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16443717/2a00000199cc4c6b98e7ccd0b1b1ef1fbd9e/XXXL"
+      ]
     },
     {
       "id": "museum_fine_arts",
@@ -195,7 +294,72 @@
       ],
       "lat": 47.2257544,
       "lon": 39.715776,
-      "coordinate_source": "nominatim"
+      "coordinate_source": "nominatim",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/4663168/2a00000179090aca86ad28f3ca645d0c717e/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1525683/2a0000016ae331888b9d946daf8ab845ee29/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/17754824/2a0000019e34b1537409850b1b7a728be7f4/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15457874/2a00000195ed5ba81b6a8d02afea79f9263f/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1058733/2a0000018810a7c9611b71604e4debf28406/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9849468/2a0000018b6297d420d2e98d7969074eccff/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/11444509/2a0000018e806046edf8984c43631f02cb1e/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/910613/2a00000185dd7c194923cd878c4c24b11f16/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/6514890/2a0000018a6c5759132335c96e1c657fdc86/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5457654/2a0000017da4482cd7c22e667069e72b3c13/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10639454/2a0000018a4ae5498a809813729a15e9c08a/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1632633/2a0000018529f337caa683a0e9b32a06a8e2/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/4465274/2a0000017867bc59fcdf44653ae7ec853729/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/13951679/2a00000195ed5bafe67e84b68b85cbd86130/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15282671/2a00000196cfd771a2d247875c49a255ceb7/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/4475806/2a0000017867bc54d92eb8fd0245744d89d7/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/903559/2a000001896338729e0e8051b364acb4df9a/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/7668046/2a0000018ba5c4449c55603e97435134d95a/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/13091609/2a0000018e80608391ce9b87974dcbd34390/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1633071/2a0000018646fc392f498a1e6b40dfc51bab/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/6119709/2a0000018097f88278b716e72ac1cd91d233/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10175550/2a0000018a6c576f41b227618d7be2b7d178/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/11492238/2a0000018e80606a4205350321bb4d5dcc24/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5487188/2a0000017ef8f4cb380fc62682e55af7a78c/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/6506385/2a0000018b23af2e80971b9ec62091fab54e/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10445027/2a0000018b8b03d4a914468542689df1a38a/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15344916/2a0000019706cc35c62a9258afdea46b5cef/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/7979184/2a0000018810aa1185c6fbb81be61c8e14db/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10845257/2a0000018a6c574b76a67a1082d1dc9f0c48/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/11411122/2a0000018e8060a82b33ca6b840459e7caa8/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/8377501/2a0000018b6292ab0792a7e6834c6c41009e/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14664328/2a000001975d9e859b99e30326ee7bed43ef/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5110793/2a0000017da448670ca2b2b96d7b0e7cdc7b/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15292747/2a00000196cfd74b2d3281de2b64928b63b4/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10878699/2a00000190aa20006476f57138d2df9cf7f2/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15510144/2a00000195ed5a4477f234938df6805a9a0b/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10845257/2a0000018a0cb257e3627794117f10282f6d/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/4441482/2a0000017998c0b1b5a35378c5a7be5a0c80/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/4916794/2a00000189acd02bf9a707cd54da1c276190/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1554359/2a0000016b8c627c9d99110a82f2c796b081/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1938323/2a00000185dd7c1e17db303108ee0cc545ad/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15461420/2a00000196cfd7dffa44420dfac711abf454/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10456159/2a0000018b81c4c9571a6e78f0883e43b5f2/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/12550566/2a0000018e957eb59c973cb128c569a062ae/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5498343/2a0000018080c7cd5ec935bad30f9dfd354e/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/13091609/2a0000018e38a9f7e477b801a030c5e2b78f/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9828935/2a0000018810a7e8f175ec7ddc6cc2f96e53/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/13951679/2a00000194134a7a793c2852a7a7f1262f40/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10175550/2a0000018b8b03868404706fdeafcfd32b8a/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14392184/2a00000195ebf838d34d178fe2ea351bb186/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10447847/2a0000018b8b036ea5d327c1c430ebdcd221/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/902116/2a0000018810a80ee389fc3ecae88a8f4296/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15340601/2a00000196d3bc0cea2084655bb20577ecd5/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14092818/2a00000193a0c3fb0db3e95933f64605f371/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/11420721/2a0000018e38aa065a2d280e5ff94097f1be/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/6950449/2a00000182e04148c6259ab259a18fe61648/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/4285172/2a0000017998c038a64b04041a7b089c23d0/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15510144/2a0000019677918565756dca4c409f530685/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9237948/2a0000018a6c56f4c596c37a32ff4623f8f0/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16329823/2a0000019706cc21ce577d338867c419521e/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9793917/2a0000018a4ae51a1faf8e95974f002fe421/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15417312/2a0000019706cce901ed55599ed806be95df/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15539509/2a00000196cfd7139888af80cb1bf788f0f5/XXXL"
+      ]
     },
     {
       "id": "paramonov_mansion_sfeu",
@@ -215,9 +379,20 @@
         "side_facade",
         "wide_street_view"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim (Pushkinskaya ul., 148, Rostov-on-Don)"
+      "lat": 47.2268493,
+      "lon": 39.7254032,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/1491998/2a00000166f7f0f87525e62a29e4e3670542/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/771751/2a00000184d40a437d1b4daf96590e5c6925/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/7810332/2a0000018810d19c5005f104878465716ac4/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/4562252/2a0000017bc13d820cd175e16a014cdb8723/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1001354/2a0000016287481bac92125ef7e4ef8c786b/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1676973/2a00000166f7ecf90dc2a552b2e26e08d452/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5496626/2a0000017d6706a026d6730914125f209b4d/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/13604236/2a00000194331845fb2fe9642c9ae679cde6/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14333651/2a000001959aee35f7bd079b54d9f4577fb6/XXXL"
+      ]
     },
     {
       "id": "kramer_mansion",
@@ -236,9 +411,13 @@
         "decorative_detail",
         "street_context"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim (Pushkinskaya ul., 114, Rostov-on-Don)"
+      "lat": 47.2258177,
+      "lon": 39.7187089,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/10385418/2a00000190fda342296be48b2293f54792ae/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5965316/2a0000018043addd8cc67819014e647c76cf/XXXL"
+      ]
     },
     {
       "id": "kramer_revenue_house",
@@ -257,9 +436,12 @@
         "street_view",
         "ornament_detail"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim (Pushkinskaya ul., 116, Rostov-on-Don)"
+      "lat": 47.2259052,
+      "lon": 39.7191268,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/18098886/2a0000019ece8fef1af7713670309e2c51e1/XXXL"
+      ]
     },
     {
       "id": "spielrein_mansion",
@@ -280,7 +462,16 @@
       ],
       "lat": 47.2245505,
       "lon": 39.710643,
-      "coordinate_source": "nominatim"
+      "coordinate_source": "nominatim",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/16161139/2a000001987a5911ec6aa7915385998c51db/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16368192/2a000001987945eb50ad45eb408a8fd4966d/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5491685/2a0000017c98b6d3dab649e3b4e56a75f330/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/8074519/2a00000188253b97308b7d59191768213c49/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/7690462/2a00000188253bac5cdfbcc0209fd826067c/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5498343/2a0000017c98b6da5b820e60212252f15eef/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/7981565/2a00000188253bcc0ac70f8154ed53c064ae/XXXL"
+      ]
     },
     {
       "id": "zvorykin_house",
@@ -301,7 +492,14 @@
       ],
       "lat": 47.224717,
       "lon": 39.7113745,
-      "coordinate_source": "nominatim"
+      "coordinate_source": "nominatim",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/15650736/2a0000019aad13c8fde9c9e33e81a956ee22/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5503221/2a0000017d97d98e387119e6d918612363bc/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1622057/2a00000188d76248d6a6fdd744263bdc73a7/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/17043127/2a0000019aad13ca3daabb89815b6b7093f8/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15394162/2a0000019aad13ca9673b337b0ec41bc9a81/XXXL"
+      ]
     },
     {
       "id": "gavala_house",
@@ -321,7 +519,10 @@
       ],
       "lat": 47.2249066,
       "lon": 39.712265,
-      "coordinate_source": "nominatim"
+      "coordinate_source": "nominatim",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/5477999/2a0000017d97d657ea8d45e27d3f74427054/XXXL"
+      ]
     },
     {
       "id": "suprunov_mansion",
@@ -342,7 +543,11 @@
       ],
       "lat": 47.2244228,
       "lon": 39.7098336,
-      "coordinate_source": "nominatim"
+      "coordinate_source": "nominatim",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/13091609/2a0000018e310a260a2e1bd70db3328a8960/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/13308954/2a0000018f4e6f09b26ec134c7a4960d458c/XXXL"
+      ]
     },
     {
       "id": "lashch_revenue_house",
@@ -363,7 +568,10 @@
       ],
       "lat": 47.2244458,
       "lon": 39.7093626,
-      "coordinate_source": "nominatim"
+      "coordinate_source": "nominatim",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/5296145/2a00000180433ee3d3212d16e07381508b9b/XXXL"
+      ]
     },
     {
       "id": "mnatsakanova_house",
@@ -382,9 +590,12 @@
         "plaster_detail",
         "entrance"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim (Pushkinskaya ul., 65, Rostov-on-Don)"
+      "lat": 47.2238053,
+      "lon": 39.7080202,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/16873746/2a000001985c3ef13db8ae512987fa26dbb1/XXXL"
+      ]
     },
     {
       "id": "kushnarev_house",
@@ -403,9 +614,9 @@
         "intersection_context",
         "ornament"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim (Pushkinskaya ul., 51, Rostov-on-Don)"
+      "lat": 47.2231109,
+      "lon": 39.7046978,
+      "coordinate_source": "manual (Yandex Maps)"
     },
     {
       "id": "reznichenko_house",
@@ -424,9 +635,12 @@
         "symmetric_composition",
         "entrance"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim (Pushkinskaya ul., 47, Rostov-on-Don)"
+      "lat": 47.2229288,
+      "lon": 39.7037526,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/5195020/2a00000180435df296bd91f37cb7f1a78c11/XXXL"
+      ]
     },
     {
       "id": "bakulin_house",
@@ -445,9 +659,9 @@
         "full_building",
         "street_level"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim (Pushkinskaya ul., 13, Rostov-on-Don)"
+      "lat": 47.2219675,
+      "lon": 39.6993031,
+      "coordinate_source": "manual (Yandex Maps)"
     },
     {
       "id": "bostrikiny_house",
@@ -468,7 +682,11 @@
       ],
       "lat": 47.2257955,
       "lon": 39.7172628,
-      "coordinate_source": "nominatim"
+      "coordinate_source": "nominatim",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/5195020/2a0000018043c1c92dc2ccd6325e90b725e2/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/19838861/2a0000019e414c38890cfae474600b4d3b1e/XXXL"
+      ]
     },
     {
       "id": "literary_figures_house",
@@ -509,9 +727,35 @@
         "full_facade",
         "surrounding_context"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim (Pushkinskaya ul., Rostov-on-Don)"
+      "lat": 47.224719,
+      "lon": 39.7283339,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/9714262/2a000001897d76c1c241a89702e0aadbf777/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/6514890/2a000001897da76f0371b389e56b19b6dc6e/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9833397/2a000001897da7a2b51fb3b489bdb07463c9/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9724410/2a000001897d9b00bc73c08017dd2df41187/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/6159907/2a000001897d995307714123ffe995de5908/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9724410/2a000001897d9a2ab00ef352bd65e5346055/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/6314780/2a000001897d995432896a858545c5868c8f/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9728306/2a000001897d9877d7b4a0672db50a87d65f/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9742646/2a000001897d987869d20002d5c93ba131cc/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9719535/2a000001897d98778ac682c0905f21effdbc/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9749133/2a000001897d987816fea762b35d349ff6c7/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9728306/2a000001897d987952717c88dd14d2976282/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9833397/2a000001897d9879bfc7393fc881aaeaf22b/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9663145/2a000001897d96efe85edd52c7ae0190638e/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/6382111/2a000001897d9628138080106af8c41c8eec/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9709783/2a000001897d911e20fd7703d01edc05e894/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9709783/2a000001897d90352735b48a630069519a81/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9704097/2a000001897d8ed87c0514652c85da13d123/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9749133/2a000001897d8ed83c98de4ad3ed00f5f66b/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9663145/2a000001897d8dde27308fe59332b76a9619/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9728306/2a000001897d8ddd867f4ca3fbe93f629bd2/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9849468/2a000001897d76c224fa06f3b1d2809aaa8b/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/901763/2a000001897d76c1bebe098a192ed9c4d4fc/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15434262/2a0000019805277f80cf65035efcfa7622ae/XXXL"
+      ]
     },
     {
       "id": "rostov_medical_university",
@@ -530,9 +774,12 @@
         "building_sign",
         "street_context"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim (Pushkinskaya ul., Rostov-on-Don)"
+      "lat": 47.2300673,
+      "lon": 39.7390372,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/4489303/2a0000017759e9db773c6f1db45ecac01b80/XXXL"
+      ]
     },
     {
       "id": "sfeu_library",
@@ -551,9 +798,14 @@
         "library_sign",
         "architectural_detail"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim (Pushkinskaya ul., Rostov-on-Don)"
+      "lat": 47.228755,
+      "lon": 39.73306,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/5485499/2a0000017f064b6181da6a83cf5f4adaf01b/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5257938/2a00000182da7306ab7fcf95995eed9f7fff/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/8072793/2a0000018400ebe476fb5becaf5a91840995/XXXL"
+      ]
     },
     {
       "id": "memorial_nazi_victims",
@@ -572,9 +824,19 @@
         "library_context",
         "floral_tributes"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim (Pushkinskaya 175, Rostov-on-Don)"
+      "lat": 47.2279142,
+      "lon": 39.7266879,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/6236523/2a0000018097c974ebd0d5070b37654e0efc/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5482016/2a0000017e32f268092b77a15f45ffbdf945/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14844975/2a000001942d32ecf7e70269486806bd0df6/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10636707/2a0000018af1784ff8b83fcb4bf76831e1d6/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/6506385/2a0000018a131c85e36779aa414e455ad03d/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/12813249/2a0000019206faf02c204dccabde3acbda91/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5485733/2a0000017dc8b991a0633f0d4d8f73e076f2/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/19519244/2a0000019b8a041494412bf2e385647a735a/XXXL"
+      ]
     },
     {
       "id": "budyonny_bust",
@@ -593,9 +855,16 @@
         "pedestal_inscription",
         "boulevard_context"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim (Pushkinskaya ul., Rostov-on-Don)"
+      "lat": 47.2234853,
+      "lon": 39.7065216,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/2776464/2a00000174ff2da4542212fb45f01fa70153/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/2838749/2a000001740864bcee6b5621f4a13431601e/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/2366463/2a00000174f6d625301384987fbcc99d63ed/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/2813737/2a000001740864f52a593574c57069b2ff13/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15038851/2a000001968b9ead7900375b97d9a3222b5f/XXXL"
+      ]
     },
     {
       "id": "sholokhov_monument",
@@ -614,9 +883,15 @@
         "pedestal",
         "boulevard_context"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim (Pushkinskaya ul., Rostov-on-Don)"
+      "lat": 47.2135035,
+      "lon": 39.7124003,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/13668123/2a0000019472cde755ddcb5e0be4c9b7548f/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/7179902/2a00000183bb406b1e512894d3f6b6034551/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/17043127/2a000001994bcee505c7418ef70eed992d51/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14599414/2a000001994bcedf194247b7595fcdfce27e/XXXL"
+      ]
     },
     {
       "id": "lanterns_1904",
@@ -635,9 +910,9 @@
         "night_illumination",
         "lantern_against_building"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
+      "lat": 47.2284695,
+      "lon": 39.7310698,
+      "coordinate_source": "manual (Yandex Maps)"
     },
     {
       "id": "gorky_park_gate",
@@ -656,9 +931,21 @@
         "park_entrance",
         "context_view"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
+      "lat": 47.2225418,
+      "lon": 39.7099914,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/19708557/2a0000019d3509ddf6887100d6efd7b78ad5/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/4324292/2a0000017719133b87754e85b39e8ef2490e/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/13206104/2a000001963921f967a16dac812485bfbd13/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9749133/2a00000189634110b6a78d09c847f3af5373/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/17651669/2a0000019d4902eb8b931d0765f97fa9a9f1/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/4587805/2a000001770e6df1b2ef78afeec50a3b2828/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/19648454/2a0000019d3509c03daa6ebc237ba14ed5c7/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15153151/2a000001958ec69fdfb59560526ea1c0cdb8/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9828935/2a0000018963410d65b3485a6d63237d9772/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/17735792/2a0000019d4902eb2945b3a4107eee2f6cbd/XXXL"
+      ]
     },
     {
       "id": "cathedral_nativity",
@@ -680,7 +967,21 @@
       ],
       "lat": 47.2172938,
       "lon": 39.712039,
-      "coordinate_source": "nominatim"
+      "coordinate_source": "nominatim",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/5316761/2a0000017b9dd37fde75e7e01da80ee73ba6/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10141118/2a0000018b9b1131d01ca45bb3b0f35dec1d/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10702157/2a0000018c2e29da28130c2032e4564c5f10/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1627037/2a000001865b825f70ce5f9915a8941ea936/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14112077/2a0000019215b7ce08e7e3e8b84639be6e09/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14014133/2a00000193989667eade0c5118c8644a099f/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1970665/2a0000017b9dd38920fb1d14da7f71dc8ccb/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/19883212/2a0000019d076b2c50903c061b7cc528a1a1/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16299341/2a0000019b0286305ff88da237c64483f423/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/8128793/2a000001885949c298c3212390a5c35235d1/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/19534558/2a0000019c7d2198fc7f99d4b8e0ba52d40e/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10812438/2a0000018a4b5d7387eec9505d9a8d8d9a34/XXXL"
+      ]
     },
     {
       "id": "gorky_theater",
@@ -700,9 +1001,16 @@
         "aerial",
         "theater_square_context"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim (Pushkinskaya 1, Rostov-on-Don)"
+      "lat": 47.2284997,
+      "lon": 39.7450888,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/247136/2a0000015b2ead8efaa7391898bea8e4052b/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/7636462/2a000001880087b49842c70d703f395efba6/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10101276/2a0000018ea08264df9e546b636a3b7b6c03/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10111752/2a0000018db7100dbf92903f406dfa79907a/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/11385489/2a0000018c7361836013cfec31d67e4445d1/XXXL"
+      ]
     },
     {
       "id": "gorky_theater_fountain",
@@ -721,9 +1029,25 @@
         "turtle_frog_detail",
         "theater_backdrop"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
+      "lat": 47.227578,
+      "lon": 39.7460436,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/5598654/2a0000017dab05fcd5a1a96bcf7b73bdf606/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16379675/2a0000019c98787294ccaa6298ff25e56bdd/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15183726/2a00000196e4d89b989865c699e2df5c2af5/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16437561/2a000001976444235063bf39cbddc277e3fe/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16158716/2a0000019b938a0861474b3779deff13a571/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16866637/2a000001989ea90e8544341fe1781453d3a9/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/19902702/2a0000019e55f52e74149a6001f25fe6c281/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15292747/2a000001969d0c947a230af0f906fabf609b/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/9753788/2a00000189628cfd1e9b0544aeed55f139b3/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15267123/2a00000196e4d86d641da8d164a6e5070aba/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16182900/2a00000196e4d8525f05107e1352d0b17112/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16166974/2a00000197db9bc4344c7c6baa66cc329a96/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15343885/2a00000198273818dbca22f02ec13ff69c09/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16325379/2a000001982737e4cbd632190d1baae33320/XXXL"
+      ]
     },
     {
       "id": "underground_mosaics",
@@ -742,9 +1066,31 @@
         "tunnel_view",
         "evening_light"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
+      "lat": 47.229091,
+      "lon": 39.752386,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/13916077/2a000001969cc9338b0dcbafc590592b150c/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/13192844/2a0000018f725492493fe512ceed83f9a7ca/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16340554/2a0000019e45fe5fc8f1071ca59c900b08ab/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15437010/2a00000196c589b427e4bd7c8793cf10c4e6/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/18112381/2a0000019e45fe53948c8c1e2f48d90992a2/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5098065/2a00000180bd026a4cbbe6c29ac83c1225fa/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/11471993/2a0000018f76b03fbda1601d704f8f9ff21b/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/17783115/2a0000019c9b183c85ba6ae08557725fbaf3/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14306621/2a000001938dfae2f9d1f691e460482d963e/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10647561/2a0000018aad5b3ec5d9b7e05be4a090cf02/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/905403/2a00000188f8521b657eceed6ce9820e8951/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15037629/2a00000194a1916bf8f0fd16a7b96e454837/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/13797017/2a000001913871c109abdc50f3a2f58e5474/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10768923/2a0000018aad5b3618ddf33f6419247fbec4/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/11277832/2a00000192d1fcdf5d9a13b220637524c7b6/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/18473509/2a0000019e45fe54241172829130a4a4194b/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14064514/2a00000192d1fce2bb7592c944d63d5b3762/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/13994056/2a00000192d1fce2b668d94c81a8cb6629d0/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/12594216/2a000001938dfae4ad184ee329379e6d43c9/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5459048/2a0000017e87d0cdc26d0bf3b574f7809b41/XXXL"
+      ]
     },
     {
       "id": "musical_theater",
@@ -765,7 +1111,22 @@
       ],
       "lat": 47.2245897,
       "lon": 39.7325855,
-      "coordinate_source": "nominatim"
+      "coordinate_source": "nominatim",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/1773749/2a0000016ae2fdd9d580ad3d9a99b2a5d2d6/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16465668/2a00000198aec168c69dc9cbf8eefc7f50af/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/12800836/2a0000018fed02d673e4c3fb697ad1a5a236/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10456159/2a0000018ac743049141e7d4884f0f0f7782/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/14091921/2a000001936ad7514a3f28e9af662bb9345c/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15311720/2a00000197c59036366d7c2d796609ddc25f/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/15434262/2a0000019935372c0b33dea3b43102449200/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10231026/2a0000018ed63808c4209ca3383d22f1a3d0/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/18111128/2a0000019ba96b271a4be802b0f230491f6d/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/6477742/2a0000018141870aacce74a691d0b9a33f02/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5533948/2a0000017e9cc6d712b93312569c5a7b4bde/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/17735792/2a0000019df2f2a7c010c98aeb47f410b4c6/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/5111241/2a0000018159404803be5dca83ba339e8656/XXXL"
+      ]
     },
     {
       "id": "vorozhein_house",
@@ -783,9 +1144,9 @@
         "entrance",
         "architectural_detail"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim (Pushkinskaya ul., Rostov-on-Don)"
+      "lat": 47.2250667,
+      "lon": 39.6582427,
+      "coordinate_source": "manual (Yandex Maps)"
     },
     {
       "id": "green_boulevard",
@@ -804,9 +1165,9 @@
         "central_promenade",
         "tree_lined_perspective"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim (Pushkinskaya 3, Rostov-on-Don)"
+      "lat": 47.2284695,
+      "lon": 39.7310698,
+      "coordinate_source": "manual (Yandex Maps)"
     },
     {
       "id": "school_49",
@@ -825,9 +1186,13 @@
         "full_building",
         "street_context"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim (Pushkinskaya ul., Rostov-on-Don)"
+      "lat": 47.22659,
+      "lon": 39.713797,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/6195924/2a0000018f82cc013b30e2708586a48841f7/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/10963046/2a0000018c15e9aca542bdcfbfce7c3bf455/XXXL"
+      ]
     },
     {
       "id": "cinema_house",
@@ -845,9 +1210,16 @@
         "entrance",
         "sign"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim (215, Pushkinskaya St., Rostov-on-Don)"
+      "lat": 47.2298311,
+      "lon": 39.7359941,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/200322/2a0000015b3b89356bd4026c62951f45322c/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/19902702/2a0000019caf83543b89065e9749cf65e6bd/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/2134557/2a0000016b8c6dc3b4acf176f9d1513597a8/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/474904/2a0000015e531f0b9fb314eef3da9dde905c/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1427475/2a00000166f7db117879afab273595ac01c5/XXXL"
+      ]
     },
     {
       "id": "sorge_bust",
@@ -865,9 +1237,16 @@
         "side",
         "pedestal"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim (190, Pushkinskaya St., Rostov-on-Don)"
+      "lat": 47.228657,
+      "lon": 39.7334815,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/1651981/2a0000016ea7d1788b8570910e2e798b029f/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1371846/2a0000016549f9753a90f77fa7714c3c31ee/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/902827/2a000001602508a7f8909d381cb04a250c7c/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/3966989/2a00000174ff2d893e77cd8750e15b09788b/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/2006845/2a0000016ea7d17cfb776dd349887245e783/XXXL"
+      ]
     },
     {
       "id": "writers_busts",
@@ -906,9 +1285,9 @@
         "entrance",
         "ornament"
       ],
-      "lat": 47.2243309,
-      "lon": 39.7115313,
-      "coordinate_source": "nominatim (132/59, Pushkinskaya St., Rostov-on-Don)"
+      "lat": 47.2264549,
+      "lon": 39.7197341,
+      "coordinate_source": "manual (Yandex Maps)"
     },
     {
       "id": "tkachenko_revenue_house",
@@ -925,9 +1304,12 @@
         "facade",
         "entrance"
       ],
-      "lat": 47.2245858,
-      "lon": 39.71166,
-      "coordinate_source": "nominatim (34, Pushkinskaya St., Rostov-on-Don)"
+      "lat": 47.222384,
+      "lon": 39.703254,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/6955494/2a00000183af749d5aa39de78965ba4b70ba/L_height"
+      ]
     },
     {
       "id": "sculpture_squirrel",
@@ -945,9 +1327,18 @@
         "side",
         "closeup"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
+      "lat": 47.222451,
+      "lon": 39.719621,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/16069310/2a000001995dc4114b7bff15188a821f5758/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/11400839/2a0000018bb8c5ff8989e7bf8db6adb75637/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/11383572/2a0000018bb8c5f9875b3c583fa292be654c/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/13904936/2a0000019364cdc7487e749eb6dda69c0769/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/16437561/2a000001995dc4112a42ab9c7f3d0bbe18bc/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/20879831/2a0000019ece610238695a46cb909a8e52bf/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/7636462/2a000001884ea015697b29462443573191b1/XXXL"
+      ]
     },
     {
       "id": "pushkin_fairytale_sculptures",
@@ -966,9 +1357,13 @@
         "firebird",
         "cat_scientist"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
+      "lat": 47.1579987,
+      "lon": 39.5256424,
+      "coordinate_source": "manual (Yandex Maps)",
+      "photos": [
+        "https://avatars.mds.yandex.net/get-altay/2134557/2a0000016e252d096fd2422e457c149eb88b/XXXL",
+        "https://avatars.mds.yandex.net/get-altay/1696029/2a0000016e395ca512f5036ca6a97cc4e20e/XXXL"
+      ]
     }
   ]
 }

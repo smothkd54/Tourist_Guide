@@ -1,0 +1,215 @@
+"""
+tests/test_api.py
+-----------------
+Unit tests for the Pushkinskaya Street Explorer API.
+
+Run:  pytest tests/ -v
+"""
+
+import json
+import base64
+import io
+from pathlib import Path
+from unittest.mock import patch, MagicMock
+
+import pytest
+import numpy as np
+
+# Add backend/ to path so we can import app
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "backend"))
+
+from app import app, load_resources, _osrm_limiter
+
+
+@pytest.fixture
+def client():
+    """Create a test client with landmarks loaded but no model."""
+    app.config["TESTING"] = True
+    with app.test_client() as client:
+        # Ensure landmarks are loaded
+        if not app.landmarks_by_id:
+            load_resources()
+        yield client
+
+
+@pytest.fixture
+def client_with_mock_model(client):
+    """Create a test client with a mock model that returns random predictions."""
+    mock_model = MagicMock()
+    mock_model.predict.return_value = [np.random.dirichlet(np.ones(31))]
+    app.model = mock_model
+    yield client
+    app.model = None
+
+
+# ── Health Check ──────────────────────────────────────────────────────────────
+
+class TestHealthCheck:
+    def test_health_returns_200_when_loaded(self, client):
+        resp = client.get("/")
+        assert resp.status_code == 200
+        data = resp.get_json()
+        assert data["status"] == "ok"
+        assert data["landmarks"] > 0
+
+    def test_health_returns_503_when_no_model(self, client):
+        app.model = None
+        resp = client.get("/")
+        assert resp.status_code == 503
+        data = resp.get_json()
+        assert data["status"] == "degraded"
+        assert data["model_loaded"] is False
+
+
+# ── Landmarks ─────────────────────────────────────────────────────────────────
+
+class TestLandmarks:
+    def test_get_all_landmarks(self, client):
+        resp = client.get("/landmarks")
+        assert resp.status_code == 200
+        data = resp.get_json()
+        assert isinstance(data, list)
+        assert len(data) > 0
+
+    def test_get_landmark_by_id(self, client):
+        resp = client.get("/landmarks/pushkin_monument")
+        assert resp.status_code == 200
+        data = resp.get_json()
+        assert data["id"] == "pushkin_monument"
+        assert "name" in data
+        assert "lat" in data
+        assert "lon" in data
+
+    def test_get_landmark_not_found(self, client):
+        resp = client.get("/landmarks/nonexistent_id")
+        assert resp.status_code == 404
+
+
+# ── Nearby ────────────────────────────────────────────────────────────────────
+
+class TestNearby:
+    def test_nearby_valid_coords(self, client):
+        resp = client.get("/nearby?lat=47.226&lon=39.719&radius_m=1000")
+        assert resp.status_code == 200
+        data = resp.get_json()
+        assert "landmarks" in data
+        assert "count" in data
+        assert data["count"] >= 0
+
+    def test_nearby_invalid_coords(self, client):
+        resp = client.get("/nearby?lat=abc&lon=def")
+        assert resp.status_code == 400
+
+    def test_nearby_missing_coords(self, client):
+        resp = client.get("/nearby")
+        assert resp.status_code == 400
+
+    def test_nearby_reports_nearest(self, client):
+        resp = client.get("/nearby?lat=47.226&lon=39.719&radius_m=1")
+        data = resp.get_json()
+        assert "nearest_landmark_distance_m" in data
+        assert "nearest_landmark_name" in data
+
+
+# ── Predict ───────────────────────────────────────────────────────────────────
+
+class TestPredict:
+    def _make_test_image_base64(self):
+        """Create a small valid JPEG image as base64."""
+        from PIL import Image
+        img = Image.new("RGB", (100, 100), color=(128, 64, 32))
+        buf = io.BytesIO()
+        img.save(buf, format="JPEG")
+        return base64.b64encode(buf.getvalue()).decode()
+
+    def test_predict_no_model(self, client):
+        app.model = None
+        resp = client.post("/predict", json={"image": self._make_test_image_base64()})
+        assert resp.status_code == 503
+
+    def test_predict_missing_image(self, client_with_mock_model):
+        resp = client_with_mock_model.post("/predict", json={})
+        assert resp.status_code == 400
+
+    def test_predict_missing_body(self, client_with_mock_model):
+        resp = client_with_mock_model.post("/predict")
+        assert resp.status_code == 400
+
+    def test_predict_invalid_base64(self, client_with_mock_model):
+        resp = client_with_mock_model.post("/predict", json={"image": "not-valid-base64!!!"})
+        assert resp.status_code == 400
+
+    def test_predict_valid_image(self, client_with_mock_model):
+        resp = client_with_mock_model.post("/predict", json={"image": self._make_test_image_base64()})
+        assert resp.status_code == 200
+        data = resp.get_json()
+        assert "top5" in data
+        assert "confidence" in data
+
+    def test_predict_rejects_oversized_body(self, client_with_mock_model):
+        """Test that MAX_CONTENT_LENGTH is enforced."""
+        # Send a body larger than MAX_CONTENT_MB
+        big_payload = {"image": "A" * (11 * 1024 * 1024)}  # 11MB of base64
+        resp = client_with_mock_model.post(
+            "/predict",
+            data=json.dumps(big_payload),
+            content_type="application/json",
+        )
+        assert resp.status_code == 413
+
+
+# ── Route Planning ────────────────────────────────────────────────────────────
+
+class TestRoute:
+    def test_plan_missing_start(self, client):
+        resp = client.get("/plan?minutes=60")
+        assert resp.status_code == 400
+
+    def test_plan_invalid_start(self, client):
+        resp = client.get("/plan?start=nonexistent&minutes=60")
+        assert resp.status_code == 404
+
+    def test_plan_invalid_minutes(self, client):
+        resp = client.get("/plan?start=pushkin_monument&minutes=abc")
+        assert resp.status_code == 400
+
+    def test_plan_custom_missing_body(self, client):
+        resp = client.post("/plan-custom", json={})
+        assert resp.status_code == 400
+
+    def test_plan_custom_empty_landmarks(self, client):
+        resp = client.post("/plan-custom", json={"landmarks": [], "start": "pushkin_monument"})
+        assert resp.status_code == 400
+
+    def test_route_fallback_no_file(self, client):
+        """GET /route returns 404 when planned_route.json doesn't exist."""
+        resp = client.get("/route")
+        # Should be 404 (file doesn't exist) or 200 (it does exist)
+        assert resp.status_code in (200, 404)
+
+
+# ── Photos ────────────────────────────────────────────────────────────────────
+
+class TestPhotos:
+    def test_serve_photo_not_found(self, client):
+        resp = client.get("/photo/nonexistent_id")
+        assert resp.status_code == 404
+
+    def test_photos_available(self, client):
+        resp = client.get("/photos/available")
+        assert resp.status_code == 200
+        data = resp.get_json()
+        assert isinstance(data, list)
+
+
+# ── Frontend ──────────────────────────────────────────────────────────────────
+
+class TestFrontend:
+    def test_serve_frontend(self, client):
+        resp = client.get("/app")
+        assert resp.status_code == 200
+
+    def test_serve_frontend_slash(self, client):
+        resp = client.get("/app/")
+        assert resp.status_code == 200

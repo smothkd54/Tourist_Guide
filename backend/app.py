@@ -27,7 +27,7 @@ from pathlib import Path
 import numpy as np
 from flask import Flask, jsonify, request, send_from_directory, current_app
 from flask_cors import CORS
-from tensorflow import keras
+import keras
 from PIL import Image
 
 # route_planner.py lives in this same directory (backend/), so this is a
@@ -38,6 +38,29 @@ from PIL import Image
 # makes Python treat backend/ as a script directory, not a package, and the
 # package-style import raises ModuleNotFoundError: No module named 'backend'.
 from route_planner import plan_route, plan_custom_route
+
+
+class RateLimiter:
+    """Simple in-memory sliding-window rate limiter."""
+
+    def __init__(self, max_requests=30, window_seconds=60):
+        self.max_requests = max_requests
+        self.window_seconds = window_seconds
+        self._requests = {}  # ip -> [timestamps]
+
+    def is_allowed(self, key):
+        import time
+        now = time.time()
+        cutoff = now - self.window_seconds
+        self._requests.setdefault(key, [])
+        self._requests[key] = [t for t in self._requests[key] if t > cutoff]
+        if len(self._requests[key]) >= self.max_requests:
+            return False
+        self._requests[key].append(now)
+        return True
+
+
+_osrm_limiter = RateLimiter(max_requests=10, window_seconds=60)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -53,15 +76,24 @@ FRONTEND_DIR     = PROJECT_ROOT / "frontend"
 MODEL_PATH       = MODELS_DIR / "landmark_classifier.keras"
 CLASS_NAMES_PATH = MODELS_DIR / "class_names.json"
 LANDMARKS_PATH   = DATA_DIR / "landmarks.json"
+PHOTOS_DIR       = DATA_DIR / "photos"
 
 IMG_SIZE             = (224, 224)
 PORT                 = 5000
 HOST                 = "0.0.0.0"
 CONFIDENCE_THRESHOLD = 0.40   # predictions below this are reported as "unknown"
+MAX_CONTENT_MB       = 10     # max request body size in MB
 # ────────────────────────────────────────────────────────────────────────────
 
 app = Flask(__name__, static_folder=str(FRONTEND_DIR))
-CORS(app)
+app.config["MAX_CONTENT_LENGTH"] = MAX_CONTENT_MB * 1024 * 1024
+CORS(app, origins=["http://localhost:*", "http://127.0.0.1:*"])
+
+
+@app.errorhandler(413)
+def request_entity_too_large(e):
+    return jsonify({"error": f"Request body too large. Maximum size is {MAX_CONTENT_MB}MB."}), 413
+
 
 # Runtime state stored as app attributes to avoid module-level scoping issues.
 app.model           = None
@@ -226,6 +258,9 @@ def dynamic_plan():
     if len(geocoded) < 2:
         return jsonify({"error": "Not enough geocoded landmarks (need at least 2)."}), 400
 
+    if not _osrm_limiter.is_allowed(request.remote_addr):
+        return jsonify({"error": "Rate limit exceeded. Try again in a minute."}), 429
+
     try:
         start_idx = next(i for i, lm in enumerate(geocoded) if lm["id"] == start_id)
     except StopIteration:
@@ -270,6 +305,9 @@ def plan_custom():
     geocoded = [lm for lm in landmarks if lm.get("lat") is not None]
     if len(geocoded) < 1:
         return jsonify({"error": "Selected landmarks need GPS coordinates"}), 400
+
+    if not _osrm_limiter.is_allowed(request.remote_addr):
+        return jsonify({"error": "Rate limit exceeded. Try again in a minute."}), 429
 
     try:
         route_data = plan_custom_route(geocoded, start_id, optimize_order=optimize)
@@ -337,7 +375,6 @@ def predict():
 
 
 # ── serve photos ──────────────────────────────────────────────────────────────
-PHOTOS_DIR = DATA_DIR / "photos"
 _PHOTO_CACHE = None
 
 def _list_available_photos():

@@ -3,13 +3,13 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# System deps for Pillow/TensorFlow
+# System deps for Pillow/TensorFlow + curl for healthcheck
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libjpeg-dev zlib1g-dev \
+    libjpeg-dev zlib1g-dev curl \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements-serve.txt .
+RUN pip install --no-cache-dir -r requirements-serve.txt
 
 COPY backend/ ./backend/
 COPY data/landmarks.json ./data/landmarks.json
@@ -25,6 +25,9 @@ EXPOSE 5000
 RUN useradd -m appuser && chown -R appuser /app
 USER appuser
 
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:5000/ || exit 1
+
 # Fail fast and loud if required artifacts are missing, instead of
 # starting a server that silently returns 503 on every /predict call.
-CMD python preflight_check.py && python backend/app.py
+CMD python preflight_check.py && gunicorn -w 2 -b 0.0.0.0:5000 backend.app:app
