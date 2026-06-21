@@ -37,7 +37,7 @@ from PIL import Image
 # `python backend/app.py` (the documented, normal way to start this server)
 # makes Python treat backend/ as a script directory, not a package, and the
 # package-style import raises ModuleNotFoundError: No module named 'backend'.
-from route_planner import plan_route
+from route_planner import plan_route, plan_custom_route
 
 logging.basicConfig(
     level=logging.INFO,
@@ -235,6 +235,46 @@ def dynamic_plan():
         route_data = plan_route(geocoded, start_idx, minutes, visit_minutes)
     except Exception as e:
         logger.error("OSRM routing failed for start=%s minutes=%s: %s", start_id, minutes, e)
+        return jsonify({"error": f"OSRM routing failed: {str(e)}"}), 503
+
+    return jsonify(route_data)
+
+
+@app.route("/plan-custom", methods=["POST"])
+def plan_custom():
+    """
+    Plan a walking route for user-selected landmarks.
+
+    POST body:
+      {
+        "landmarks": ["id1", "id2", ...],  (required, list of landmark IDs)
+        "start": "id1",                     (required, starting landmark ID)
+        "optimize": true                    (optional, default true)
+      }
+    """
+    body = request.get_json(silent=True)
+    if not body or "landmarks" not in body or "start" not in body:
+        return jsonify({"error": "Send JSON with 'landmarks' (list of IDs) and 'start' (landmark ID)"}), 400
+
+    landmark_ids = body["landmarks"]
+    start_id = body["start"]
+    optimize = body.get("optimize", True)
+
+    if not isinstance(landmark_ids, list) or len(landmark_ids) == 0:
+        return jsonify({"error": "'landmarks' must be a non-empty list of landmark IDs"}), 400
+
+    landmarks = [current_app.landmarks_by_id[lid] for lid in landmark_ids if lid in current_app.landmarks_by_id]
+    if len(landmarks) == 0:
+        return jsonify({"error": "None of the provided landmark IDs were found"}), 404
+
+    geocoded = [lm for lm in landmarks if lm.get("lat") is not None]
+    if len(geocoded) < 1:
+        return jsonify({"error": "Selected landmarks need GPS coordinates"}), 400
+
+    try:
+        route_data = plan_custom_route(geocoded, start_id, optimize_order=optimize)
+    except Exception as e:
+        logger.error("OSRM routing failed for custom route: %s", e)
         return jsonify({"error": f"OSRM routing failed: {str(e)}"}), 503
 
     return jsonify(route_data)

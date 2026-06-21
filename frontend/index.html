@@ -71,7 +71,7 @@
     .bar-fill { height: 4px; background: var(--accent); border-radius: 2px; transition: width 0.5s; }
     .bar-pct { font-size: 11px; color: var(--muted); width: 38px; text-align: right; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
-    .lm-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: border-color 0.15s; }
+    .lm-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: border-color 0.15s; position: relative; }
     .lm-card:hover { border-color: var(--accent); }
     .lm-thumb { height: 110px; background: #141414; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .lm-thumb img { width: 100%; height: 100%; object-fit: cover; }
@@ -80,6 +80,14 @@
     .lm-info h3 { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
     .lm-info p { font-size: 11px; color: var(--muted); }
     .lm-info small { font-size: 10px; color: #555; }
+    .add-visit-btn {
+      position: absolute; top: 8px; right: 8px; z-index: 5;
+      background: rgba(0,0,0,0.7); border: 1px solid var(--border); border-radius: 6px;
+      color: var(--muted); cursor: pointer; padding: 4px 8px; font-size: 11px;
+      display: flex; align-items: center; gap: 4px; transition: all 0.15s;
+    }
+    .add-visit-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .add-visit-btn.in-list { background: #2a2316; border-color: var(--accent); color: var(--accent); }
     .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
     .modal-bg.open { display: flex; }
     .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; max-width: 560px; width: 100%; max-height: 85vh; overflow-y: auto; }
@@ -122,6 +130,26 @@
     .speak-btn { background: none; border: 1px solid var(--border); border-radius: 6px; color: var(--muted); cursor: pointer; padding: 5px 10px; font-size: 12px; display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; }
     .speak-btn:hover { color: var(--accent); border-color: var(--accent); }
     .speak-btn.speaking { color: var(--accent); border-color: var(--accent); }
+    .mode-toggle { display: flex; gap: 4px; margin-bottom: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 4px; }
+    .mode-btn { flex: 1; padding: 8px 12px; font-size: 12px; font-weight: 500; border-radius: 7px; border: none; background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; text-align: center; }
+    .mode-btn:hover { color: var(--text); }
+    .mode-btn.active { background: #2a2316; color: var(--accent); }
+    .visit-list-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .visit-list-header h3 { font-size: 14px; font-weight: 500; }
+    .visit-list-count { font-size: 11px; color: var(--muted); background: var(--border); padding: 2px 8px; border-radius: 99px; }
+    .visit-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .visit-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; }
+    .visit-item-num { width: 22px; height: 22px; border-radius: 50%; background: #2a2316; color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+    .visit-item-name { flex: 1; font-size: 13px; }
+    .visit-item-actions { display: flex; gap: 4px; }
+    .visit-item-btn { background: none; border: 1px solid var(--border); border-radius: 4px; color: var(--muted); cursor: pointer; padding: 2px 6px; font-size: 11px; }
+    .visit-item-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .visit-item-btn.remove:hover { border-color: var(--red); color: var(--red); }
+    .order-toggle { display: flex; gap: 12px; margin-bottom: 14px; font-size: 12px; color: var(--muted); }
+    .order-toggle label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .empty-visit-list { text-align: center; padding: 20px; color: var(--muted); font-size: 13px; }
+    .empty-visit-list a { color: var(--accent); text-decoration: none; }
+    .add-all-btn { margin-top: 10px; }
   </style>
 </head>
 <body>
@@ -173,14 +201,40 @@
 </div>
 
 <div id="tab-walk" class="panel">
-  <div class="notice">&#128694; Real walking route using OSRM. Works from anywhere — no GPS needed, just pick a starting landmark and a time budget. Plan your route from Moscow or before you even land.</div>
-  <div class="guide-controls">
-    <label style="font-size:13px;color:var(--muted)">Time:</label>
-    <input type="number" id="walk-minutes" value="60" min="15" max="240" step="15" style="width:70px">
-    <span style="font-size:13px;color:var(--muted)">min</span>
-    <select id="walk-start"></select>
-    <button class="guide-btn primary" onclick="planWalk()">&#10148; Plan route</button>
+  <div class="notice">&#128694; Plan your walk on Pushkinskaya Street. Choose specific sites or let us suggest a route based on your time.</div>
+
+  <div class="mode-toggle">
+    <button class="mode-btn active" onclick="switchWalkMode('custom')">My Visit List</button>
+    <button class="mode-btn" onclick="switchWalkMode('suggest')">Suggest for My Time</button>
   </div>
+
+  <div id="walk-mode-custom">
+    <div class="visit-list-header">
+      <h3>My Visit List</h3>
+      <span class="visit-list-count" id="visit-count">0 sites</span>
+    </div>
+    <div id="visit-list-container"></div>
+    <div class="guide-controls" id="custom-controls" style="display:none;">
+      <label style="font-size:13px;color:var(--muted)">Start from:</label>
+      <select id="custom-start"></select>
+      <div class="order-toggle">
+        <label><input type="radio" name="route-order" value="optimize" checked> Auto-optimize</label>
+        <label><input type="radio" name="route-order" value="keep"> Keep my order</label>
+      </div>
+      <button class="guide-btn primary" onclick="planCustomRoute()">&#10148; Plan route</button>
+    </div>
+  </div>
+
+  <div id="walk-mode-suggest" style="display:none;">
+    <div class="guide-controls">
+      <label style="font-size:13px;color:var(--muted)">Time:</label>
+      <input type="number" id="walk-minutes" value="60" min="15" max="240" step="15" style="width:70px">
+      <span style="font-size:13px;color:var(--muted)">min</span>
+      <select id="walk-start"></select>
+      <button class="guide-btn primary" onclick="planWalk()">&#10148; Suggest route</button>
+    </div>
+  </div>
+
   <div id="walk-result"></div>
 </div>
 
@@ -204,6 +258,7 @@
 const API = window.location.origin;
 let landmarks = [];
 const photoStore = {};
+let visitList = JSON.parse(localStorage.getItem('visitList') || '[]');
 
 async function init() {
   try {
@@ -214,6 +269,7 @@ async function init() {
     renderBrowse();
     renderManage();
     populateWalkStart();
+    renderVisitList();
   } catch(e) {
     document.getElementById('api-status').textContent = 'API offline -- run: python backend/app.py';
   }
@@ -231,6 +287,107 @@ function switchTab(name) {
   document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', names[i] === name));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
+}
+
+function switchWalkMode(mode) {
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.textContent.includes(mode === 'custom' ? 'Visit List' : 'Suggest')));
+  document.getElementById('walk-mode-custom').style.display = mode === 'custom' ? 'block' : 'none';
+  document.getElementById('walk-mode-suggest').style.display = mode === 'suggest' ? 'block' : 'none';
+  document.getElementById('walk-result').innerHTML = '';
+}
+
+function toggleVisitList(id) {
+  const idx = visitList.indexOf(id);
+  if (idx === -1) {
+    visitList.push(id);
+  } else {
+    visitList.splice(idx, 1);
+  }
+  localStorage.setItem('visitList', JSON.stringify(visitList));
+  renderVisitList();
+  renderBrowse();
+}
+
+function addToVisitList(id) {
+  if (!visitList.includes(id)) {
+    visitList.push(id);
+    localStorage.setItem('visitList', JSON.stringify(visitList));
+    renderVisitList();
+    renderBrowse();
+  }
+}
+
+function removeFromVisitList(id) {
+  visitList = visitList.filter(x => x !== id);
+  localStorage.setItem('visitList', JSON.stringify(visitList));
+  renderVisitList();
+  renderBrowse();
+}
+
+function moveVisitItem(id, direction) {
+  const idx = visitList.indexOf(id);
+  if (idx === -1) return;
+  const newIdx = idx + direction;
+  if (newIdx < 0 || newIdx >= visitList.length) return;
+  [visitList[idx], visitList[newIdx]] = [visitList[newIdx], visitList[idx]];
+  localStorage.setItem('visitList', JSON.stringify(visitList));
+  renderVisitList();
+}
+
+function clearVisitList() {
+  visitList = [];
+  localStorage.setItem('visitList', JSON.stringify(visitList));
+  renderVisitList();
+  renderBrowse();
+}
+
+function renderVisitList() {
+  const container = document.getElementById('visit-list-container');
+  const countEl = document.getElementById('visit-count');
+  const controlsEl = document.getElementById('custom-controls');
+  countEl.textContent = `${visitList.length} site${visitList.length !== 1 ? 's' : ''}`;
+
+  if (visitList.length === 0) {
+    container.innerHTML = `<div class="empty-visit-list">No sites selected yet. Browse landmarks and click <strong>+ Add</strong> to build your visit list, or <a href="#" onclick="switchWalkMode('suggest'); return false;">let us suggest a route</a>.</div>`;
+    controlsEl.style.display = 'none';
+    return;
+  }
+
+  const geocodedInList = visitList.filter(id => {
+    const lm = landmarks.find(l => l.id === id);
+    return lm && lm.lat != null;
+  });
+
+  container.innerHTML = `<div class="visit-list">${visitList.map((id, i) => {
+    const lm = landmarks.find(l => l.id === id);
+    if (!lm) return '';
+    const hasCoords = lm.lat != null;
+    return `<div class="visit-item" style="${!hasCoords ? 'opacity:0.5;' : ''}">
+      <span class="visit-item-num">${i + 1}</span>
+      <span class="visit-item-name">${lm.name}${!hasCoords ? ' <span style="color:var(--muted);font-size:11px;">(no GPS)</span>' : ''}</span>
+      <div class="visit-item-actions">
+        <button class="visit-item-btn" onclick="moveVisitItem('${id}', -1)" title="Move up">&#9650;</button>
+        <button class="visit-item-btn" onclick="moveVisitItem('${id}', 1)" title="Move down">&#9660;</button>
+        <button class="visit-item-btn remove" onclick="removeFromVisitList('${id}')" title="Remove">&#10005;</button>
+      </div>
+    </div>`;
+  }).join('')}</div>
+  <button class="guide-btn" onclick="clearVisitList()" style="font-size:12px;padding:6px 12px;">Clear All</button>`;
+
+  if (geocodedInList.length >= 1) {
+    controlsEl.style.display = 'flex';
+    updateCustomStartSelect(geocodedInList);
+  } else {
+    controlsEl.style.display = 'none';
+  }
+}
+
+function updateCustomStartSelect(geocodedInList) {
+  const sel = document.getElementById('custom-start');
+  sel.innerHTML = geocodedInList.map(id => {
+    const lm = landmarks.find(l => l.id === id);
+    return `<option value="${lm.id}">${lm.name}</option>`;
+  }).join('');
 }
 
 document.getElementById('file-input').onchange = e => {
@@ -295,7 +452,8 @@ function renderTop5(top5) {
 function renderBrowse() {
   document.getElementById('browse-grid').innerHTML = landmarks.map(lm => {
     const thumb = getFirstPhoto(lm.id);
-    return `<div class="lm-card" onclick="openModal('${lm.id}')"><div class="lm-thumb">${thumb?`<img src="${thumb}">`:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 9 4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="13.5" r="1.5"/></svg>'}</div><div class="lm-info"><h3>${lm.name}</h3><p>${lm.type} · ${lm.year_built}</p><small>${lm.street}</small></div></div>`;
+    const inList = visitList.includes(lm.id);
+    return `<div class="lm-card" onclick="openModal('${lm.id}')"><button class="add-visit-btn ${inList?'in-list':''}" onclick="event.stopPropagation(); toggleVisitList('${lm.id}')">${inList ? '&#10003; Added' : '+ Add'}</button><div class="lm-thumb">${thumb?`<img src="${thumb}">`:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 9 4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="13.5" r="1.5"/></svg>'}</div><div class="lm-info"><h3>${lm.name}</h3><p>${lm.type} · ${lm.year_built}</p><small>${lm.street}</small></div></div>`;
   }).join('');
 }
 
@@ -332,8 +490,9 @@ function openModal(id) {
   const store = photoStore[id] || {};
   const photos = (lm.angles||[]).map(a => store[a]).filter(Boolean);
   const serverPhoto = photoIds.indexOf(id) !== -1 ? '/photo/' + id : null;
+  const inList = visitList.includes(id);
   document.getElementById('modal-title').textContent = lm.name;
-  document.getElementById('modal-body').innerHTML = `<div style="display:flex;gap:8px;overflow-x:auto;margin-bottom:14px;">${photos.length?photos.map(src=>`<img src="${src}" style="height:120px;border-radius:6px;object-fit:cover;">`).join(''):serverPhoto?`<img src="${serverPhoto}" style="height:120px;border-radius:6px;object-fit:cover;">`:''}</div><div style="font-size:12px;color:var(--muted);display:flex;gap:14px;margin-bottom:10px;"><span>&#128205; ${lm.street}</span><span>&#128197; ${lm.year_built}</span></div><p style="font-size:13px;color:#bbb;line-height:1.75;">${lm.description}</p><button class="speak-btn" onclick="speakText('${(lm.description+(lm.fun_fact?'. '+lm.fun_fact:'')).replace(/'/g,"\\'")}',this)">&#128266; Listen</button>${lm.fun_fact?`<p style="margin-top:10px;font-size:12px;color:var(--accent)">&#9733; ${lm.fun_fact}</p>`:''}<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;">${[['Architect',lm.architect],['Style',lm.style],['Height',lm.height_ft+' ft'],['Floors',lm.floors]].map(([k,v])=>`<div class="fact"><label>${k}</label><strong>${v}</strong></div>`).join('')}</div>`;
+  document.getElementById('modal-body').innerHTML = `<div style="display:flex;gap:8px;overflow-x:auto;margin-bottom:14px;">${photos.length?photos.map(src=>`<img src="${src}" style="height:120px;border-radius:6px;object-fit:cover;">`).join(''):serverPhoto?`<img src="${serverPhoto}" style="height:120px;border-radius:6px;object-fit:cover;">`:''}</div><button class="guide-btn ${inList?'primary':''}" onclick="toggleVisitList('${lm.id}'); openModal('${lm.id}');" style="margin-bottom:14px;width:100%;justify-content:center;">${inList ? '&#10003; In Your Visit List' : '+ Add to Visit List'}</button><div style="font-size:12px;color:var(--muted);display:flex;gap:14px;margin-bottom:10px;"><span>&#128205; ${lm.street}</span><span>&#128197; ${lm.year_built}</span></div><p style="font-size:13px;color:#bbb;line-height:1.75;">${lm.description}</p><button class="speak-btn" onclick="speakText('${(lm.description+(lm.fun_fact?'. '+lm.fun_fact:'')).replace(/'/g,"\\'")}',this)">&#128266; Listen</button>${lm.fun_fact?`<p style="margin-top:10px;font-size:12px;color:var(--accent)">&#9733; ${lm.fun_fact}</p>`:''}<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;">${[['Architect',lm.architect],['Style',lm.style],['Height',lm.height_ft+' ft'],['Floors',lm.floors]].map(([k,v])=>`<div class="fact"><label>${k}</label><strong>${v}</strong></div>`).join('')}</div>`;
   document.getElementById('modal-bg').classList.add('open');
 }
 
@@ -426,9 +585,6 @@ function renderNearby(data, userLat, userLon, warningHtml) {
     const distKm = distM / 1000;
 
     if (distKm > 50) {
-      // Far away — Moscow, abroad, anywhere not in Rostov-on-Don. "Nearby"
-      // is the wrong frame entirely; show the whole street instead and
-      // point at trip planning rather than implying something's broken.
       listEl.innerHTML = warningHtml + `
         <div class="notice" style="color:var(--accent);">
           &#9992; You're about ${distKm >= 1000 ? Math.round(distKm) : distKm.toFixed(0)} km from Pushkinskaya Street —
@@ -443,8 +599,6 @@ function renderNearby(data, userLat, userLon, warningHtml) {
     }
 
     if (distKm > 2) {
-      // Same city or nearby, but outside the current radius filter —
-      // different message than "far away": just widen the radius.
       listEl.innerHTML = warningHtml + `
         <div class="notice">
           Nearest landmark (${nearestName}) is about ${distKm.toFixed(1)} km away — outside the
@@ -455,8 +609,6 @@ function renderNearby(data, userLat, userLon, warningHtml) {
       return;
     }
 
-    // Genuinely close but just outside a tight radius — the old message
-    // is still the right one here.
     listEl.innerHTML = warningHtml + `<div class="notice">No landmarks within ${data.query.radius_m}m — nearest is ${nearestName}, about ${Math.round(distM)} m away. Try a larger radius.</div>`;
     mapWrap.style.display = 'none';
     return;
@@ -492,6 +644,30 @@ function renderMap(elId, userLat, userLon, points) {
   points.forEach(lm => { L.marker([lm.lat, lm.lon]).addTo(leafletMap).bindPopup(`<strong>${lm.name}</strong><br>${Math.round(lm.distance_m)} m away`); });
 }
 
+async function planCustomRoute() {
+  const start = document.getElementById('custom-start').value;
+  const optimize = document.querySelector('input[name="route-order"]:checked').value === 'optimize';
+  if (!start) { alert('Please select a starting landmark.'); return; }
+  if (visitList.length === 0) { alert('Your visit list is empty. Add landmarks first.'); return; }
+
+  const resultEl = document.getElementById('walk-result');
+  resultEl.innerHTML = '<div class="notice"><span class="spinner">&#8635;</span> Computing route...</div>';
+  try {
+    const r = await fetch(`${API}/plan-custom`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ landmarks: visitList, start: start, optimize: optimize })
+    });
+    if (!r.ok) {
+      const err = await r.json();
+      throw new Error(err.error || 'Failed to plan route');
+    }
+    renderWalk(await r.json());
+  } catch(e) {
+    resultEl.innerHTML = `<div class="notice" style="color:var(--red)">&#9888; ${e.message}</div>`;
+  }
+}
+
 async function planWalk() {
   const start = document.getElementById('walk-start').value;
   const minutes = document.getElementById('walk-minutes').value;
@@ -504,15 +680,26 @@ async function planWalk() {
       const err = await r.json();
       throw new Error(err.error || 'Failed to plan route');
     }
-    renderWalk(await r.json());
+    const route = await r.json();
+    renderWalk(route);
+    if (route.stops.length > 0) {
+      resultEl.innerHTML += `<div style="margin-top:12px;"><button class="guide-btn add-all-btn" onclick="addAllToVisitList(${JSON.stringify(route.stops.map(s=>s.id)).replace(/"/g,'&quot;')})">+ Add all ${route.stops.length} stops to My Visit List</button></div>`;
+    }
   } catch(e) {
     resultEl.innerHTML = `<div class="notice" style="color:var(--red)">&#9888; ${e.message}</div>`;
   }
 }
 
+function addAllToVisitList(ids) {
+  ids.forEach(id => { if (!visitList.includes(id)) visitList.push(id); });
+  localStorage.setItem('visitList', JSON.stringify(visitList));
+  renderVisitList();
+  renderBrowse();
+}
+
 function renderWalk(route) {
   const resultEl = document.getElementById('walk-result');
-  const stopsHtml = route.stops.map((s,i) => `<div class="route-item" onclick="openModal('${s.id}')"><div class="step-num">${i+1}</div><div class="item-main"><strong>${s.name}</strong></div></div>`).join('');
+  const stopsHtml = route.stops.map((s,i) => `<div class="route-item" onclick="openModal('${s.id}')"><div class="step-num">${i+1}</div><div class="item-main"><strong>${s.name}</strong><span>${s.estimated_visit_minutes} min visit</span></div><button class="visit-item-btn" onclick="event.stopPropagation(); addToVisitList('${s.id}')" title="Add to visit list">+ Add</button></div>`).join('');
   resultEl.innerHTML = `<div class="notice">&#128694; ${route.stops.length} stops · ${route.total_walking_minutes} min walking · ${route.total_minutes} min total</div><div id="map-walk"><div id="walk-map" style="margin-bottom:14px;"></div></div><div class="route-list">${stopsHtml}</div>`;
   if (route.stops.length > 0) renderRouteMap(route);
 }

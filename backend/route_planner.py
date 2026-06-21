@@ -98,6 +98,104 @@ def osrm_route_geometry(coords_seq: List[tuple]) -> Optional[Dict]:
     return None
 
 
+def plan_custom_route(
+    landmarks: List[Dict],
+    start_id: str,
+    optimize_order: bool = True
+) -> Dict[str, Any]:
+    """
+    Plan a walking route for user-selected landmarks.
+
+    landmarks: List of user-selected landmark dicts (must have lat/lon)
+    start_id: ID of the starting landmark
+    optimize_order: If True, reorder landmarks for shortest walking distance.
+                    If False, keep user's original order.
+
+    Returns the same format as plan_route().
+    """
+    if len(landmarks) < 1:
+        raise ValueError("Need at least 1 landmark.")
+
+    if len(landmarks) == 1:
+        lm = landmarks[0]
+        return {
+            "stops": [{
+                "id": lm["id"],
+                "name": lm["name"],
+                "lat": lm["lat"],
+                "lon": lm["lon"],
+                "estimated_visit_minutes": estimate_visit_minutes(lm),
+            }],
+            "total_walking_minutes": 0,
+            "total_visit_minutes": estimate_visit_minutes(lm),
+            "total_minutes": estimate_visit_minutes(lm),
+            "route_geometry": None,
+        }
+
+    matrix = osrm_table(landmarks)
+    durations = matrix["durations"]
+
+    id_to_idx = {lm["id"]: i for i, lm in enumerate(landmarks)}
+    if start_id not in id_to_idx:
+        raise ValueError(f"Start landmark '{start_id}' not found in provided list.")
+    start_idx = id_to_idx[start_id]
+
+    if optimize_order:
+        visited = [start_idx]
+        remaining = set(range(len(landmarks))) - {start_idx}
+
+        while remaining:
+            current = visited[-1]
+            candidates = sorted(
+                remaining,
+                key=lambda j: durations[current][j] if durations[current][j] is not None else float('inf')
+            )
+            if not candidates:
+                break
+            nxt = candidates[0]
+            if durations[current][nxt] is None:
+                remaining.discard(nxt)
+                continue
+            visited.append(nxt)
+            remaining.discard(nxt)
+
+        ordered = [landmarks[i] for i in visited]
+    else:
+        start_lm = next(lm for lm in landmarks if lm["id"] == start_id)
+        others = [lm for lm in landmarks if lm["id"] != start_id]
+        ordered = [start_lm] + others
+
+    total_walk_secs = 0
+    for i in range(1, len(ordered)):
+        prev_id, cur_id = ordered[i - 1]["id"], ordered[i]["id"]
+        prev_idx, cur_idx = id_to_idx[prev_id], id_to_idx[cur_id]
+        walk = durations[prev_idx][cur_idx]
+        if walk is not None:
+            total_walk_secs += walk
+
+    total_visit_secs = sum(estimate_visit_minutes(lm) * 60 for lm in ordered)
+
+    coords_seq = [(lm["lat"], lm["lon"]) for lm in ordered]
+    geometry = osrm_route_geometry(coords_seq)
+
+    return {
+        "stops": [
+            {
+                "id": lm["id"],
+                "name": lm["name"],
+                "lat": lm["lat"],
+                "lon": lm["lon"],
+                "estimated_visit_minutes": estimate_visit_minutes(lm),
+            }
+            for lm in ordered
+        ],
+        "total_walking_minutes": round(total_walk_secs / 60, 1),
+        "total_visit_minutes": round(total_visit_secs / 60, 1),
+        "total_minutes": round((total_walk_secs + total_visit_secs) / 60, 1),
+        "route_geometry": geometry,
+    }
+
+
 def plan_route(
     landmarks: List[Dict],
     start_idx: int,
