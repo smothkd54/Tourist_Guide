@@ -21,6 +21,7 @@ ENDPOINTS
 import json
 import base64
 import io
+import logging
 from pathlib import Path
 
 import numpy as np
@@ -37,6 +38,12 @@ from PIL import Image
 # makes Python treat backend/ as a script directory, not a package, and the
 # package-style import raises ModuleNotFoundError: No module named 'backend'.
 from route_planner import plan_route
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+)
+logger = logging.getLogger("pushkinskaya_api")
 
 # ── paths — anchored to project root, independent of CWD ─────────────────────
 PROJECT_ROOT     = Path(__file__).resolve().parent.parent
@@ -64,19 +71,16 @@ app.landmarks_by_id = {}
 
 def load_resources():
     """Load model, class names, and landmark metadata into app state."""
-    print("Loading model...", end=" ", flush=True)
     if MODEL_PATH.exists():
         app.model = keras.models.load_model(MODEL_PATH)
-        print("done")
+        logger.info("Model loaded from %s", MODEL_PATH)
     else:
-        print("not found")
-        print(f"  Expected at: {MODEL_PATH}")
-        print(f"  Run: python train.py")
+        logger.error("Model not found at %s — run train.py first. /predict will return 503.", MODEL_PATH)
 
     if CLASS_NAMES_PATH.exists():
         app.class_names = json.loads(CLASS_NAMES_PATH.read_text())
     else:
-        print(f"  Warning: {CLASS_NAMES_PATH} not found. Run train.py first.")
+        logger.warning("%s not found. Run train.py first.", CLASS_NAMES_PATH)
 
     if LANDMARKS_PATH.exists():
         data = json.loads(LANDMARKS_PATH.read_text())
@@ -84,8 +88,8 @@ def load_resources():
     else:
         raise FileNotFoundError(f"landmarks.json not found at {LANDMARKS_PATH}")
 
-    print(f"Classes loaded: {len(app.class_names)}")
-    print(f"Landmarks in DB: {len(app.landmarks_by_id)}")
+    logger.info("Classes loaded: %d", len(app.class_names))
+    logger.info("Landmarks in DB: %d", len(app.landmarks_by_id))
 
 
 def preprocess_image(image_bytes: bytes) -> np.ndarray:
@@ -116,12 +120,23 @@ def haversine_m(lat1, lon1, lat2, lon2):
 # ── routes ───────────────────────────────────────────────────────────────────
 @app.route("/")
 def health():
-    return jsonify({
-        "status": "ok",
-        "model_loaded": current_app.model is not None,
+    model_ok = current_app.model is not None
+    landmarks_ok = len(current_app.landmarks_by_id) > 0
+
+    body = {
+        "status": "ok" if (model_ok and landmarks_ok) else "degraded",
+        "model_loaded": model_ok,
         "classes": len(current_app.class_names),
         "landmarks": len(current_app.landmarks_by_id),
-    })
+    }
+
+    # A health check that always returns 200 is invisible to load
+    # balancers and orchestrators — they only look at the status code,
+    # not the body. If the model failed to load, this needs to fail
+    # loudly (503) so a deployment gets flagged or rolled back instead
+    # of silently serving broken /predict requests.
+    status_code = 200 if (model_ok and landmarks_ok) else 503
+    return jsonify(body), status_code
 
 
 @app.route("/landmarks")
@@ -219,6 +234,7 @@ def dynamic_plan():
     try:
         route_data = plan_route(geocoded, start_idx, minutes, visit_minutes)
     except Exception as e:
+        logger.error("OSRM routing failed for start=%s minutes=%s: %s", start_id, minutes, e)
         return jsonify({"error": f"OSRM routing failed: {str(e)}"}), 503
 
     return jsonify(route_data)
@@ -235,6 +251,7 @@ def get_route():
 @app.route("/predict", methods=["POST"])
 def predict():
     if current_app.model is None:
+        logger.error("Predict called but model is not loaded")
         return jsonify({"error": "Model not loaded. Run train.py first."}), 503
 
     body = request.get_json(silent=True)
@@ -245,6 +262,7 @@ def predict():
         img_bytes = decode_base64_image(body["image"])
         tensor    = preprocess_image(img_bytes)
     except Exception as e:
+        logger.warning("Image decode failed: %s", e)
         return jsonify({"error": f"Image decode failed: {e}"}), 400
 
     probs = current_app.model.predict(tensor, verbose=0)[0]

@@ -1,6 +1,27 @@
-tensorflow>=2.13.0
-flask>=3.0.0
-flask-cors>=4.0.0
-pillow>=10.0.0
-numpy>=1.24.0
-matplotlib>=3.7.0
+# Core ML — pinned to a specific minor version. TensorFlow makes
+# breaking changes between minor versions; ">=" here means a future
+# `pip install` could silently swap your model-loading behavior.
+tensorflow==2.16.1
+numpy==1.26.4
+
+# Image processing
+pillow==10.4.0
+
+# Training visualisation (only needed for train.py / evaluate.py,
+# not for serving — see requirements-serve.txt if you want a
+# slimmer production image without matplotlib)
+matplotlib==3.9.0
+
+# API server
+flask==3.0.3
+flask-cors==4.0.1
+
+# Image collection scripts
+requests==2.32.3
+beautifulsoup4==4.12.3
+
+# Crop tool
+opencv-python==4.10.0.84
+
+# Deduplication
+imagehash==4.3.1
