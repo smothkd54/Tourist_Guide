@@ -17,11 +17,12 @@ In Docker, wire this into the entrypoint:
 """
 
 import json
+import os
 import sys
 from pathlib import Path
 
 PROJECT_ROOT     = Path(__file__).resolve().parent
-MODEL_PATH       = PROJECT_ROOT / "models" / "landmark_classifier.keras"
+MODEL_PATH       = Path(os.environ.get("MODEL_PATH", str(PROJECT_ROOT / "models" / "landmark_classifier.keras")))
 CLASS_NAMES_PATH = PROJECT_ROOT / "models" / "class_names.json"
 LANDMARKS_PATH   = PROJECT_ROOT / "data" / "landmarks.json"
 FRONTEND_PATH    = PROJECT_ROOT / "frontend" / "index.html"

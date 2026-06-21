@@ -4,7 +4,6 @@ __pycache__/
 *.zip
 .env
 data/images/
-models/landmark_classifier.keras
 models/checkpoint_phase1.keras
 models/training_curves.png
 models/confusion_matrix.png

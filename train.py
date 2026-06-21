@@ -28,6 +28,7 @@ REQUIREMENTS
 
 import json
 import argparse
+import os
 from pathlib import Path
 
 import numpy as np
@@ -178,7 +179,7 @@ def train(args):
     )
 
     cb_ckpt2 = keras.callbacks.ModelCheckpoint(
-        MODELS_DIR / "landmark_classifier.keras",
+        Path(os.environ.get("MODEL_PATH", str(MODELS_DIR / "landmark_classifier.keras"))),
         save_best_only=True, monitor="val_accuracy", verbose=1
     )
     cb_es2 = keras.callbacks.EarlyStopping(

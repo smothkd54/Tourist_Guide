@@ -19,7 +19,7 @@ import numpy as np
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "backend"))
 
-from app import app, load_resources
+from app import app, load_resources, _osrm_limiter
 
 
 @pytest.fixture
@@ -46,15 +46,11 @@ def client_with_mock_model(client):
 # ── Health Check ──────────────────────────────────────────────────────────────
 
 class TestHealthCheck:
-    def test_health_returns_200_when_loaded(self, client):
-        resp = client.get("/")
+    def test_health_returns_200_when_loaded(self, client_with_mock_model):
+        resp = client_with_mock_model.get("/")
+        assert resp.status_code == 200
         data = resp.get_json()
-        if app.model is not None:
-            assert resp.status_code == 200
-            assert data["status"] == "ok"
-        else:
-            assert resp.status_code == 503
-            assert data["status"] == "degraded"
+        assert data["status"] == "ok"
         assert data["landmarks"] > 0
 
     def test_health_returns_503_when_no_model(self, client):
@@ -153,7 +149,6 @@ class TestPredict:
 
     def test_predict_rejects_oversized_body(self, client_with_mock_model):
         """Test that MAX_CONTENT_LENGTH is enforced."""
-        # Send a body larger than MAX_CONTENT_MB
         big_payload = {"image": "A" * (11 * 1024 * 1024)}  # 11MB of base64
         resp = client_with_mock_model.post(
             "/predict",
@@ -178,6 +173,14 @@ class TestRoute:
         resp = client.get("/plan?start=pushkin_monument&minutes=abc")
         assert resp.status_code == 400
 
+    def test_plan_rate_limit_blocks_after_threshold(self, client):
+        _osrm_limiter._requests.clear()
+        addr = "127.0.0.1"
+        for _ in range(_osrm_limiter.max_requests):
+            assert _osrm_limiter.is_allowed(addr) is True
+        assert _osrm_limiter.is_allowed(addr) is False
+        _osrm_limiter._requests.clear()
+
     def test_plan_custom_missing_body(self, client):
         resp = client.post("/plan-custom", json={})
         assert resp.status_code == 400
@@ -189,7 +192,6 @@ class TestRoute:
     def test_route_fallback_no_file(self, client):
         """GET /route returns 404 when planned_route.json doesn't exist."""
         resp = client.get("/route")
-        # Should be 404 (file doesn't exist) or 200 (it does exist)
         assert resp.status_code in (200, 404)
 
 
@@ -217,3 +219,58 @@ class TestFrontend:
     def test_serve_frontend_slash(self, client):
         resp = client.get("/app/")
         assert resp.status_code == 200
+
+
+# ── Inference Smoke Test ─────────────────────────────────────────────────────
+
+class TestInferenceSmoke:
+    """End-to-end smoke test with a real (untrained) model.
+
+    Verifies the full predict pipeline: image decode → resize →
+    model.predict → JSON response structure — without requiring the
+    actual trained .keras file.
+    """
+
+    def test_predict_smoke_real_model(self, client):
+        import app as app_module
+        import keras
+        from keras.applications import EfficientNetB0
+
+        # Build a tiny real model (untrained)
+        base = EfficientNetB0(include_top=False, pooling="avg",
+                              input_shape=(224, 224, 3))
+        inputs = keras.Input(shape=(224, 224, 3))
+        x = base(inputs, training=False)
+        outputs = keras.layers.Dense(31, activation="softmax")(x)
+        real_model = keras.Model(inputs, outputs)
+
+        # Temporarily swap in the real model and lower threshold
+        saved_model = app_module.app.model
+        saved_names = app_module.app.class_names
+        saved_threshold = app_module.CONFIDENCE_THRESHOLD
+        app_module.app.model = real_model
+        app_module.app.class_names = [f"class_{i}" for i in range(31)]
+        app_module.CONFIDENCE_THRESHOLD = 0.0
+
+        try:
+            # Build a valid JPEG
+            from PIL import Image
+            img = Image.new("RGB", (224, 224), color=(64, 128, 192))
+            buf = io.BytesIO()
+            img.save(buf, format="JPEG")
+            b64 = base64.b64encode(buf.getvalue()).decode()
+
+            resp = client.post("/predict", json={"image": b64})
+            assert resp.status_code == 200
+            data = resp.get_json()
+
+            assert "landmark_id" in data
+            assert "confidence" in data
+            assert "top5" in data
+            assert isinstance(data["top5"], list)
+            assert len(data["top5"]) == 5
+            assert 0.0 <= data["confidence"] <= 1.0
+        finally:
+            app_module.app.model = saved_model
+            app_module.app.class_names = saved_names
+            app_module.CONFIDENCE_THRESHOLD = saved_threshold

@@ -16,6 +16,7 @@ OUTPUT
 
 import json
 import argparse
+import os
 from pathlib import Path
 
 import numpy as np
@@ -130,6 +131,6 @@ def main(model_path: Path):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=Path,
-                        default=MODELS_DIR / "landmark_classifier.keras")
+                        default=Path(os.environ.get("MODEL_PATH", str(MODELS_DIR / "landmark_classifier.keras"))))
     args = parser.parse_args()
     main(args.model)

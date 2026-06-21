@@ -13,6 +13,7 @@ USAGE
 
 import json
 import argparse
+import os
 from pathlib import Path
 
 import numpy as np
@@ -96,7 +97,7 @@ if __name__ == "__main__":
     parser.add_argument("--top",   type=int,  default=3,
                         help="Show top-N predictions (default 3)")
     parser.add_argument("--model", type=Path,
-                        default=MODELS_DIR / "landmark_classifier.keras",
+                        default=Path(os.environ.get("MODEL_PATH", str(MODELS_DIR / "landmark_classifier.keras"))),
                         help="Path to trained model")
     args = parser.parse_args()
 
