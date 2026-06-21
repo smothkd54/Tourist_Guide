@@ -1,0 +1,508 @@
+{
+  "pushkin_monument": {
+    "landmark_id": "pushkin_monument",
+    "filename": "Statue de Pouchkine à Rostov-sur-le-Don 5.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:Statue_de_Pouchkine_%C3%A0_Rostov-sur-le-Don_5.jpg",
+    "thumbnail": "data\\photos\\pushkin_monument.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "kirov_monument": {
+    "landmark_id": "kirov_monument",
+    "filename": "Kirovskiy rayon, Rostov, Rostovskaya oblast', Russia - panoramio (28).jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:Kirovskiy_rayon%2C_Rostov%2C_Rostovskaya_oblast%27%2C_Russia_-_panoramio_%2828%29.jpg",
+    "thumbnail": "data\\photos\\kirov_monument.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 933
+    }
+  },
+  "chekhov_monument": {
+    "landmark_id": "chekhov_monument",
+    "filename": "2020. Ростов-на-Дону IMG 20200704 045717.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:2020._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83_IMG_20200704_045717.jpg",
+    "thumbnail": "data\\photos\\chekhov_monument.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "vysotsky_monument": {
+    "landmark_id": "vysotsky_monument",
+    "filename": "2020. Ростов-на-Дону IMG 20200704 053427.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:2020._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83_IMG_20200704_053427.jpg",
+    "thumbnail": "data\\photos\\vysotsky_monument.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "pushkin_spheres": {
+    "landmark_id": "pushkin_spheres",
+    "filename": "2020. Ростов-на-Дону IMG 20200704 053437.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:2020._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83_IMG_20200704_053437.jpg",
+    "thumbnail": "data\\photos\\pushkin_spheres.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "lyre_fountain": {
+    "landmark_id": "lyre_fountain",
+    "filename": "2020. Ростов-на-Дону DSC 0215.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:2020._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83_DSC_0215.jpg",
+    "thumbnail": "data\\photos\\lyre_fountain.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 927
+    }
+  },
+  "library_fountain": {
+    "landmark_id": "library_fountain",
+    "filename": "Ростов-на-Дону. Фонтан у Публичной библиотеки 01.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83._%D0%A4%D0%BE%D0%BD%D1%82%D0%B0%D0%BD_%D1%83_%D0%9F%D1%83%D0%B1%D0%BB%D0%B8%D1%87%D0%BD%D0%BE%D0%B9_%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B8_01.jpg",
+    "thumbnail": "data\\photos\\library_fountain.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "don_state_library": {
+    "landmark_id": "don_state_library",
+    "filename": "Донская государственная публичная библиотека. (г. Ростов-на-Дону). 01.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%94%D0%BE%D0%BD%D1%81%D0%BA%D0%B0%D1%8F_%D0%B3%D0%BE%D1%81%D1%83%D0%B4%D0%B0%D1%80%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F_%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D1%87%D0%BD%D0%B0%D1%8F_%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B0._%28%D0%B3._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83%29._01.jpg",
+    "thumbnail": "data\\photos\\don_state_library.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "museum_fine_arts": {
+    "landmark_id": "museum_fine_arts",
+    "filename": "Особняк Домбровского - общий вид.JPG",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%9E%D1%81%D0%BE%D0%B1%D0%BD%D1%8F%D0%BA_%D0%94%D0%BE%D0%BC%D0%B1%D1%80%D0%BE%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_-_%D0%BE%D0%B1%D1%89%D0%B8%D0%B9_%D0%B2%D0%B8%D0%B4.JPG",
+    "thumbnail": "data\\photos\\museum_fine_arts.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1053
+    }
+  },
+  "paramonov_mansion_sfeu": {
+    "landmark_id": "paramonov_mansion_sfeu",
+    "filename": "Особняк Парамонова на улице Пушкинская, 148 (Rostov-on-Don).jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%9E%D1%81%D0%BE%D0%B1%D0%BD%D1%8F%D0%BA_%D0%9F%D0%B0%D1%80%D0%B0%D0%BC%D0%BE%D0%BD%D0%BE%D0%B2%D0%B0_%D0%BD%D0%B0_%D1%83%D0%BB%D0%B8%D1%86%D0%B5_%D0%9F%D1%83%D1%88%D0%BA%D0%B8%D0%BD%D1%81%D0%BA%D0%B0%D1%8F%2C_148_%28Rostov-on-Don%29.jpg",
+    "thumbnail": "data\\photos\\paramonov_mansion_sfeu.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 984
+    }
+  },
+  "kramer_mansion": {
+    "landmark_id": "kramer_mansion",
+    "filename": "Доходный Дом Л.Н. Кремер, 1900 год. Ростов-на-Дону.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%94%D0%BE%D1%85%D0%BE%D0%B4%D0%BD%D1%8B%D0%B9_%D0%94%D0%BE%D0%BC_%D0%9B.%D0%9D._%D0%9A%D1%80%D0%B5%D0%BC%D0%B5%D1%80%2C_1900_%D0%B3%D0%BE%D0%B4._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83.jpg",
+    "thumbnail": "data\\photos\\kramer_mansion.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "kramer_revenue_house": {
+    "landmark_id": "kramer_revenue_house",
+    "filename": "2020. Ростов-на-Дону IMG 20200704 045649.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:2020._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83_IMG_20200704_045649.jpg",
+    "thumbnail": "data\\photos\\kramer_revenue_house.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "spielrein_mansion": {
+    "landmark_id": "spielrein_mansion",
+    "filename": "2020. Ростов-на-Дону IMG 20200704 045701.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:2020._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83_IMG_20200704_045701.jpg",
+    "thumbnail": "data\\photos\\spielrein_mansion.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1866
+    }
+  },
+  "zvorykin_house": {
+    "landmark_id": "zvorykin_house",
+    "filename": "2022 г. Вид с ул. Пушкинская.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:2022_%D0%B3._%D0%92%D0%B8%D0%B4_%D1%81_%D1%83%D0%BB._%D0%9F%D1%83%D1%88%D0%BA%D0%B8%D0%BD%D1%81%D0%BA%D0%B0%D1%8F.jpg",
+    "thumbnail": "data\\photos\\zvorykin_house.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "gavala_house": {
+    "landmark_id": "gavala_house",
+    "filename": "Вид на жилой дом М.Г. Гавалла с бульвара Пушкинской. Ростов-на-Дону Пономарева Т.В.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%92%D0%B8%D0%B4_%D0%BD%D0%B0_%D0%B6%D0%B8%D0%BB%D0%BE%D0%B9_%D0%B4%D0%BE%D0%BC_%D0%9C.%D0%93._%D0%93%D0%B0%D0%B2%D0%B0%D0%BB%D0%BB%D0%B0_%D1%81_%D0%B1%D1%83%D0%BB%D1%8C%D0%B2%D0%B0%D1%80%D0%B0_%D0%9F%D1%83%D1%88%D0%BA%D0%B8%D0%BD%D1%81%D0%BA%D0%BE%D0%B9._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83_%D0%9F%D0%BE%D0%BD%D0%BE%D0%BC%D0%B0%D1%80%D0%B5%D0%B2%D0%B0_%D0%A2.%D0%92.jpg",
+    "thumbnail": "data\\photos\\gavala_house.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 929
+    }
+  },
+  "suprunov_mansion": {
+    "landmark_id": "suprunov_mansion",
+    "filename": "Suprunov mansion 2020 ex.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:Suprunov_mansion_2020_ex.jpg",
+    "thumbnail": "data\\photos\\suprunov_mansion.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 700
+    }
+  },
+  "lashch_revenue_house": {
+    "landmark_id": "lashch_revenue_house",
+    "filename": "Доходный дом А.П. Ливус.JPG",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%94%D0%BE%D1%85%D0%BE%D0%B4%D0%BD%D1%8B%D0%B9_%D0%B4%D0%BE%D0%BC_%D0%90.%D0%9F._%D0%9B%D0%B8%D0%B2%D1%83%D1%81.JPG",
+    "thumbnail": "data\\photos\\lashch_revenue_house.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "mnatsakanova_house": {
+    "landmark_id": "mnatsakanova_house",
+    "filename": "Profitable house of S.N. Mnatsakanova 3.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:Profitable_house_of_S.N._Mnatsakanova_3.jpg",
+    "thumbnail": "data\\photos\\mnatsakanova_house.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "kushnarev_house": {
+    "landmark_id": "kushnarev_house",
+    "filename": "ДД Кушнарева, Пушкинская, 51.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%94%D0%94_%D0%9A%D1%83%D1%88%D0%BD%D0%B0%D1%80%D0%B5%D0%B2%D0%B0%2C_%D0%9F%D1%83%D1%88%D0%BA%D0%B8%D0%BD%D1%81%D0%BA%D0%B0%D1%8F%2C_51.jpg",
+    "thumbnail": "data\\photos\\kushnarev_house.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "reznichenko_house": {
+    "landmark_id": "reznichenko_house",
+    "filename": "Дом К.О. Резниченко.JPG",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%94%D0%BE%D0%BC_%D0%9A.%D0%9E._%D0%A0%D0%B5%D0%B7%D0%BD%D0%B8%D1%87%D0%B5%D0%BD%D0%BA%D0%BE.JPG",
+    "thumbnail": "data\\photos\\reznichenko_house.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "bakulin_house": {
+    "landmark_id": "bakulin_house",
+    "filename": "2020. Ростов-на-Дону IMG 20200704 045625.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:2020._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83_IMG_20200704_045625.jpg",
+    "thumbnail": "data\\photos\\bakulin_house.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "bostrikiny_house": {
+    "landmark_id": "bostrikiny_house",
+    "filename": "Доходный дом Бострикиных - общий вид.JPG",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%94%D0%BE%D1%85%D0%BE%D0%B4%D0%BD%D1%8B%D0%B9_%D0%B4%D0%BE%D0%BC_%D0%91%D0%BE%D1%81%D1%82%D1%80%D0%B8%D0%BA%D0%B8%D0%BD%D1%8B%D1%85_-_%D0%BE%D0%B1%D1%89%D0%B8%D0%B9_%D0%B2%D0%B8%D0%B4.JPG",
+    "thumbnail": "data\\photos\\bostrikiny_house.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 933
+    }
+  },
+  "literary_figures_house": {
+    "landmark_id": "literary_figures_house",
+    "filename": "2020. Ростов-на-Дону IMG 20200704 045656.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:2020._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83_IMG_20200704_045656.jpg",
+    "thumbnail": "data\\photos\\literary_figures_house.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "annunciation_church": {
+    "landmark_id": "annunciation_church",
+    "filename": "2020. Ростов-на-Дону DSC 0214.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:2020._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83_DSC_0214.jpg",
+    "thumbnail": "data\\photos\\annunciation_church.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 927
+    }
+  },
+  "rostov_medical_university": {
+    "landmark_id": "rostov_medical_university",
+    "filename": "Комплекс Николаевской городской больницы 8.JPG",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%9A%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%81_%D0%9D%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0%D0%B5%D0%B2%D1%81%D0%BA%D0%BE%D0%B9_%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%D1%81%D0%BA%D0%BE%D0%B9_%D0%B1%D0%BE%D0%BB%D1%8C%D0%BD%D0%B8%D1%86%D1%8B_8.JPG",
+    "thumbnail": "data\\photos\\rostov_medical_university.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "sfeu_library": {
+    "landmark_id": "sfeu_library",
+    "filename": "Особняк книгоиздателя Н Е Парамонова 1914 г (библиотека ЮФУ) - Пушкинская,148А.JPG",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%9E%D1%81%D0%BE%D0%B1%D0%BD%D1%8F%D0%BA_%D0%BA%D0%BD%D0%B8%D0%B3%D0%BE%D0%B8%D0%B7%D0%B4%D0%B0%D1%82%D0%B5%D0%BB%D1%8F_%D0%9D_%D0%95_%D0%9F%D0%B0%D1%80%D0%B0%D0%BC%D0%BE%D0%BD%D0%BE%D0%B2%D0%B0_1914_%D0%B3_%28%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B0_%D0%AE%D0%A4%D0%A3%29_-_%D0%9F%D1%83%D1%88%D0%BA%D0%B8%D0%BD%D1%81%D0%BA%D0%B0%D1%8F%2C148%D0%90.JPG",
+    "thumbnail": "data\\photos\\sfeu_library.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "memorial_nazi_victims": {
+    "landmark_id": "memorial_nazi_victims",
+    "filename": "Donskaya State Public Library flowerbed Live Pages.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:Donskaya_State_Public_Library_flowerbed_Live_Pages.jpg",
+    "thumbnail": "data\\photos\\memorial_nazi_victims.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "budyonny_bust": {
+    "landmark_id": "budyonny_bust",
+    "filename": "2020. Ростов-на-Дону IMG 20200704 053415.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:2020._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83_IMG_20200704_053415.jpg",
+    "thumbnail": "data\\photos\\budyonny_bust.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "sholokhov_monument": {
+    "landmark_id": "sholokhov_monument",
+    "filename": "2020. Ростов-на-Дону IMG 20200704 053513.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:2020._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83_IMG_20200704_053513.jpg",
+    "thumbnail": "data\\photos\\sholokhov_monument.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "lanterns_1904": {
+    "landmark_id": "lanterns_1904",
+    "filename": "Пушкинская зима.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%9F%D1%83%D1%88%D0%BA%D0%B8%D0%BD%D1%81%D0%BA%D0%B0%D1%8F_%D0%B7%D0%B8%D0%BC%D0%B0.jpg",
+    "thumbnail": "data\\photos\\lanterns_1904.jpg",
+    "pixels": {
+      "width": 1216,
+      "height": 1280
+    }
+  },
+  "gorky_park_gate": {
+    "landmark_id": "gorky_park_gate",
+    "filename": "Парк им.Горького - вход с ул.Б.Садовая.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%9F%D0%B0%D1%80%D0%BA_%D0%B8%D0%BC.%D0%93%D0%BE%D1%80%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_-_%D0%B2%D1%85%D0%BE%D0%B4_%D1%81_%D1%83%D0%BB.%D0%91.%D0%A1%D0%B0%D0%B4%D0%BE%D0%B2%D0%B0%D1%8F.jpg",
+    "thumbnail": "data\\photos\\gorky_park_gate.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 788
+    }
+  },
+  "cathedral_nativity": {
+    "landmark_id": "cathedral_nativity",
+    "filename": "Rostov on Don Cathedral 2021.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:Rostov_on_Don_Cathedral_2021.jpg",
+    "thumbnail": "data\\photos\\cathedral_nativity.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 933
+    }
+  },
+  "gorky_theater": {
+    "landmark_id": "gorky_theater",
+    "filename": "Gorky Theatre 2021.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:Gorky_Theatre_2021.jpg",
+    "thumbnail": "data\\photos\\gorky_theater.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 933
+    }
+  },
+  "gorky_theater_fountain": {
+    "landmark_id": "gorky_theater_fountain",
+    "filename": "Rostov-on-Don, Theatre Square, Drama Theatre, Russia.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:Rostov-on-Don%2C_Theatre_Square%2C_Drama_Theatre%2C_Russia.jpg",
+    "thumbnail": "data\\photos\\gorky_theater_fountain.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 787
+    }
+  },
+  "underground_mosaics": {
+    "landmark_id": "underground_mosaics",
+    "filename": "2020. Ростов-на-Дону DSC 0216.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:2020._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83_DSC_0216.jpg",
+    "thumbnail": "data\\photos\\underground_mosaics.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 927
+    }
+  },
+  "musical_theater": {
+    "landmark_id": "musical_theater",
+    "filename": "Rostov-on-Don, State Musical Theater (Opera House), Russia.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:Rostov-on-Don%2C_State_Musical_Theater_%28Opera_House%29%2C_Russia.jpg",
+    "thumbnail": "data\\photos\\musical_theater.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 930
+    }
+  },
+  "vorozhein_house": {
+    "landmark_id": "vorozhein_house",
+    "filename": "Доходный дом К.А. Ворожеина.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%94%D0%BE%D1%85%D0%BE%D0%B4%D0%BD%D1%8B%D0%B9_%D0%B4%D0%BE%D0%BC_%D0%9A.%D0%90._%D0%92%D0%BE%D1%80%D0%BE%D0%B6%D0%B5%D0%B8%D0%BD%D0%B0.jpg",
+    "thumbnail": "data\\photos\\vorozhein_house.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 951
+    }
+  },
+  "green_boulevard": {
+    "landmark_id": "green_boulevard",
+    "filename": "Пушкинская, Ростов-на-Дону.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%9F%D1%83%D1%88%D0%BA%D0%B8%D0%BD%D1%81%D0%BA%D0%B0%D1%8F%2C_%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83.jpg",
+    "thumbnail": "data\\photos\\green_boulevard.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 993
+    }
+  },
+  "school_49": {
+    "landmark_id": "school_49",
+    "filename": "Ростов на Дону Пушкинская улица женская гимназия цветн.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2_%D0%BD%D0%B0_%D0%94%D0%BE%D0%BD%D1%83_%D0%9F%D1%83%D1%88%D0%BA%D0%B8%D0%BD%D1%81%D0%BA%D0%B0%D1%8F_%D1%83%D0%BB%D0%B8%D1%86%D0%B0_%D0%B6%D0%B5%D0%BD%D1%81%D0%BA%D0%B0%D1%8F_%D0%B3%D0%B8%D0%BC%D0%BD%D0%B0%D0%B7%D0%B8%D1%8F_%D1%86%D0%B2%D0%B5%D1%82%D0%BD.jpg",
+    "thumbnail": "data\\photos\\school_49.jpg",
+    "pixels": {
+      "width": 1074,
+      "height": 687
+    }
+  },
+  "cinema_house": {
+    "landmark_id": "cinema_house",
+    "filename": "2020. Ростов-на-Дону IMG 20200704 053424.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:2020._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83_IMG_20200704_053424.jpg",
+    "thumbnail": "data\\photos\\cinema_house.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "sorge_bust": {
+    "landmark_id": "sorge_bust",
+    "filename": "2020. Ростов-на-Дону IMG 20200704 053517.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:2020._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83_IMG_20200704_053517.jpg",
+    "thumbnail": "data\\photos\\sorge_bust.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "writers_busts": {
+    "landmark_id": "writers_busts",
+    "filename": "2020. Ростов-на-Дону IMG 20200704 053501.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:2020._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83_IMG_20200704_053501.jpg",
+    "thumbnail": "data\\photos\\writers_busts.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "grinshteyn_revenue_house": {
+    "landmark_id": "grinshteyn_revenue_house",
+    "filename": "2020. Ростов-на-Дону IMG 20200704 053506.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:2020._%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83_IMG_20200704_053506.jpg",
+    "thumbnail": "data\\photos\\grinshteyn_revenue_house.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1050
+    }
+  },
+  "sculpture_squirrel": {
+    "landmark_id": "sculpture_squirrel",
+    "filename": "СССР, 1987, Ростов-на-Дону, Белка в Парке Горького, Rostov-on-Don.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%A1%D0%A1%D0%A1%D0%A0%2C_1987%2C_%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83%2C_%D0%91%D0%B5%D0%BB%D0%BA%D0%B0_%D0%B2_%D0%9F%D0%B0%D1%80%D0%BA%D0%B5_%D0%93%D0%BE%D1%80%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE%2C_Rostov-on-Don.jpg",
+    "thumbnail": "data\\photos\\sculpture_squirrel.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 812
+    }
+  },
+  "pushkin_fairytale_sculptures": {
+    "landmark_id": "pushkin_fairytale_sculptures",
+    "filename": "СССР, 1983, Ростов-на-Дону, Деревянные скульптуры в Парке Горького.jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%A1%D0%A1%D0%A1%D0%A0%2C_1983%2C_%D0%A0%D0%BE%D1%81%D1%82%D0%BE%D0%B2-%D0%BD%D0%B0-%D0%94%D0%BE%D0%BD%D1%83%2C_%D0%94%D0%B5%D1%80%D0%B5%D0%B2%D1%8F%D0%BD%D0%BD%D1%8B%D0%B5_%D1%81%D0%BA%D1%83%D0%BB%D1%8C%D0%BF%D1%82%D1%83%D1%80%D1%8B_%D0%B2_%D0%9F%D0%B0%D1%80%D0%BA%D0%B5_%D0%93%D0%BE%D1%80%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE.jpg",
+    "thumbnail": "data\\photos\\pushkin_fairytale_sculptures.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 931
+    }
+  },
+  "tkachenko_revenue_house": {
+    "landmark_id": "tkachenko_revenue_house",
+    "filename": "Доходный дом А.А. Ткаченко (Rostov on Don).jpg",
+    "source": "Wikimedia Commons",
+    "url": "https://commons.wikimedia.org/wiki/File:%D0%94%D0%BE%D1%85%D0%BE%D0%B4%D0%BD%D1%8B%D0%B9_%D0%B4%D0%BE%D0%BC_%D0%90.%D0%90._%D0%A2%D0%BA%D0%B0%D1%87%D0%B5%D0%BD%D0%BA%D0%BE_%28Rostov_on_Don%29.jpg",
+    "thumbnail": "data\\photos\\tkachenko_revenue_house.jpg",
+    "pixels": {
+      "width": 1400,
+      "height": 1941
+    }
+  }
+}
