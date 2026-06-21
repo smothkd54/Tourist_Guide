@@ -92,7 +92,7 @@ def predict(image_path: Path, model, class_names, landmarks_by_id, top_n: int):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Predict NYC landmark from an image.")
+    parser = argparse.ArgumentParser(description="Predict Pushkinskaya Street landmark from an image.")
     parser.add_argument("image", type=Path, help="Path to image file")
     parser.add_argument("--top",   type=int,  default=3,
                         help="Show top-N predictions (default 3)")

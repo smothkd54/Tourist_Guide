@@ -1,172 +1,250 @@
 {
   "pushkin_monument": {
-    "status": "not_found",
+    "status": "only_generic_fallback",
     "lat": null,
-    "lon": null
+    "lon": null,
+    "fallback_lat": 47.2245858,
+    "fallback_lon": 39.71166,
+    "note": "Only the generic street query resolved. Not accepted as a landmark-specific coordinate. Add lat/lon manually if you can confirm the location, e.g. via openstreetmap.org."
   },
   "kirov_monument": {
-    "status": "not_found",
+    "status": "only_generic_fallback",
     "lat": null,
-    "lon": null
+    "lon": null,
+    "fallback_lat": 47.2245858,
+    "fallback_lon": 39.71166,
+    "note": "Only the generic street query resolved. Not accepted as a landmark-specific coordinate. Add lat/lon manually if you can confirm the location, e.g. via openstreetmap.org."
   },
   "vysotsky_monument": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2245858,
+    "lon": 39.71166,
+    "matched_query": "Pushkinskaya ul., Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "pushkin_spheres": {
-    "status": "not_found",
+    "status": "only_generic_fallback",
     "lat": null,
-    "lon": null
+    "lon": null,
+    "fallback_lat": 47.2245858,
+    "fallback_lon": 39.71166,
+    "note": "Only the generic street query resolved. Not accepted as a landmark-specific coordinate. Add lat/lon manually if you can confirm the location, e.g. via openstreetmap.org."
   },
   "lyre_fountain": {
-    "status": "not_found",
+    "status": "only_generic_fallback",
     "lat": null,
-    "lon": null
+    "lon": null,
+    "fallback_lat": 47.2245858,
+    "fallback_lon": 39.71166,
+    "note": "Only the generic street query resolved. Not accepted as a landmark-specific coordinate. Add lat/lon manually if you can confirm the location, e.g. via openstreetmap.org."
   },
   "library_fountain": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2245858,
+    "lon": 39.71166,
+    "matched_query": "Pushkinskaya ul., 175a, Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "don_state_library": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2245858,
+    "lon": 39.71166,
+    "matched_query": "Pushkinskaya ul., 175a, Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "paramonov_mansion_sfeu": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2245858,
+    "lon": 39.71166,
+    "matched_query": "Pushkinskaya ul., 148, Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "kramer_mansion": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2243309,
+    "lon": 39.7115313,
+    "matched_query": "Pushkinskaya ul., 114, Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "kramer_revenue_house": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2245858,
+    "lon": 39.71166,
+    "matched_query": "Pushkinskaya ul., 116, Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "mnatsakanova_house": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2243309,
+    "lon": 39.7115313,
+    "matched_query": "Pushkinskaya ul., 65, Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "kushnarev_house": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2243309,
+    "lon": 39.7115313,
+    "matched_query": "Pushkinskaya ul., 51, Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "reznichenko_house": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2245858,
+    "lon": 39.71166,
+    "matched_query": "Pushkinskaya ul., 47, Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "bakulin_house": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2243309,
+    "lon": 39.7115313,
+    "matched_query": "Pushkinskaya ul., 13, Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "annunciation_church": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2245858,
+    "lon": 39.71166,
+    "matched_query": "Pushkinskaya ul., Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "rostov_medical_university": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2245858,
+    "lon": 39.71166,
+    "matched_query": "Pushkinskaya ul., Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "sfeu_library": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2245858,
+    "lon": 39.71166,
+    "matched_query": "Pushkinskaya ul., Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "memorial_nazi_victims": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2243309,
+    "lon": 39.7115313,
+    "matched_query": "Pushkinskaya 175, Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "budyonny_bust": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2245858,
+    "lon": 39.71166,
+    "matched_query": "Pushkinskaya ul., Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "sholokhov_monument": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2245858,
+    "lon": 39.71166,
+    "matched_query": "Pushkinskaya ul., Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "lanterns_1904": {
-    "status": "not_found",
+    "status": "only_generic_fallback",
     "lat": null,
-    "lon": null
+    "lon": null,
+    "fallback_lat": 47.2245858,
+    "fallback_lon": 39.71166,
+    "note": "Only the generic street query resolved. Not accepted as a landmark-specific coordinate. Add lat/lon manually if you can confirm the location, e.g. via openstreetmap.org."
   },
   "gorky_park_gate": {
-    "status": "not_found",
+    "status": "only_generic_fallback",
     "lat": null,
-    "lon": null
+    "lon": null,
+    "fallback_lat": 47.2245858,
+    "fallback_lon": 39.71166,
+    "note": "Only the generic street query resolved. Not accepted as a landmark-specific coordinate. Add lat/lon manually if you can confirm the location, e.g. via openstreetmap.org."
   },
   "gorky_theater": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2243309,
+    "lon": 39.7115313,
+    "matched_query": "Pushkinskaya 1, Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "gorky_theater_fountain": {
-    "status": "not_found",
+    "status": "only_generic_fallback",
     "lat": null,
-    "lon": null
+    "lon": null,
+    "fallback_lat": 47.2245858,
+    "fallback_lon": 39.71166,
+    "note": "Only the generic street query resolved. Not accepted as a landmark-specific coordinate. Add lat/lon manually if you can confirm the location, e.g. via openstreetmap.org."
   },
   "underground_mosaics": {
-    "status": "not_found",
+    "status": "only_generic_fallback",
     "lat": null,
-    "lon": null
+    "lon": null,
+    "fallback_lat": 47.2245858,
+    "fallback_lon": 39.71166,
+    "note": "Only the generic street query resolved. Not accepted as a landmark-specific coordinate. Add lat/lon manually if you can confirm the location, e.g. via openstreetmap.org."
   },
   "vorozhein_house": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2245858,
+    "lon": 39.71166,
+    "matched_query": "Pushkinskaya ul., Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "green_boulevard": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2243309,
+    "lon": 39.7115313,
+    "matched_query": "Pushkinskaya 3, Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "school_49": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2245858,
+    "lon": 39.71166,
+    "matched_query": "Pushkinskaya ul., Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "cinema_house": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2245858,
+    "lon": 39.71166,
+    "matched_query": "215, Pushkinskaya St., Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "sorge_bust": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2243309,
+    "lon": 39.7115313,
+    "matched_query": "190, Pushkinskaya St., Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "grinshteyn_revenue_house": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2243309,
+    "lon": 39.7115313,
+    "matched_query": "132/59, Pushkinskaya St., Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "tkachenko_revenue_house": {
-    "status": "not_found",
-    "lat": null,
-    "lon": null
+    "status": "found",
+    "lat": 47.2245858,
+    "lon": 39.71166,
+    "matched_query": "34, Pushkinskaya St., Rostov-on-Don",
+    "display_name": "Пушкинская улица, Солдатская слобода, Ленинский район, Ростов-на-Дону, городской округ Ростов-на-Дону, Ростовская област"
   },
   "sculpture_squirrel": {
-    "status": "not_found",
+    "status": "only_generic_fallback",
     "lat": null,
-    "lon": null
+    "lon": null,
+    "fallback_lat": 47.2245858,
+    "fallback_lon": 39.71166,
+    "note": "Only the generic street query resolved. Not accepted as a landmark-specific coordinate. Add lat/lon manually if you can confirm the location, e.g. via openstreetmap.org."
   },
   "pushkin_fairytale_sculptures": {
-    "status": "not_found",
+    "status": "only_generic_fallback",
     "lat": null,
-    "lon": null
+    "lon": null,
+    "fallback_lat": 47.2245858,
+    "fallback_lon": 39.71166,
+    "note": "Only the generic street query resolved. Not accepted as a landmark-specific coordinate. Add lat/lon manually if you can confirm the location, e.g. via openstreetmap.org."
   }
 }

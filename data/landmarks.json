@@ -24,7 +24,7 @@
       ],
       "lat": null,
       "lon": null,
-      "coordinate_source": "not found"
+      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
     },
     {
       "id": "kirov_monument",
@@ -46,7 +46,7 @@
       ],
       "lat": null,
       "lon": null,
-      "coordinate_source": "not found"
+      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
     },
     {
       "id": "chekhov_monument",
@@ -86,9 +86,9 @@
         "detail",
         "boulevard_context"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2245858,
+      "lon": 39.71166,
+      "coordinate_source": "nominatim (Pushkinskaya ul., Rostov-on-Don)"
     },
     {
       "id": "pushkin_spheres",
@@ -109,7 +109,7 @@
       ],
       "lat": null,
       "lon": null,
-      "coordinate_source": "not found"
+      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
     },
     {
       "id": "lyre_fountain",
@@ -130,7 +130,7 @@
       ],
       "lat": null,
       "lon": null,
-      "coordinate_source": "not found"
+      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
     },
     {
       "id": "library_fountain",
@@ -149,9 +149,9 @@
         "water_jets",
         "library_backdrop"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2245858,
+      "lon": 39.71166,
+      "coordinate_source": "nominatim (Pushkinskaya ul., 175a, Rostov-on-Don)"
     },
     {
       "id": "don_state_library",
@@ -171,9 +171,9 @@
         "interior_garden",
         "aerial"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2245858,
+      "lon": 39.71166,
+      "coordinate_source": "nominatim (Pushkinskaya ul., 175a, Rostov-on-Don)"
     },
     {
       "id": "museum_fine_arts",
@@ -215,9 +215,9 @@
         "side_facade",
         "wide_street_view"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2245858,
+      "lon": 39.71166,
+      "coordinate_source": "nominatim (Pushkinskaya ul., 148, Rostov-on-Don)"
     },
     {
       "id": "kramer_mansion",
@@ -236,9 +236,9 @@
         "decorative_detail",
         "street_context"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2243309,
+      "lon": 39.7115313,
+      "coordinate_source": "nominatim (Pushkinskaya ul., 114, Rostov-on-Don)"
     },
     {
       "id": "kramer_revenue_house",
@@ -257,9 +257,9 @@
         "street_view",
         "ornament_detail"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2245858,
+      "lon": 39.71166,
+      "coordinate_source": "nominatim (Pushkinskaya ul., 116, Rostov-on-Don)"
     },
     {
       "id": "spielrein_mansion",
@@ -382,9 +382,9 @@
         "plaster_detail",
         "entrance"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2243309,
+      "lon": 39.7115313,
+      "coordinate_source": "nominatim (Pushkinskaya ul., 65, Rostov-on-Don)"
     },
     {
       "id": "kushnarev_house",
@@ -403,9 +403,9 @@
         "intersection_context",
         "ornament"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2243309,
+      "lon": 39.7115313,
+      "coordinate_source": "nominatim (Pushkinskaya ul., 51, Rostov-on-Don)"
     },
     {
       "id": "reznichenko_house",
@@ -424,9 +424,9 @@
         "symmetric_composition",
         "entrance"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2245858,
+      "lon": 39.71166,
+      "coordinate_source": "nominatim (Pushkinskaya ul., 47, Rostov-on-Don)"
     },
     {
       "id": "bakulin_house",
@@ -445,9 +445,9 @@
         "full_building",
         "street_level"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2243309,
+      "lon": 39.7115313,
+      "coordinate_source": "nominatim (Pushkinskaya ul., 13, Rostov-on-Don)"
     },
     {
       "id": "bostrikiny_house",
@@ -509,9 +509,9 @@
         "full_facade",
         "surrounding_context"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2245858,
+      "lon": 39.71166,
+      "coordinate_source": "nominatim (Pushkinskaya ul., Rostov-on-Don)"
     },
     {
       "id": "rostov_medical_university",
@@ -530,9 +530,9 @@
         "building_sign",
         "street_context"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2245858,
+      "lon": 39.71166,
+      "coordinate_source": "nominatim (Pushkinskaya ul., Rostov-on-Don)"
     },
     {
       "id": "sfeu_library",
@@ -551,9 +551,9 @@
         "library_sign",
         "architectural_detail"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2245858,
+      "lon": 39.71166,
+      "coordinate_source": "nominatim (Pushkinskaya ul., Rostov-on-Don)"
     },
     {
       "id": "memorial_nazi_victims",
@@ -572,9 +572,9 @@
         "library_context",
         "floral_tributes"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2243309,
+      "lon": 39.7115313,
+      "coordinate_source": "nominatim (Pushkinskaya 175, Rostov-on-Don)"
     },
     {
       "id": "budyonny_bust",
@@ -593,9 +593,9 @@
         "pedestal_inscription",
         "boulevard_context"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2245858,
+      "lon": 39.71166,
+      "coordinate_source": "nominatim (Pushkinskaya ul., Rostov-on-Don)"
     },
     {
       "id": "sholokhov_monument",
@@ -614,9 +614,9 @@
         "pedestal",
         "boulevard_context"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2245858,
+      "lon": 39.71166,
+      "coordinate_source": "nominatim (Pushkinskaya ul., Rostov-on-Don)"
     },
     {
       "id": "lanterns_1904",
@@ -637,7 +637,7 @@
       ],
       "lat": null,
       "lon": null,
-      "coordinate_source": "not found"
+      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
     },
     {
       "id": "gorky_park_gate",
@@ -658,7 +658,7 @@
       ],
       "lat": null,
       "lon": null,
-      "coordinate_source": "not found"
+      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
     },
     {
       "id": "cathedral_nativity",
@@ -700,9 +700,9 @@
         "aerial",
         "theater_square_context"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2243309,
+      "lon": 39.7115313,
+      "coordinate_source": "nominatim (Pushkinskaya 1, Rostov-on-Don)"
     },
     {
       "id": "gorky_theater_fountain",
@@ -723,7 +723,7 @@
       ],
       "lat": null,
       "lon": null,
-      "coordinate_source": "not found"
+      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
     },
     {
       "id": "underground_mosaics",
@@ -744,7 +744,7 @@
       ],
       "lat": null,
       "lon": null,
-      "coordinate_source": "not found"
+      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
     },
     {
       "id": "musical_theater",
@@ -783,9 +783,9 @@
         "entrance",
         "architectural_detail"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2245858,
+      "lon": 39.71166,
+      "coordinate_source": "nominatim (Pushkinskaya ul., Rostov-on-Don)"
     },
     {
       "id": "green_boulevard",
@@ -804,9 +804,9 @@
         "central_promenade",
         "tree_lined_perspective"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2243309,
+      "lon": 39.7115313,
+      "coordinate_source": "nominatim (Pushkinskaya 3, Rostov-on-Don)"
     },
     {
       "id": "school_49",
@@ -825,9 +825,9 @@
         "full_building",
         "street_context"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2245858,
+      "lon": 39.71166,
+      "coordinate_source": "nominatim (Pushkinskaya ul., Rostov-on-Don)"
     },
     {
       "id": "cinema_house",
@@ -845,9 +845,9 @@
         "entrance",
         "sign"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2245858,
+      "lon": 39.71166,
+      "coordinate_source": "nominatim (215, Pushkinskaya St., Rostov-on-Don)"
     },
     {
       "id": "sorge_bust",
@@ -865,9 +865,9 @@
         "side",
         "pedestal"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2243309,
+      "lon": 39.7115313,
+      "coordinate_source": "nominatim (190, Pushkinskaya St., Rostov-on-Don)"
     },
     {
       "id": "writers_busts",
@@ -906,9 +906,9 @@
         "entrance",
         "ornament"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2243309,
+      "lon": 39.7115313,
+      "coordinate_source": "nominatim (132/59, Pushkinskaya St., Rostov-on-Don)"
     },
     {
       "id": "tkachenko_revenue_house",
@@ -925,9 +925,9 @@
         "facade",
         "entrance"
       ],
-      "lat": null,
-      "lon": null,
-      "coordinate_source": "not found"
+      "lat": 47.2245858,
+      "lon": 39.71166,
+      "coordinate_source": "nominatim (34, Pushkinskaya St., Rostov-on-Don)"
     },
     {
       "id": "sculpture_squirrel",
@@ -947,7 +947,7 @@
       ],
       "lat": null,
       "lon": null,
-      "coordinate_source": "not found"
+      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
     },
     {
       "id": "pushkin_fairytale_sculptures",
@@ -968,7 +968,7 @@
       ],
       "lat": null,
       "lon": null,
-      "coordinate_source": "not found"
+      "coordinate_source": "unresolved — only generic street match, needs manual coordinates"
     }
   ]
 }

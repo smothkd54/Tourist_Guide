@@ -245,7 +245,7 @@ def _plot_history(h1, h2):
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Train the NYC landmark classifier.")
+    parser = argparse.ArgumentParser(description="Train the Pushkinskaya Street landmark classifier.")
     parser.add_argument("--batch",       type=int, default=BATCH_SIZE)
     parser.add_argument("--epochs-head", type=int, default=EPOCHS_HEAD,  dest="epochs_head")
     parser.add_argument("--epochs-fine", type=int, default=EPOCHS_FINE,  dest="epochs_fine")

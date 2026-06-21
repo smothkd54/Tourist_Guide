@@ -17,17 +17,17 @@ FOLDER STRUCTURE PRODUCED
   data/
     images/
       train/
-        flatiron/          <- one folder per landmark id
-        grand_central/
-        empire_state/
-        brooklyn_bridge/
-        chrysler/
-        statue_of_liberty/
+        annunciation_church/          <- one folder per landmark id
+        bostrikiny_house/
+        cathedral_nativity/
+        chekhov_monument/
+        cinema_house/
+        don_state_library/
       val/
-        flatiron/
+        annunciation_church/
         ...
       test/
-        flatiron/
+        annunciation_church/
         ...
     raw/                   <- drop your unsorted photos here first
 
