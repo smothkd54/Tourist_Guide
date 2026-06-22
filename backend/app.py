@@ -38,6 +38,8 @@ from PIL import Image
 # `python backend/app.py` (the documented, normal way to start this server)
 # makes Python treat backend/ as a script directory, not a package, and the
 # package-style import raises ModuleNotFoundError: No module named 'backend'.
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from route_planner import plan_route, plan_custom_route
 from logging_setup import setup_logging
 
