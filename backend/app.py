@@ -61,7 +61,8 @@ class RateLimiter:
         return True
 
 
-_osrm_limiter = RateLimiter(max_requests=10, window_seconds=60)
+_workers = int(os.environ.get("GUNICORN_WORKERS", "2"))
+_osrm_limiter = RateLimiter(max_requests=10 // _workers, window_seconds=60)
 
 logging.basicConfig(
     level=logging.INFO,
