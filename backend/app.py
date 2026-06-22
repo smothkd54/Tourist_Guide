@@ -22,6 +22,7 @@ import json
 import base64
 import io
 import os
+import time
 from pathlib import Path
 
 import numpy as np
@@ -66,6 +67,77 @@ _osrm_limiter = RateLimiter(max_requests=10 // _workers, window_seconds=60)
 
 logger = setup_logging("app")
 
+
+# ── metrics ───────────────────────────────────────────────────────────────────
+class MetricsCollector:
+    """In-memory metrics for Prometheus /metrics endpoint.
+
+    Thread-safe per-worker (gunicorn prefork = one process per worker).
+    Counters are reset on worker restart — acceptable for ephemeral
+    container metrics shipped to Prometheus/Grafana.
+    """
+
+    _BUCKETS = (0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
+
+    def __init__(self):
+        self._requests: dict[tuple[str, str, str], int] = {}
+        self._confidences: list[float] = []
+        self._osrm_ok = 0
+        self._osrm_fail = 0
+        self._start_time = time.time()
+
+    def record_request(self, method: str, endpoint: str, status: int):
+        key = (method, endpoint, str(status))
+        self._requests[key] = self._requests.get(key, 0) + 1
+
+    def record_confidence(self, confidence: float):
+        self._confidences.append(confidence)
+
+    def record_osrm(self, success: bool):
+        if success:
+            self._osrm_ok += 1
+        else:
+            self._osrm_fail += 1
+
+    def render(self) -> str:
+        lines = []
+        lines.append("# HELP pushkinskaya_http_requests_total Total HTTP requests handled")
+        lines.append("# TYPE pushkinskaya_http_requests_total counter")
+        for (method, endpoint, status), count in sorted(self._requests.items()):
+            lines.append(
+                f'pushkinskaya_http_requests_total{{method="{method}",'
+                f'endpoint="{endpoint}",status="{status}"}} {count}'
+            )
+
+        lines.append("# HELP pushkinskaya_prediction_confidence Prediction confidence distribution")
+        lines.append("# TYPE pushkinskaya_prediction_confidence histogram")
+        buckets = [0] * len(self._BUCKETS)
+        for c in self._confidences:
+            for i, boundary in enumerate(self._BUCKETS):
+                if c <= boundary:
+                    buckets[i] += 1
+                    break
+        for i, boundary in enumerate(self._BUCKETS):
+            lines.append(f"pushkinskaya_prediction_confidence_bucket{{le=\"{boundary}\"}} {buckets[i]}")
+        lines.append(f"pushkinskaya_prediction_confidence_bucket{{le=\"+Inf\"}} {len(self._confidences)}")
+        lines.append(f"pushkinskaya_prediction_confidence_count {len(self._confidences)}")
+        if self._confidences:
+            lines.append(f"pushkinskaya_prediction_confidence_sum {sum(self._confidences):.6f}")
+
+        lines.append("# HELP pushkinskaya_osrm_requests_total OSRM routing requests")
+        lines.append("# TYPE pushkinskaya_osrm_requests_total counter")
+        lines.append(f"pushkinskaya_osrm_requests_total{{status=\"ok\"}} {self._osrm_ok}")
+        lines.append(f"pushkinskaya_osrm_requests_total{{status=\"fail\"}} {self._osrm_fail}")
+
+        lines.append("# HELP pushkinskaya_uptime_seconds Server uptime in seconds")
+        lines.append("# TYPE pushkinskaya_uptime_seconds gauge")
+        lines.append(f"pushkinskaya_uptime_seconds {time.time() - self._start_time:.1f}")
+
+        return "\n".join(lines) + "\n"
+
+
+_metrics = MetricsCollector()
+
 # ── paths — anchored to project root, independent of CWD ─────────────────────
 PROJECT_ROOT     = Path(__file__).resolve().parent.parent
 MODELS_DIR       = PROJECT_ROOT / "models"
@@ -87,6 +159,18 @@ app = Flask(__name__, static_folder=str(FRONTEND_DIR))
 app.config["MAX_CONTENT_LENGTH"] = MAX_CONTENT_MB * 1024 * 1024
 _cors_origins = os.environ.get("CORS_ORIGINS", "http://localhost:*|http://127.0.0.1:*")
 CORS(app, origins=[o.strip() for o in _cors_origins.split("|")])
+
+
+@app.before_request
+def _start_timer():
+    request._start_time = time.time()
+
+
+@app.after_request
+def _record_metrics(response):
+    endpoint = request.endpoint or request.path
+    _metrics.record_request(request.method, endpoint, response.status_code)
+    return response
 
 
 @app.errorhandler(413)
@@ -191,6 +275,13 @@ def health():
     return jsonify(body), status_code
 
 
+@app.route("/metrics")
+def metrics():
+    """Prometheus-compatible metrics endpoint."""
+    from flask import Response
+    return Response(_metrics.render(), mimetype="text/plain; version=0.0.4; charset=utf-8")
+
+
 @app.route("/landmarks")
 def get_landmarks():
     return jsonify(list(current_app.landmarks_by_id.values()))
@@ -289,9 +380,11 @@ def dynamic_plan():
     try:
         route_data = plan_route(geocoded, start_idx, minutes, visit_minutes)
     except Exception as e:
+        _metrics.record_osrm(False)
         logger.error("OSRM routing failed for start=%s minutes=%s: %s", start_id, minutes, e)
         return jsonify({"error": f"OSRM routing failed: {str(e)}"}), 503
 
+    _metrics.record_osrm(True)
     return jsonify(route_data)
 
 
@@ -332,9 +425,11 @@ def plan_custom():
     try:
         route_data = plan_custom_route(geocoded, start_id, optimize_order=optimize)
     except Exception as e:
+        _metrics.record_osrm(False)
         logger.error("OSRM routing failed for custom route: %s", e)
         return jsonify({"error": f"OSRM routing failed: {str(e)}"}), 503
 
+    _metrics.record_osrm(True)
     return jsonify(route_data)
 
 
@@ -382,6 +477,7 @@ def predict():
 
     best_id   = current_app.class_names[top5_idx[0]]
     best_conf = float(probs[top5_idx[0]])
+    _metrics.record_confidence(best_conf)
 
     if best_conf < CONFIDENCE_THRESHOLD:
         return jsonify({

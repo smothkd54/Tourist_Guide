@@ -304,3 +304,36 @@ class TestLogging:
         assert log_file.exists()
         content = log_file.read_text(encoding="utf-8")
         assert "test message" in content
+
+
+# ── Metrics ───────────────────────────────────────────────────────────────────
+
+class TestMetrics:
+    def test_metrics_returns_prometheus_format(self, client):
+        resp = client.get("/metrics")
+        assert resp.status_code == 200
+        assert resp.content_type.startswith("text/plain")
+        body = resp.get_data(as_text=True)
+        assert "pushkinskaya_http_requests_total" in body
+        assert "pushkinskaya_prediction_confidence" in body
+        assert "pushkinskaya_osrm_requests_total" in body
+        assert "pushkinskaya_uptime_seconds" in body
+
+    def test_metrics_counts_requests(self, client):
+        client.get("/landmarks")
+        client.get("/landmarks/pushkin_monument")
+        resp = client.get("/metrics")
+        body = resp.get_data(as_text=True)
+        assert 'endpoint="get_landmarks"' in body
+        assert 'endpoint="get_landmark"' in body
+
+    def test_metrics_records_prediction_confidence(self, client_with_mock_model):
+        from PIL import Image
+        img = Image.new("RGB", (100, 100), color=(128, 64, 32))
+        buf = io.BytesIO()
+        img.save(buf, format="JPEG")
+        b64 = base64.b64encode(buf.getvalue()).decode()
+        client_with_mock_model.post("/predict", json={"image": b64})
+        resp = client_with_mock_model.get("/metrics")
+        body = resp.get_data(as_text=True)
+        assert "pushkinskaya_prediction_confidence_count" in body

@@ -136,6 +136,7 @@ All "Listen" buttons use free browser SpeechSynthesis TTS.
 | GET    | `/photos/available`   | —                            | list of landmark IDs with photos     |
 | POST   | `/predict`            | `{ "image": "<base64>" }`    | prediction + landmark info           |
 | GET    | `/model/info`         | —                            | model training metadata             |
+| GET    | `/metrics`            | —                            | Prometheus-compatible metrics       |
 
 ---
 
