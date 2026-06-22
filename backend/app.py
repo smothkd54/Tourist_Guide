@@ -103,13 +103,34 @@ app.class_names     = []
 app.landmarks_by_id = {}
 
 
+def _is_lfs_pointer(path: Path) -> bool:
+    """Return True if the file is a Git LFS pointer stub, not the real content."""
+    if path.stat().st_size > 1024:
+        return False
+    try:
+        return path.read_text(encoding="utf-8", errors="ignore") \
+                   .startswith("version https://git-lfs.github.com")
+    except Exception:
+        return False
+
+
 def load_resources():
     """Load model, class names, and landmark metadata into app state."""
-    if MODEL_PATH.exists():
+    if MODEL_PATH.exists() and not _is_lfs_pointer(MODEL_PATH):
         app.model = keras.models.load_model(MODEL_PATH)
         logger.info("Model loaded from %s", MODEL_PATH)
+    elif MODEL_PATH.exists():
+        logger.error(
+            "Model at %s is a Git LFS pointer — run 'git lfs pull' to "
+            "fetch the real file. /predict will return 503 until then.",
+            MODEL_PATH,
+        )
     else:
-        logger.error("Model not found at %s — run train.py first. /predict will return 503.", MODEL_PATH)
+        logger.error(
+            "Model not found at %s — run train.py first. "
+            "/predict will return 503.",
+            MODEL_PATH,
+        )
 
     if CLASS_NAMES_PATH.exists():
         app.class_names = json.loads(CLASS_NAMES_PATH.read_text())
