@@ -15,11 +15,13 @@ from unittest.mock import MagicMock
 import pytest
 import numpy as np
 
-# Add backend/ to path so we can import app
+# Add backend/ and project root to path so we can import app + logging_setup
 import sys
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "backend"))
+_root = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_root / "backend"))
+sys.path.insert(0, str(_root))
 
-from app import app, load_resources, _osrm_limiter
+from app import app, load_resources, _osrm_limiter  # noqa: E402
 
 
 @pytest.fixture
@@ -288,3 +290,17 @@ class TestInferenceSmoke:
             app_module.app.model = saved_model
             app_module.app.class_names = saved_names
             app_module.CONFIDENCE_THRESHOLD = saved_threshold
+
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+
+class TestLogging:
+    def test_log_file_created(self, tmp_path, monkeypatch):
+        monkeypatch.setenv("LOG_DIR", str(tmp_path))
+        from logging_setup import setup_logging
+        logger = setup_logging("test_log_create")
+        logger.info("test message")
+        log_file = tmp_path / "test_log_create.log"
+        assert log_file.exists()
+        content = log_file.read_text(encoding="utf-8")
+        assert "test message" in content

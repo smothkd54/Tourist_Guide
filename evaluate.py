@@ -23,7 +23,10 @@ import numpy as np
 import tensorflow as tf
 import keras
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
+
+from logging_setup import setup_logging
+
+logger = setup_logging("evaluate")
 
 # ── config ──────────────────────────────────────────────────────────────────
 DATA_DIR   = Path("data/images/test")
@@ -79,9 +82,12 @@ def per_class_metrics(cm, class_names):
 def plot_cm(cm, class_names):
     fig, ax = plt.subplots(figsize=(8, 7))
     im = ax.imshow(cm, cmap="Blues")
-    ax.set_xticks(range(len(class_names))); ax.set_xticklabels(class_names, rotation=45, ha="right")
-    ax.set_yticks(range(len(class_names))); ax.set_yticklabels(class_names)
-    ax.set_xlabel("Predicted"); ax.set_ylabel("True")
+    ax.set_xticks(range(len(class_names)))
+    ax.set_xticklabels(class_names, rotation=45, ha="right")
+    ax.set_yticks(range(len(class_names)))
+    ax.set_yticklabels(class_names)
+    ax.set_xlabel("Predicted")
+    ax.set_ylabel("True")
     ax.set_title("Confusion Matrix — test split")
     thresh = cm.max() / 2
     for i in range(len(class_names)):
@@ -93,7 +99,7 @@ def plot_cm(cm, class_names):
     plt.tight_layout()
     out = MODELS_DIR / "confusion_matrix.png"
     plt.savefig(out, dpi=120)
-    print(f"\n   Confusion matrix → {out}")
+    logger.info("Confusion matrix → %s", out)
     plt.close()
 
 
@@ -101,13 +107,13 @@ def main(model_path: Path):
     class_names = load_class_names()
     n_classes   = len(class_names)
 
-    print(f"\n📦 Loading model: {model_path}")
+    logger.info("Loading model: %s", model_path)
     model = keras.models.load_model(model_path)
 
-    print(f"📂 Loading test split: {DATA_DIR}")
+    logger.info("Loading test split: %s", DATA_DIR)
     test_ds = load_test_dataset(class_names)
 
-    print("🔍 Running inference on test set…")
+    logger.info("Running inference on test set...")
     y_true_all, y_pred_all = [], []
 
     for images, labels in test_ds:
@@ -119,13 +125,13 @@ def main(model_path: Path):
     y_pred = np.array(y_pred_all)
 
     overall_acc = (y_true == y_pred).mean()
-    print(f"\n✅ Overall accuracy: {overall_acc * 100:.2f}%  ({(y_true == y_pred).sum()}/{len(y_true)})")
+    logger.info("Overall accuracy: %.2f%% (%d/%d)", overall_acc * 100, (y_true == y_pred).sum(), len(y_true))
 
     cm = confusion_matrix_manual(y_true, y_pred, n_classes)
     per_class_metrics(cm, class_names)
     plot_cm(cm, class_names)
 
-    print("\nNext step:  python backend/app.py\n")
+    logger.info("Next step:  python backend/app.py")
 
 
 if __name__ == "__main__":

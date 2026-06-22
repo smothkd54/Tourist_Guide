@@ -37,3 +37,6 @@ plan_route.py
 
 # Documentation (not needed in image)
 *.md
+
+# Logs (regenerated at runtime)
+logs/

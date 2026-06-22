@@ -11,3 +11,4 @@ models/training_history.json
 models/model_metadata.json
 .venv/
 updated_files/
+logs/

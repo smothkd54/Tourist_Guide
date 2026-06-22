@@ -21,7 +21,6 @@ ENDPOINTS
 import json
 import base64
 import io
-import logging
 import os
 from pathlib import Path
 
@@ -39,6 +38,7 @@ from PIL import Image
 # makes Python treat backend/ as a script directory, not a package, and the
 # package-style import raises ModuleNotFoundError: No module named 'backend'.
 from route_planner import plan_route, plan_custom_route
+from logging_setup import setup_logging
 
 
 class RateLimiter:
@@ -64,11 +64,7 @@ class RateLimiter:
 _workers = int(os.environ.get("GUNICORN_WORKERS", "2"))
 _osrm_limiter = RateLimiter(max_requests=10 // _workers, window_seconds=60)
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
-)
-logger = logging.getLogger("pushkinskaya_api")
+logger = setup_logging("app")
 
 # ── paths — anchored to project root, independent of CWD ─────────────────────
 PROJECT_ROOT     = Path(__file__).resolve().parent.parent

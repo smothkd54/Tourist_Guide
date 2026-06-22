@@ -18,10 +18,13 @@ OUTPUT
 import argparse
 import json
 import sys
-import time
 from pathlib import Path
 
 import requests
+
+from logging_setup import setup_logging
+
+logger = setup_logging("plan_route")
 
 DATA_DIR = Path("data")
 LANDMARKS_JSON = DATA_DIR / "landmarks.json"
@@ -97,10 +100,10 @@ def main():
     landmarks = load_landmarks_with_coords()
 
     if len(landmarks) < 2:
-        print("Need at least 2 geocoded landmarks. Ensure landmarks in data/landmarks.json have 'lat' and 'lon' fields.")
+        logger.error("Need at least 2 geocoded landmarks. Ensure landmarks in data/landmarks.json have 'lat' and 'lon' fields.")
         sys.exit(1)
 
-    print(f"{len(landmarks)} landmarks with coordinates.")
+    logger.info("%d landmarks with coordinates.", len(landmarks))
 
     if args.distance_matrix:
         matrix = osrm_table(landmarks)
@@ -114,14 +117,14 @@ def main():
     if args.start:
         ids = [lm["id"] for lm in landmarks]
         if args.start not in ids:
-            print(f"Landmark '{args.start}' not found. Available: {', '.join(ids[:10])}...")
+            logger.error("Landmark '%s' not found. Available: %s...", args.start, ", ".join(ids[:10]))
             sys.exit(1)
         start_idx = ids.index(args.start)
 
-    print("Fetching walking matrix from OSRM...")
+    logger.info("Fetching walking matrix from OSRM...")
     matrix = osrm_table(landmarks)
 
-    print(f"Planning {args.minutes}-minute walk from {landmarks[start_idx]['name']}...")
+    logger.info("Planning %d-minute walk from %s...", args.minutes, landmarks[start_idx]['name'])
     route_indices = plan_walk(landmarks, matrix, start_idx, args.minutes, args.visit_minutes)
     route = [landmarks[i] for i in route_indices]
 
@@ -141,9 +144,9 @@ def main():
     total_visit = len(route) * args.visit_minutes
     total = total_walk_secs / 60 + total_visit
     print("-" * 60)
-    print(f"  Stops: {len(route)}, Walking: {total_walk_secs/60:.1f}min, Total: {total:.1f}min")
+    logger.info("Stops: %d, Walking: %.1fmin, Total: %.1fmin", len(route), total_walk_secs/60, total)
 
-    print("Fetching path geometry...")
+    logger.info("Fetching path geometry...")
     coords_seq = [(lm["lat"], lm["lon"]) for lm in route]
     geometry = osrm_route_geometry(coords_seq)
 
@@ -158,7 +161,7 @@ def main():
     }
 
     ROUTE_OUTPUT.write_text(json.dumps(output, ensure_ascii=False, indent=2))
-    print(f"Saved: {ROUTE_OUTPUT}")
+    logger.info("Saved: %s", ROUTE_OUTPUT)
 
 
 if __name__ == "__main__":

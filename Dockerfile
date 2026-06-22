@@ -17,15 +17,18 @@ COPY data/photos/ ./data/photos/
 COPY models/ ./models/
 COPY frontend/ ./frontend/
 COPY preflight_check.py .
+COPY logging_setup.py .
 
 ENV PYTHONUNBUFFERED=1
 ENV CORS_ORIGINS=http://localhost:*|http://127.0.0.1:*
 ENV GUNICORN_WORKERS=2
 ENV MODEL_PATH=/app/models/landmark_classifier.keras
+ENV LOG_DIR=/app/logs
 EXPOSE 5000
 
 # Don't run as root in production
 RUN useradd -m appuser && chown -R appuser /app
+RUN mkdir -p /app/logs && chown appuser:appuser /app/logs
 USER appuser
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \

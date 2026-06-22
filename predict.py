@@ -20,6 +20,10 @@ import numpy as np
 from PIL import Image
 import keras
 
+from logging_setup import setup_logging
+
+logger = setup_logging("predict")
+
 # ── config ──────────────────────────────────────────────────────────────────
 MODELS_DIR   = Path("models")
 DATA_DIR     = Path("data")
@@ -60,7 +64,7 @@ def predict(image_path: Path, model, class_names, landmarks_by_id, top_n: int):
 
     top_idx = np.argsort(probs)[::-1][:top_n]
 
-    print(f"\n📸 Image : {image_path}")
+    logger.info("Image: %s", image_path)
     print(f"{'Rank':<6} {'Landmark ID':<26} {'Confidence':>12}  Bar")
     print("─" * 65)
 
@@ -77,10 +81,12 @@ def predict(image_path: Path, model, class_names, landmarks_by_id, top_n: int):
     best_conf = float(probs[top_idx[0]])
 
     if best_conf < THRESHOLD:
+        logger.warning("Confidence %.1f%% is below threshold %d%%.", best_conf * 100, THRESHOLD * 100)
         print(f"⚠️  Confidence {best_conf:.1%} is below threshold {THRESHOLD:.0%}.")
         print("   Try a clearer or less cropped photo, or add more training images.")
     else:
         info = landmarks_by_id.get(best_id, {})
+        logger.info("Identified: %s (confidence: %.3f)", info.get("name", best_id), best_conf)
         print(f"✅  Identified: {info.get('name', best_id)}")
         if info:
             print(f"   Street  : {info.get('street', '—')}")

@@ -37,11 +37,14 @@ least MIN_PHOTOS_PER_CLASS images before training is attempted.
 """
 
 import json
-import os
 import random
 import shutil
 import argparse
 from pathlib import Path
+
+from logging_setup import setup_logging
+
+logger = setup_logging("collect_data")
 
 # ── config ──────────────────────────────────────────────────────────────────
 DATA_DIR        = Path("data")
@@ -95,23 +98,24 @@ def split_and_copy(paths: list[Path], landmark_id: str):
 
 
 def report(landmark_id: str, counts: dict, total: int):
-    status = "✅" if total >= MIN_PHOTOS_PER_CLASS else "⚠️ "
-    print(f"  {status} {landmark_id:<22} total={total:3d}  "
-          f"train={counts['train']} val={counts['val']} test={counts['test']}")
+    status = "OK" if total >= MIN_PHOTOS_PER_CLASS else "WARN"
+    logger.info("  %s %s total=%d  train=%d val=%d test=%d",
+                status, landmark_id, total,
+                counts['train'], counts['val'], counts['test'])
 
 
 def main(source: Path):
     random.seed(SEED)
     landmark_ids = load_landmark_ids()
 
-    print(f"\n🗂  Collecting images from: {source}")
-    print(f"   Output → {IMAGES_DIR}\n")
+    logger.info("Collecting images from: %s", source)
+    logger.info("Output → %s", IMAGES_DIR)
 
     totals = {}
     for lid in landmark_ids:
         paths = collect_for_landmark(lid, source)
         if not paths:
-            print(f"  ⚠️  {lid:<22} — no images found in {source / lid}")
+            logger.warning("  %s — no images found in %s", lid, source / lid)
             totals[lid] = 0
             continue
         counts = split_and_copy(paths, lid)
@@ -121,11 +125,10 @@ def main(source: Path):
     print()
     ready    = sum(1 for t in totals.values() if t >= MIN_PHOTOS_PER_CLASS)
     not_ready = len(landmark_ids) - ready
-    print(f"Summary: {ready}/{len(landmark_ids)} classes ready for training.")
+    logger.info("Summary: %d/%d classes ready for training.", ready, len(landmark_ids))
     if not_ready:
-        print(f"         {not_ready} class(es) need more photos "
-              f"(minimum {MIN_PHOTOS_PER_CLASS} each).")
-    print("\nNext step:  python train.py\n")
+        logger.warning("%d class(es) need more photos (minimum %d each).", not_ready, MIN_PHOTOS_PER_CLASS)
+    logger.info("Next step:  python train.py")
 
 
 if __name__ == "__main__":

@@ -37,6 +37,10 @@ from keras import layers
 from keras.applications import EfficientNetB0
 import matplotlib.pyplot as plt
 
+from logging_setup import setup_logging
+
+logger = setup_logging("train")
+
 # ── config ──────────────────────────────────────────────────────────────────
 DATA_DIR     = Path("data/images")
 MODELS_DIR   = Path("models")
@@ -106,10 +110,10 @@ def build_model(num_classes: int, trainable_base: bool = False) -> keras.Model:
             weights="imagenet",
             input_shape=(*IMG_SIZE, 3),
         )
-        print("   ✅ Using ImageNet pretrained weights.")
+        logger.info("Using ImageNet pretrained weights.")
     except Exception:
-        print("   ⚠️  Could not download ImageNet weights — training from scratch.")
-        print("      (Transfer learning gives much better results with real photos.)")
+        logger.warning("Could not download ImageNet weights — training from scratch.")
+        logger.info("Transfer learning gives much better results with real photos.")
         base = EfficientNetB0(
             include_top=False,
             weights=None,
@@ -131,18 +135,18 @@ def build_model(num_classes: int, trainable_base: bool = False) -> keras.Model:
 
 # ── training ──────────────────────────────────────────────────────────────────
 def train(args):
-    print("\n📂 Loading datasets…")
+    logger.info("Loading datasets...")
     train_ds, class_names = load_dataset("train", args.batch, augment=True)
     val_ds,   _           = load_dataset("val",   args.batch, augment=False)
     num_classes = len(class_names)
-    print(f"   Classes ({num_classes}): {class_names}")
+    logger.info("Classes (%d): %s", num_classes, class_names)
 
     # save class names now so inference always has them
     with open(MODELS_DIR / "class_names.json", "w") as f:
         json.dump(class_names, f, indent=2)
 
     # ── phase 1: head only ────────────────────────────────────────────────
-    print("\n🧠 Phase 1 — training classification head (base frozen)…")
+    logger.info("Phase 1 — training classification head (base frozen)...")
     model, base = build_model(num_classes, trainable_base=False)
     model.compile(
         optimizer=keras.optimizers.Adam(LR_HEAD),
@@ -166,7 +170,7 @@ def train(args):
     )
 
     # ── phase 2: fine-tune top layers ─────────────────────────────────────
-    print("\n🔧 Phase 2 — fine-tuning top base layers…")
+    logger.info("Phase 2 — fine-tuning top base layers...")
     for layer in base.layers[UNFREEZE_FROM:]:
         if not isinstance(layer, layers.BatchNormalization):
             layer.trainable = True
@@ -213,11 +217,11 @@ def train(args):
     # ── write model metadata ─────────────────────────────────────────────
     _write_metadata(h1, h2, class_names, args)
 
-    print("\n✅ Training complete.")
-    print(f"   Model  → {MODELS_DIR}/landmark_classifier.keras")
-    print(f"   Labels → {MODELS_DIR}/class_names.json")
-    print("\nNext step:  python evaluate.py")
-    print("            python backend/app.py   (to start the API)\n")
+    logger.info("Training complete.")
+    logger.info("Model  → %s/landmark_classifier.keras", MODELS_DIR)
+    logger.info("Labels → %s/class_names.json", MODELS_DIR)
+    logger.info("Next step:  python evaluate.py")
+    logger.info("            python backend/app.py   (to start the API)")
 
 
 def _plot_history(h1, h2):
@@ -244,7 +248,7 @@ def _plot_history(h1, h2):
     plt.tight_layout()
     path = Path("models/training_curves.png")
     plt.savefig(path, dpi=120)
-    print(f"   Curves → {path}")
+    logger.info("Curves → %s", path)
     plt.close()
 
 
@@ -289,7 +293,7 @@ def _write_metadata(h1, h2, class_names, args):
     out = MODELS_DIR / "model_metadata.json"
     with open(out, "w") as f:
         json.dump(meta, f, indent=2)
-    print(f"   Metadata → {out}")
+    logger.info("Metadata → %s", out)
 
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
