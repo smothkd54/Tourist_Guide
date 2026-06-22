@@ -1,0 +1,12 @@
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - CORS_ORIGINS=https://your-domain.com
+      - GUNICORN_WORKERS=2
+      - MODEL_PATH=/app/models/landmark_classifier.keras
+    volumes:
+      - ./models:/app/models
+    restart: unless-stopped

@@ -76,13 +76,34 @@ Open http://localhost:5000/app in your browser.
 
 ### Docker
 
+**Quick start (docker-compose):**
 ```bash
-git lfs pull   # required — photos are stored via Git LFS
-docker build -t pushkinskaya-explorer .
-docker run -p 5000:5000 pushkinskaya-explorer
+git lfs pull
+# Edit CORS_ORIGINS in docker-compose.yml for your domain
+docker compose up -d
 ```
 
-The production image uses gunicorn with 2 workers and includes a health check.
+**Manual (docker run):**
+```bash
+git lfs pull
+docker build -t pushkinskaya-explorer .
+docker run -p 5000:5000 \
+  -e CORS_ORIGINS=https://your-domain.com \
+  pushkinskaya-explorer
+```
+
+**Swap model without rebuild:**
+```bash
+cp new_model.keras ./models/landmark_classifier.keras
+docker compose restart
+```
+
+Environment variables:
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `CORS_ORIGINS` | `http://localhost:*` | Pipe-delimited allowed origins |
+| `GUNICORN_WORKERS` | `2` | Number of gunicorn worker processes |
+| `MODEL_PATH` | `/app/models/landmark_classifier.keras` | Path to model file |
 
 ---
 
