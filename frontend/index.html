@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c8a96e">
+  <meta name="description" content="Interactive tourist guide for Pushkinskaya Street, Rostov-on-Don">
   <title>Pushkinskaya Street Explorer</title>
+  <link rel="manifest" href="/app/manifest.json">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -150,6 +153,11 @@
     .empty-visit-list { text-align: center; padding: 20px; color: var(--muted); font-size: 13px; }
     .empty-visit-list a { color: var(--accent); text-decoration: none; }
     .add-all-btn { margin-top: 10px; }
+    .offline-banner {
+      display: none; padding: 8px 24px; font-size: 12px; font-weight: 500;
+      background: #3a1e1e; color: var(--red); text-align: center;
+    }
+    .offline-banner.show { display: block; }
   </style>
 </head>
 <body>
@@ -158,6 +166,7 @@
   <h1>Pushkinskaya Street Explorer</h1>
   <span id="api-status">Connecting...</span>
 </header>
+<div class="offline-banner" id="offline-banner">You're offline — showing cached data. Route planning and identification require a connection.</div>
 <nav>
   <button class="tab-btn active" onclick="switchTab('identify')">Identify</button>
   <button class="tab-btn" onclick="switchTab('browse')">Browse Sites</button>
@@ -728,6 +737,23 @@ function speakText(text, btnEl) {
   btnEl.innerHTML = '&#9209; Stop';
   speechSynthesis.speak(currentUtterance);
 }
+
+// ── Service Worker + Offline Detection ──────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/app/sw.js').catch(() => {});
+}
+
+function updateOnlineStatus() {
+  const banner = document.getElementById('offline-banner');
+  if (navigator.onLine) {
+    banner.classList.remove('show');
+  } else {
+    banner.classList.add('show');
+  }
+}
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+updateOnlineStatus();
 </script>
 </body>
 </html>
