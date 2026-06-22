@@ -158,6 +158,12 @@
       background: #3a1e1e; color: var(--red); text-align: center;
     }
     .offline-banner.show { display: block; }
+    .lang-toggle {
+      margin-left: 8px; padding: 3px 8px; font-size: 11px; font-weight: 600;
+      border-radius: 4px; border: 1px solid var(--border); background: transparent;
+      color: var(--muted); cursor: pointer; transition: all 0.15s;
+    }
+    .lang-toggle:hover { border-color: var(--accent); color: var(--accent); }
   </style>
 </head>
 <body>
@@ -165,6 +171,7 @@
   <span class="status-dot" id="dot"></span>
   <h1>Pushkinskaya Street Explorer</h1>
   <span id="api-status">Connecting...</span>
+  <button class="lang-toggle" id="lang-btn" onclick="toggleLang()" title="Switch language">EN</button>
 </header>
 <div class="offline-banner" id="offline-banner">You're offline — showing cached data. Route planning and identification require a connection.</div>
 <nav>
@@ -268,8 +275,15 @@ const API = window.location.origin;
 let landmarks = [];
 const photoStore = {};
 let visitList = JSON.parse(localStorage.getItem('visitList') || '[]');
+let currentLang = localStorage.getItem('lang') || 'en';
+
+function lmName(lm) {
+  if (!lm) return '';
+  return (currentLang === 'ru' && lm.name_ru) ? lm.name_ru : lm.name;
+}
 
 async function init() {
+  document.getElementById('lang-btn').textContent = currentLang === 'en' ? 'EN' : 'RU';
   try {
     const r = await fetch(`${API}/landmarks`);
     landmarks = await r.json();
@@ -287,7 +301,7 @@ async function init() {
 function populateWalkStart() {
   const sel = document.getElementById('walk-start');
   const geocoded = landmarks.filter(l => l.lat != null);
-  sel.innerHTML = geocoded.map(l => `<option value="${l.id}">${l.name}</option>`).join('');
+  sel.innerHTML = geocoded.map(l => `<option value="${l.id}">${lmName(l)}</option>`).join('');
   if (geocoded.length === 0) sel.innerHTML = '<option value="">No geocoded landmarks</option>';
 }
 
@@ -296,6 +310,20 @@ function switchTab(name) {
   document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', names[i] === name));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
+}
+
+function toggleLang() {
+  currentLang = currentLang === 'en' ? 'ru' : 'en';
+  localStorage.setItem('lang', currentLang);
+  document.getElementById('lang-btn').textContent = currentLang === 'en' ? 'EN' : 'RU';
+  renderBrowse();
+  renderManage();
+  renderVisitList();
+  populateWalkStart();
+  updateCustomStartSelect(visitList.filter(id => {
+    const lm = landmarks.find(l => l.id === id);
+    return lm && lm.lat != null;
+  }));
 }
 
 function switchWalkMode(mode) {
@@ -373,7 +401,7 @@ function renderVisitList() {
     const hasCoords = lm.lat != null;
     return `<div class="visit-item" style="${!hasCoords ? 'opacity:0.5;' : ''}">
       <span class="visit-item-num">${i + 1}</span>
-      <span class="visit-item-name">${lm.name}${!hasCoords ? ' <span style="color:var(--muted);font-size:11px;">(no GPS)</span>' : ''}</span>
+      <span class="visit-item-name">${lmName(lm)}${!hasCoords ? ' <span style="color:var(--muted);font-size:11px;">(no GPS)</span>' : ''}</span>
       <div class="visit-item-actions">
         <button class="visit-item-btn" onclick="moveVisitItem('${id}', -1)" title="Move up">&#9650;</button>
         <button class="visit-item-btn" onclick="moveVisitItem('${id}', 1)" title="Move down">&#9660;</button>
@@ -395,7 +423,7 @@ function updateCustomStartSelect(geocodedInList) {
   const sel = document.getElementById('custom-start');
   sel.innerHTML = geocodedInList.map(id => {
     const lm = landmarks.find(l => l.id === id);
-    return `<option value="${lm.id}">${lm.name}</option>`;
+    return `<option value="${lm.id}">${lmName(lm)}</option>`;
   }).join('');
 }
 
@@ -447,8 +475,9 @@ function renderResult(data) {
     el.style.display = 'block'; return;
   }
   const info = data.info || {};
+  const resultLm = landmarks.find(l => l.id === data.landmark_id);
   const facts = [['Style',info.style],['Architect',info.architect],['Height',info.height_ft?info.height_ft+' ft':null],['Floors',info.floors||null],['Year',info.year_built],['Type',info.type]].filter(([,v])=>v);
-  el.innerHTML = `<div class="result-card"><div class="rc-header"><span class="rc-title">${data.name}</span><span class="conf-badge">${data.confidence_pct}</span></div><div class="rc-body"><div class="rc-meta"><span>&#128205; ${info.address||'---'}</span><span>&#128197; ${info.year_built||'---'}</span></div><p class="rc-desc">${info.description||''}</p><button class="speak-btn" onclick="speakText('${(info.description||'').replace(/'/g,"\\'")}',this)">&#128266; Listen</button>${info.fun_fact?`<p class="rc-desc" style="margin-top:8px;color:var(--accent)">&#9733; ${info.fun_fact}</p>`:''}<div class="facts-grid">${facts.map(([k,v])=>`<div class="fact"><label>${k}</label><strong>${v}</strong></div>`).join('')}</div>${renderTop5(data.top5)}</div></div>`;
+  el.innerHTML = `<div class="result-card"><div class="rc-header"><span class="rc-title">${lmName(resultLm) || data.name}</span><span class="conf-badge">${data.confidence_pct}</span></div><div class="rc-body"><div class="rc-meta"><span>&#128205; ${info.address||'---'}</span><span>&#128197; ${info.year_built||'---'}</span></div><p class="rc-desc">${info.description||''}</p><button class="speak-btn" onclick="speakText('${(info.description||'').replace(/'/g,"\\'")}',this)">&#128266; Listen</button>${info.fun_fact?`<p class="rc-desc" style="margin-top:8px;color:var(--accent)">&#9733; ${info.fun_fact}</p>`:''}<div class="facts-grid">${facts.map(([k,v])=>`<div class="fact"><label>${k}</label><strong>${v}</strong></div>`).join('')}</div>${renderTop5(data.top5)}</div></div>`;
   el.style.display = 'block';
 }
 
@@ -462,14 +491,14 @@ function renderBrowse() {
   document.getElementById('browse-grid').innerHTML = landmarks.map(lm => {
     const thumb = getFirstPhoto(lm.id);
     const inList = visitList.includes(lm.id);
-    return `<div class="lm-card" onclick="openModal('${lm.id}')"><button class="add-visit-btn ${inList?'in-list':''}" onclick="event.stopPropagation(); toggleVisitList('${lm.id}')">${inList ? '&#10003; Added' : '+ Add'}</button><div class="lm-thumb">${thumb?`<img src="${thumb}">`:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 9 4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="13.5" r="1.5"/></svg>'}</div><div class="lm-info"><h3>${lm.name}</h3><p>${lm.type} · ${lm.year_built}</p><small>${lm.address}</small></div></div>`;
+    return `<div class="lm-card" onclick="openModal('${lm.id}')"><button class="add-visit-btn ${inList?'in-list':''}" onclick="event.stopPropagation(); toggleVisitList('${lm.id}')">${inList ? '&#10003; Added' : '+ Add'}</button><div class="lm-thumb">${thumb?`<img src="${thumb}">`:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 9 4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="13.5" r="1.5"/></svg>'}</div><div class="lm-info"><h3>${lmName(lm)}</h3><p>${lm.type} · ${lm.year_built}</p><small>${lm.address}</small></div></div>`;
   }).join('');
 }
 
 function renderManage() {
   document.getElementById('manage-grid').innerHTML = landmarks.map(lm => {
     const store = photoStore[lm.id] || {};
-    return `<div class="manage-card"><h3>${lm.name}</h3><div class="angle-list">${(lm.angles||[]).map(a => `<label class="angle-row"><span class="angle-dot ${store[a]?'filled':''}"></span><span class="angle-name">${a.replace(/_/g,' ')}</span>${store[a]?'<span class="angle-check">&#10003;</span>':''}<input type="file" accept="image/*" onchange="addPhoto('${lm.id}','${a}',event)"></label>`).join('')}</div></div>`;
+    return `<div class="manage-card"><h3>${lmName(lm)}</h3><div class="angle-list">${(lm.angles||[]).map(a => `<label class="angle-row"><span class="angle-dot ${store[a]?'filled':''}"></span><span class="angle-name">${a.replace(/_/g,' ')}</span>${store[a]?'<span class="angle-check">&#10003;</span>':''}<input type="file" accept="image/*" onchange="addPhoto('${lm.id}','${a}',event)"></label>`).join('')}</div></div>`;
   }).join('');
 }
 
@@ -500,7 +529,7 @@ function openModal(id) {
   const photos = (lm.angles||[]).map(a => store[a]).filter(Boolean);
   const serverPhoto = photoIds.indexOf(id) !== -1 ? '/photo/' + id : null;
   const inList = visitList.includes(id);
-  document.getElementById('modal-title').textContent = lm.name;
+  document.getElementById('modal-title').textContent = lmName(lm);
   document.getElementById('modal-body').innerHTML = `<div style="display:flex;gap:8px;overflow-x:auto;margin-bottom:14px;">${photos.length?photos.map(src=>`<img src="${src}" style="height:120px;border-radius:6px;object-fit:cover;">`).join(''):serverPhoto?`<img src="${serverPhoto}" style="height:120px;border-radius:6px;object-fit:cover;">`:''}</div><button class="guide-btn ${inList?'primary':''}" onclick="toggleVisitList('${lm.id}'); openModal('${lm.id}');" style="margin-bottom:14px;width:100%;justify-content:center;">${inList ? '&#10003; In Your Visit List' : '+ Add to Visit List'}</button><div style="font-size:12px;color:var(--muted);display:flex;gap:14px;margin-bottom:10px;"><span>&#128205; ${lm.address}</span><span>&#128197; ${lm.year_built}</span></div><p style="font-size:13px;color:#bbb;line-height:1.75;">${lm.description}</p><button class="speak-btn" onclick="speakText('${(lm.description+(lm.fun_fact?'. '+lm.fun_fact:'')).replace(/'/g,"\\'")}',this)">&#128266; Listen</button>${lm.fun_fact?`<p style="margin-top:10px;font-size:12px;color:var(--accent)">&#9733; ${lm.fun_fact}</p>`:''}<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;">${[['Architect',lm.architect],['Style',lm.style],['Height',lm.height_ft?lm.height_ft+' ft':null],['Floors',lm.floors||null]].filter(([,v])=>v).map(([k,v])=>`<div class="fact"><label>${k}</label><strong>${v}</strong></div>`).join('')}</div>`;
   document.getElementById('modal-bg').classList.add('open');
 }
@@ -583,7 +612,9 @@ function renderNearby(data, userLat, userLon, warningHtml) {
 
   if (data.count === 0) {
     const distM = data.nearest_landmark_distance_m;
-    const nearestName = data.nearest_landmark_name;
+    const nearestId = data.nearest_landmark_id;
+    const nearestLm = nearestId ? landmarks.find(l => l.id === nearestId) : null;
+    const nearestName = nearestLm ? lmName(nearestLm) : data.nearest_landmark_name;
 
     if (distM == null) {
       listEl.innerHTML = warningHtml + `<div class="notice">No geocoded landmarks available yet.</div>`;
@@ -623,7 +654,7 @@ function renderNearby(data, userLat, userLon, warningHtml) {
     return;
   }
 
-  listEl.innerHTML = warningHtml + data.landmarks.map(lm => `<div class="nearby-item" onclick="openModal('${lm.id}')"><div class="item-main"><strong>${lm.name}</strong><span>${lm.type} · ${lm.year_built}</span></div><div class="item-dist">${lm.distance_m<1000?Math.round(lm.distance_m)+' m':(lm.distance_m/1000).toFixed(1)+' km'}</div></div>`).join('');
+  listEl.innerHTML = warningHtml + data.landmarks.map(lm => `<div class="nearby-item" onclick="openModal('${lm.id}')"><div class="item-main"><strong>${lmName(lm)}</strong><span>${lm.type} · ${lm.year_built}</span></div><div class="item-dist">${lm.distance_m<1000?Math.round(lm.distance_m)+' m':(lm.distance_m/1000).toFixed(1)+' km'}</div></div>`).join('');
   mapWrap.style.display = 'block';
   renderMap('map', userLat, userLon, data.landmarks);
 }
@@ -639,7 +670,7 @@ function showAllLandmarksMap() {
   leafletMap = L.map('map').setView([avgLat, avgLon], 15);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; OpenStreetMap contributors', maxZoom: 19}).addTo(leafletMap);
   geocoded.forEach(lm => {
-    L.marker([lm.lat, lm.lon]).addTo(leafletMap).bindPopup(`<strong>${lm.name}</strong>`).on('click', () => openModal(lm.id));
+    L.marker([lm.lat, lm.lon]).addTo(leafletMap).bindPopup(`<strong>${lmName(lm)}</strong>`).on('click', () => openModal(lm.id));
   });
   const bounds = geocoded.map(l => [l.lat, l.lon]);
   leafletMap.fitBounds(bounds, { padding: [30, 30] });
@@ -650,7 +681,7 @@ function renderMap(elId, userLat, userLon, points) {
   leafletMap = L.map(elId).setView([userLat, userLon], 15);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; OpenStreetMap contributors', maxZoom: 19}).addTo(leafletMap);
   L.marker([userLat, userLon], {icon: L.divIcon({className:'', html:'<div style="background:#4caf78;width:14px;height:14px;border-radius:50%;border:2px solid white;"></div>'})}).addTo(leafletMap).bindPopup('You are here');
-  points.forEach(lm => { L.marker([lm.lat, lm.lon]).addTo(leafletMap).bindPopup(`<strong>${lm.name}</strong><br>${Math.round(lm.distance_m)} m away`); });
+  points.forEach(lm => { L.marker([lm.lat, lm.lon]).addTo(leafletMap).bindPopup(`<strong>${lmName(lm)}</strong><br>${Math.round(lm.distance_m)} m away`); });
 }
 
 async function planCustomRoute() {
@@ -708,7 +739,7 @@ function addAllToVisitList(ids) {
 
 function renderWalk(route) {
   const resultEl = document.getElementById('walk-result');
-  const stopsHtml = route.stops.map((s,i) => `<div class="route-item" onclick="openModal('${s.id}')"><div class="step-num">${i+1}</div><div class="item-main"><strong>${s.name}</strong><span>${s.estimated_visit_minutes} min visit</span></div><button class="visit-item-btn" onclick="event.stopPropagation(); addToVisitList('${s.id}')" title="Add to visit list">+ Add</button></div>`).join('');
+  const stopsHtml = route.stops.map((s,i) => { const lm = landmarks.find(l => l.id === s.id); return `<div class="route-item" onclick="openModal('${s.id}')"><div class="step-num">${i+1}</div><div class="item-main"><strong>${lmName(lm) || s.name}</strong><span>${s.estimated_visit_minutes} min visit</span></div><button class="visit-item-btn" onclick="event.stopPropagation(); addToVisitList('${s.id}')" title="Add to visit list">+ Add</button></div>`; }).join('');
   resultEl.innerHTML = `<div class="notice">&#128694; ${route.stops.length} stops · ${route.total_walking_minutes} min walking · ${route.total_minutes} min total</div><div id="map-walk"><div id="walk-map" style="margin-bottom:14px;"></div></div><div class="route-list">${stopsHtml}</div>`;
   if (route.stops.length > 0) renderRouteMap(route);
 }
@@ -718,7 +749,7 @@ function renderRouteMap(route) {
   const first = route.stops[0];
   leafletMap = L.map('walk-map').setView([first.lat, first.lon], 15);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; OpenStreetMap contributors', maxZoom: 19}).addTo(leafletMap);
-  route.stops.forEach((s,i) => { L.marker([s.lat, s.lon]).addTo(leafletMap).bindPopup(`<strong>${i+1}. ${s.name}</strong>`); });
+  route.stops.forEach((s,i) => { const lm = landmarks.find(l => l.id === s.id); L.marker([s.lat, s.lon]).addTo(leafletMap).bindPopup(`<strong>${i+1}. ${lmName(lm) || s.name}</strong>`); });
   if (route.route_geometry) {
     const latlngs = route.route_geometry.coordinates.map(c => [c[1], c[0]]);
     L.polyline(latlngs, {color: '#c8a96e', weight: 3}).addTo(leafletMap);

@@ -336,6 +336,7 @@ def nearby():
     if nearest_overall is not None:
         response["nearest_landmark_distance_m"] = round(nearest_dist, 1)
         response["nearest_landmark_name"] = nearest_overall["name"]
+        response["nearest_landmark_id"] = nearest_overall["id"]
 
     return jsonify(response)
 
