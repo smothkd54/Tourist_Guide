@@ -350,6 +350,15 @@ def get_route():
     return jsonify(json.loads(route_path.read_text()))
 
 
+@app.route("/model/info")
+def model_info():
+    """Return metadata about the currently loaded model (training run, accuracy, etc.)."""
+    meta_path = MODELS_DIR / "model_metadata.json"
+    if not meta_path.exists():
+        return jsonify({"error": "No model metadata available. Train a model first."}), 404
+    return jsonify(json.loads(meta_path.read_text()))
+
+
 @app.route("/predict", methods=["POST"])
 def predict():
     if current_app.model is None:

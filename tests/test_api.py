@@ -221,6 +221,20 @@ class TestFrontend:
         assert resp.status_code == 200
 
 
+# ── Model Info ───────────────────────────────────────────────────────────────
+
+class TestModelInfo:
+    def test_model_info_returns_metadata(self, client):
+        resp = client.get("/model/info")
+        # 200 if metadata exists, 404 if not (no training yet)
+        assert resp.status_code in (200, 404)
+        if resp.status_code == 200:
+            data = resp.get_json()
+            assert "trained_at" in data
+            assert "num_classes" in data
+            assert "results" in data
+
+
 # ── Inference Smoke Test ─────────────────────────────────────────────────────
 
 class TestInferenceSmoke:

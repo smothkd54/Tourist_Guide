@@ -31,7 +31,6 @@ import argparse
 import os
 from pathlib import Path
 
-import numpy as np
 import tensorflow as tf
 import keras
 from keras import layers
@@ -211,7 +210,10 @@ def train(args):
 
     _plot_history(h1, h2)
 
-    print(f"\n✅ Training complete.")
+    # ── write model metadata ─────────────────────────────────────────────
+    _write_metadata(h1, h2, class_names, args)
+
+    print("\n✅ Training complete.")
     print(f"   Model  → {MODELS_DIR}/landmark_classifier.keras")
     print(f"   Labels → {MODELS_DIR}/class_names.json")
     print("\nNext step:  python evaluate.py")
@@ -230,18 +232,64 @@ def _plot_history(h1, h2):
     axes[0].plot(all_acc,  label="Train acc")
     axes[0].plot(all_vacc, label="Val acc")
     axes[0].axvline(ph2_start, color="grey", linestyle="--", label="Phase 2 start")
-    axes[0].set_title("Accuracy"); axes[0].legend()
+    axes[0].set_title("Accuracy")
+    axes[0].legend()
 
     axes[1].plot(all_loss,  label="Train loss")
     axes[1].plot(all_vloss, label="Val loss")
     axes[1].axvline(ph2_start, color="grey", linestyle="--", label="Phase 2 start")
-    axes[1].set_title("Loss"); axes[1].legend()
+    axes[1].set_title("Loss")
+    axes[1].legend()
 
     plt.tight_layout()
     path = Path("models/training_curves.png")
     plt.savefig(path, dpi=120)
     print(f"   Curves → {path}")
     plt.close()
+
+
+def _count_images(split: str) -> int:
+    split_dir = DATA_DIR / split
+    if not split_dir.exists():
+        return 0
+    return sum(1 for _ in split_dir.rglob("*") if _.suffix.lower() in (".jpg", ".jpeg", ".png", ".webp"))
+
+
+def _write_metadata(h1, h2, class_names, args):
+    from datetime import datetime, timezone
+    model_path = Path(os.environ.get("MODEL_PATH", str(MODELS_DIR / "landmark_classifier.keras")))
+    meta = {
+        "trained_at": datetime.now(timezone.utc).isoformat(),
+        "model_file": model_path.name,
+        "model_size_bytes": model_path.stat().st_size if model_path.exists() else 0,
+        "num_classes": len(class_names),
+        "training": {
+            "epochs_head": args.epochs_head,
+            "epochs_fine": args.epochs_fine,
+            "actual_head_epochs": len(h1.history["accuracy"]),
+            "actual_fine_epochs": len(h2.history["accuracy"]),
+            "batch_size": args.batch,
+            "unfreeze_from": UNFREEZE_FROM,
+            "lr_head": LR_HEAD,
+            "lr_fine": LR_FINE,
+        },
+        "results": {
+            "best_val_acc": round(max(h1.history["val_accuracy"] + h2.history["val_accuracy"]), 4),
+            "final_val_acc": round(h2.history["val_accuracy"][-1], 4),
+            "final_train_acc": round(h2.history["accuracy"][-1], 4),
+            "early_stopped_phase1": len(h1.history["accuracy"]) < args.epochs_head,
+            "early_stopped_phase2": len(h2.history["accuracy"]) < args.epochs_fine,
+        },
+        "data": {
+            "train_images": _count_images("train"),
+            "val_images": _count_images("val"),
+            "img_size": list(IMG_SIZE),
+        },
+    }
+    out = MODELS_DIR / "model_metadata.json"
+    with open(out, "w") as f:
+        json.dump(meta, f, indent=2)
+    print(f"   Metadata → {out}")
 
 
 # ── CLI ───────────────────────────────────────────────────────────────────────

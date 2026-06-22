@@ -8,5 +8,6 @@ models/checkpoint_phase1.keras
 models/training_curves.png
 models/confusion_matrix.png
 models/training_history.json
+models/model_metadata.json
 .venv/
 updated_files/
