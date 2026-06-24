@@ -1,14 +1,28 @@
 services:
+  caddy:
+    image: caddy:2
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web
+    restart: unless-stopped
+
   web:
     build: .
-    ports:
-      - "5000:5000"
-    environment:
-      - CORS_ORIGINS=http://localhost:*|http://127.0.0.1:*  # change to your domain for deployment
-      - GUNICORN_WORKERS=2
-      - MODEL_PATH=/app/models/landmark_classifier.keras
-      - LOG_DIR=/app/logs
+    expose:
+      - "5000"
+    env_file:
+      - .env
     volumes:
       - ./models:/app/models
       - ./logs:/app/logs
     restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:

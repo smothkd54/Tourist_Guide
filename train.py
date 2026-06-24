@@ -37,7 +37,7 @@ from keras import layers
 from keras.applications import EfficientNetB0
 import matplotlib.pyplot as plt
 
-from logging_setup import setup_logging
+from backend.logging_setup import setup_logging
 
 logger = setup_logging("train")
 
@@ -297,7 +297,7 @@ def _write_metadata(h1, h2, class_names, args):
 
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description="Train the Pushkinskaya Street landmark classifier.")
     parser.add_argument("--batch",       type=int, default=BATCH_SIZE)
     parser.add_argument("--epochs-head", type=int, default=EPOCHS_HEAD,  dest="epochs_head")
@@ -306,3 +306,7 @@ if __name__ == "__main__":
                         help="Resume phase 2 from checkpoint_phase1.keras")
     args = parser.parse_args()
     train(args)
+
+
+if __name__ == "__main__":
+    main()

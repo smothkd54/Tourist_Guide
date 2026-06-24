@@ -1,0 +1,36 @@
+# Caddyfile — reverse proxy for Pushkinskaya Street Explorer
+#
+# Caddy auto-provisions HTTPS via Let's Encrypt.
+# Just point your DNS A record to this server and it works.
+#
+# For local development (no domain), use :80 for plain HTTP.
+
+:80 {
+    encode gzip
+    reverse_proxy web:5000
+
+    # Cache static assets aggressively (JS, CSS, images)
+    header /app/static/* Cache-Control "public, max-age=86400"
+    # Cache app shell for 1 hour
+    header /app Cache-Control "public, max-age=3600"
+    # Don't cache API responses
+    header /landmarks Cache-Control "no-cache"
+    header /nearby Cache-Control "no-cache"
+    header /predict Cache-Control "no-cache"
+    header /plan* Cache-Control "no-cache"
+    header /metrics Cache-Control "no-cache"
+}
+
+# Uncomment below and replace your-domain.com for production HTTPS:
+# your-domain.com {
+#     encode gzip
+#     reverse_proxy web:5000
+#
+#     header /app/static/* Cache-Control "public, max-age=86400"
+#     header /app Cache-Control "public, max-age=3600"
+#     header /landmarks Cache-Control "no-cache"
+#     header /nearby Cache-Control "no-cache"
+#     header /predict Cache-Control "no-cache"
+#     header /plan* Cache-Control "no-cache"
+#     header /metrics Cache-Control "no-cache"
+# }

@@ -9,40 +9,8 @@ Run:  pytest tests/ -v
 import json
 import base64
 import io
-from pathlib import Path
-from unittest.mock import MagicMock
 
-import pytest
-import numpy as np
-
-# Add backend/ and project root to path so we can import app + logging_setup
-import sys
-_root = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(_root / "backend"))
-sys.path.insert(0, str(_root))
-
-from app import app, load_resources, _osrm_limiter  # noqa: E402
-
-
-@pytest.fixture
-def client():
-    """Create a test client with landmarks loaded but no model."""
-    app.config["TESTING"] = True
-    with app.test_client() as client:
-        # Ensure landmarks are loaded
-        if not app.landmarks_by_id:
-            load_resources()
-        yield client
-
-
-@pytest.fixture
-def client_with_mock_model(client):
-    """Create a test client with a mock model that returns random predictions."""
-    mock_model = MagicMock()
-    mock_model.predict.return_value = [np.random.dirichlet(np.ones(31))]
-    app.model = mock_model
-    yield client
-    app.model = None
+from backend.app import app, _osrm_limiter  # noqa: E402
 
 
 # ── Health Check ──────────────────────────────────────────────────────────────
@@ -248,7 +216,7 @@ class TestInferenceSmoke:
     """
 
     def test_predict_smoke_real_model(self, client):
-        import app as app_module
+        from backend import app as app_module
         import keras
         from keras.applications import EfficientNetB0
 
@@ -297,7 +265,7 @@ class TestInferenceSmoke:
 class TestLogging:
     def test_log_file_created(self, tmp_path, monkeypatch):
         monkeypatch.setenv("LOG_DIR", str(tmp_path))
-        from logging_setup import setup_logging
+        from backend.logging_setup import setup_logging
         logger = setup_logging("test_log_create")
         logger.info("test message")
         log_file = tmp_path / "test_log_create.log"

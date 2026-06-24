@@ -12,3 +12,6 @@ models/model_metadata.json
 .venv/
 updated_files/
 logs/
+*.egg-info/
+dist/
+build/

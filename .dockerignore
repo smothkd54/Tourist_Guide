@@ -11,6 +11,9 @@ docker-compose.yml
 *.pyo
 .venv/
 venv/
+*.egg-info/
+dist/
+build/
 
 # Archives
 *.zip
@@ -37,6 +40,11 @@ plan_route.py
 
 # Documentation (not needed in image)
 *.md
+
+# Config files (not needed in image)
+Caddyfile
+.env
+.env.example
 
 # Logs (regenerated at runtime)
 logs/

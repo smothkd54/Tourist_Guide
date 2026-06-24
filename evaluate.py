@@ -24,7 +24,7 @@ import tensorflow as tf
 import keras
 import matplotlib.pyplot as plt
 
-from logging_setup import setup_logging
+from backend.logging_setup import setup_logging
 
 logger = setup_logging("evaluate")
 
@@ -103,7 +103,15 @@ def plot_cm(cm, class_names):
     plt.close()
 
 
-def main(model_path: Path):
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model", type=Path,
+                        default=Path(os.environ.get("MODEL_PATH", str(MODELS_DIR / "landmark_classifier.keras"))))
+    args = parser.parse_args()
+    _run(args.model)
+
+
+def _run(model_path: Path):
     class_names = load_class_names()
     n_classes   = len(class_names)
 
@@ -135,8 +143,4 @@ def main(model_path: Path):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--model", type=Path,
-                        default=Path(os.environ.get("MODEL_PATH", str(MODELS_DIR / "landmark_classifier.keras"))))
-    args = parser.parse_args()
-    main(args.model)
+    main()

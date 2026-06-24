@@ -20,7 +20,7 @@ import numpy as np
 from PIL import Image
 import keras
 
-from logging_setup import setup_logging
+from backend.logging_setup import setup_logging
 
 logger = setup_logging("predict")
 
@@ -97,7 +97,8 @@ def predict(image_path: Path, model, class_names, landmarks_by_id, top_n: int):
     print()
 
 
-if __name__ == "__main__":
+# ── CLI ───────────────────────────────────────────────────────────────────────
+def main():
     parser = argparse.ArgumentParser(description="Predict Pushkinskaya Street landmark from an image.")
     parser.add_argument("image", type=Path, help="Path to image file")
     parser.add_argument("--top",   type=int,  default=3,
@@ -109,3 +110,7 @@ if __name__ == "__main__":
 
     model, class_names, landmarks_by_id = load_resources(args.model)
     predict(args.image, model, class_names, landmarks_by_id, args.top)
+
+
+if __name__ == "__main__":
+    main()

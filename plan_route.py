@@ -22,7 +22,7 @@ from pathlib import Path
 
 import requests
 
-from logging_setup import setup_logging
+from backend.logging_setup import setup_logging
 
 logger = setup_logging("plan_route")
 

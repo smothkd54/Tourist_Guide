@@ -31,17 +31,8 @@ from flask_cors import CORS
 import keras
 from PIL import Image
 
-# route_planner.py lives in this same directory (backend/), so this is a
-# plain relative import — NOT "from backend.route_planner import ...".
-# That package-style form only works if this file is launched as
-# `python -m backend.app` from the project root; running it directly with
-# `python backend/app.py` (the documented, normal way to start this server)
-# makes Python treat backend/ as a script directory, not a package, and the
-# package-style import raises ModuleNotFoundError: No module named 'backend'.
-import sys as _sys
-_sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from route_planner import plan_route, plan_custom_route
-from logging_setup import setup_logging
+from backend.route_planner import plan_route, plan_custom_route
+from backend.logging_setup import setup_logging
 
 
 class RateLimiter:
@@ -529,6 +520,13 @@ def photos_available():
 @app.route("/app/")
 def serve_frontend():
     return send_from_directory(FRONTEND_DIR, "index.html")
+
+
+@app.route("/sw.js")
+def serve_sw():
+    from flask import Response
+    sw_path = PROJECT_ROOT / "sw.js"
+    return Response(sw_path.read_text(), mimetype="application/javascript")
 
 
 @app.route("/app/<path:filename>")

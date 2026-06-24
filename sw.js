@@ -1,5 +1,5 @@
 const CACHE_NAME = "pushkinskaya-v1";
-const APP_SHELL = ["/app", "/app/index.html"];
+const APP_SHELL = ["/app"];
 const LANDMARKS_CACHE = "pushkinskaya-data-v1";
 
 self.addEventListener("install", (event) => {
@@ -90,6 +90,22 @@ self.addEventListener("fetch", (event) => {
             if (response.ok) {
               cache.put(event.request, response.clone());
             }
+            return response;
+          }).catch(() => cached);
+          return cached || fetched;
+        })
+      )
+    );
+    return;
+  }
+
+  // Model metadata — cache first (rarely changes)
+  if (url.pathname === "/model/info") {
+    event.respondWith(
+      caches.open(LANDMARKS_CACHE).then((cache) =>
+        cache.match(event.request).then((cached) => {
+          const fetched = fetch(event.request).then((response) => {
+            if (response.ok) cache.put(event.request, response.clone());
             return response;
           }).catch(() => cached);
           return cached || fetched;

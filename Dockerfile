@@ -11,13 +11,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements-serve.txt .
 RUN pip install --no-cache-dir -r requirements-serve.txt
 
-COPY backend/ ./backend/
-COPY data/landmarks.json ./data/landmarks.json
-COPY data/photos/ ./data/photos/
-COPY models/ ./models/
-COPY frontend/ ./frontend/
-COPY preflight_check.py .
-COPY logging_setup.py .
+COPY . .
+RUN pip install --no-cache-dir .
 
 ENV PYTHONUNBUFFERED=1
 ENV CORS_ORIGINS=http://localhost:*|http://127.0.0.1:*

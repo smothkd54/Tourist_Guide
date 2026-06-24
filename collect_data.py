@@ -42,7 +42,7 @@ import shutil
 import argparse
 from pathlib import Path
 
-from logging_setup import setup_logging
+from backend.logging_setup import setup_logging
 
 logger = setup_logging("collect_data")
 

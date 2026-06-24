@@ -7,7 +7,7 @@
   <meta name="description" content="Interactive tourist guide for Pushkinskaya Street, Rostov-on-Don">
   <title>Pushkinskaya Street Explorer</title>
   <link rel="manifest" href="/app/manifest.json">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="/app/static/leaflet/leaflet.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -158,6 +158,28 @@
       background: #3a1e1e; color: var(--red); text-align: center;
     }
     .offline-banner.show { display: block; }
+    .queue-badge {
+      display: none; background: var(--accent); color: var(--bg);
+      font-size: 10px; font-weight: 700; border-radius: 99px;
+      padding: 1px 6px; min-width: 18px; text-align: center;
+    }
+    .queue-badge.show { display: inline-block; }
+    .queue-panel {
+      display: none; padding: 12px 24px; border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .queue-panel.show { display: block; }
+    .queue-item {
+      display: flex; align-items: center; gap: 10px;
+      background: #141414; border: 1px solid var(--border); border-radius: 8px;
+      padding: 8px 12px; margin-bottom: 6px; font-size: 12px;
+    }
+    .qi-time { color: var(--muted); white-space: nowrap; }
+    .qi-status { margin-left: auto; font-size: 11px; }
+    .qi-status.queued { color: var(--accent); }
+    .qi-status.processing { color: var(--muted); }
+    .qi-status.done { color: var(--green); }
+    .qi-status.failed { color: var(--red); }
     .lang-toggle {
       margin-left: 8px; padding: 3px 8px; font-size: 11px; font-weight: 600;
       border-radius: 4px; border: 1px solid var(--border); background: transparent;
@@ -172,8 +194,16 @@
   <h1>Pushkinskaya Street Explorer</h1>
   <span id="api-status">Connecting...</span>
   <button class="lang-toggle" id="lang-btn" onclick="toggleLang()" title="Switch language">EN</button>
+  <span class="queue-badge" id="queue-badge">0</span>
 </header>
 <div class="offline-banner" id="offline-banner">You're offline — showing cached data. Route planning and identification require a connection.</div>
+<div class="queue-panel" id="queue-panel">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+    <span style="font-size:13px;font-weight:500;">&#128229; Identification Queue</span>
+    <button class="guide-btn" onclick="processQueue()" style="font-size:11px;padding:4px 10px;" id="queue-process-btn">Process Now</button>
+  </div>
+  <div id="queue-list"></div>
+</div>
 <nav>
   <button class="tab-btn active" onclick="switchTab('identify')">Identify</button>
   <button class="tab-btn" onclick="switchTab('browse')">Browse Sites</button>
@@ -269,7 +299,7 @@
   </div>
 </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/app/static/leaflet/leaflet.js"></script>
 <script>
 const API = window.location.origin;
 let landmarks = [];
@@ -293,6 +323,7 @@ async function init() {
     renderManage();
     populateWalkStart();
     renderVisitList();
+    renderQueue();
   } catch(e) {
     document.getElementById('api-status').textContent = 'API offline -- run: python backend/app.py';
   }
@@ -452,6 +483,14 @@ async function runIdentify() {
   const img = document.getElementById('preview-img');
   if (!img.src || img.src === location.href) return;
   const btn = document.getElementById('id-btn');
+
+  if (!navigator.onLine) {
+    queuePredict(img.src);
+    btn.disabled = false;
+    btn.innerHTML = '&#9654; Identify this landmark';
+    return;
+  }
+
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner">&#8635;</span> Running model...';
   try {
@@ -461,8 +500,7 @@ async function runIdentify() {
     });
     renderResult(await resp.json());
   } catch(e) {
-    document.getElementById('result').innerHTML = '<div class="notice" style="color:var(--red)">&#9888; API unreachable.</div>';
-    document.getElementById('result').style.display = 'block';
+    queuePredict(img.src);
   }
   btn.disabled = false;
   btn.innerHTML = '&#9654; Identify this landmark';
@@ -485,6 +523,125 @@ function renderTop5(top5) {
   if (!top5) return '';
   const max = top5[0]?.confidence || 1;
   return `<div class="top5"><h4>Model top-5 scores</h4>${top5.map(t => `<div class="bar-row"><span class="bar-label">${t.landmark_id}</span><div class="bar-track"><div class="bar-fill" style="width:${(t.confidence/max*100).toFixed(1)}%"></div></div><span class="bar-pct">${(t.confidence*100).toFixed(1)}%</span></div>`).join('')}</div>`;
+}
+
+// ── Offline Predict Queue ──────────────────────────────────────────────
+const QUEUE_MAX = 5;
+
+function getQueue() {
+  try { return JSON.parse(localStorage.getItem('predictQueue') || '[]'); }
+  catch { return []; }
+}
+
+function saveQueue(q) {
+  try {
+    localStorage.setItem('predictQueue', JSON.stringify(q));
+  } catch(e) {
+    const completed = q.filter(i => i.status === 'done' || i.status === 'failed');
+    if (completed.length > 0) {
+      q = q.filter(i => i.status !== 'done' && i.status !== 'failed');
+      try { localStorage.setItem('predictQueue', JSON.stringify(q)); } catch { return; }
+    }
+  }
+  renderQueue();
+}
+
+function queuePredict(imageData) {
+  const q = getQueue();
+  if (q.length >= QUEUE_MAX) {
+    document.getElementById('result').innerHTML =
+      '<div class="notice" style="color:var(--red)">&#9888; Queue full (5 items). Remove an item or wait for processing.</div>';
+    document.getElementById('result').style.display = 'block';
+    return;
+  }
+  q.push({
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    imageData: imageData,
+    timestamp: new Date().toISOString(),
+    status: 'queued',
+    result: null
+  });
+  saveQueue(q);
+  document.getElementById('result').innerHTML =
+    '<div class="notice" style="color:var(--accent)">&#128229; You\'re offline. Image queued — will identify when connection restores.</div>';
+  document.getElementById('result').style.display = 'block';
+}
+
+async function processQueue() {
+  const q = getQueue();
+  const pending = q.filter(i => i.status === 'queued');
+  if (pending.length === 0) return;
+
+  document.getElementById('queue-process-btn').disabled = true;
+  document.getElementById('queue-process-btn').innerHTML = '<span class="spinner">&#8635;</span>';
+
+  for (const item of pending) {
+    item.status = 'processing';
+    saveQueue(q);
+    try {
+      const resp = await fetch(`${API}/predict`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: item.imageData })
+      });
+      item.result = await resp.json();
+      item.status = 'done';
+      showQueuedResult(item.result);
+    } catch(e) {
+      item.status = 'failed';
+    }
+    saveQueue(q);
+  }
+
+  document.getElementById('queue-process-btn').disabled = false;
+  document.getElementById('queue-process-btn').innerHTML = 'Process Now';
+}
+
+function showQueuedResult(data) {
+  renderResult(data);
+}
+
+function renderQueue() {
+  const q = getQueue();
+  const pending = q.filter(i => i.status === 'queued' || i.status === 'processing');
+  const badge = document.getElementById('queue-badge');
+  const panel = document.getElementById('queue-panel');
+  const list = document.getElementById('queue-list');
+
+  if (q.length > 0) {
+    badge.textContent = pending.length || q.length;
+    badge.classList.add('show');
+    panel.classList.add('show');
+  } else {
+    badge.classList.remove('show');
+    panel.classList.remove('show');
+  }
+
+  if (q.length === 0) { list.innerHTML = ''; return; }
+
+  list.innerHTML = q.slice().reverse().map(item => {
+    const time = new Date(item.timestamp).toLocaleTimeString();
+    let statusHtml = '';
+    if (item.status === 'queued')
+      statusHtml = '<span class="qi-status queued">Queued</span>';
+    else if (item.status === 'processing')
+      statusHtml = '<span class="qi-status processing"><span class="spinner">&#8635;</span> Processing</span>';
+    else if (item.status === 'done' && item.result) {
+      const name = item.result.identified ? item.result.name : 'No match';
+      statusHtml = `<span class="qi-status done">&#10003; ${name}</span>`;
+    } else if (item.status === 'failed')
+      statusHtml = '<span class="qi-status failed">&#10007; Failed</span>';
+
+    return `<div class="queue-item">
+      <span class="qi-time">${time}</span>
+      ${statusHtml}
+      <button class="visit-item-btn remove" onclick="removeFromQueue('${item.id}')" title="Remove">&#10005;</button>
+    </div>`;
+  }).join('');
+}
+
+function removeFromQueue(id) {
+  const q = getQueue().filter(i => i.id !== id);
+  saveQueue(q);
 }
 
 function renderBrowse() {
@@ -771,7 +928,7 @@ function speakText(text, btnEl) {
 
 // ── Service Worker + Offline Detection ──────────────────────────────────────
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/app/sw.js').catch(() => {});
+  navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(() => {});
 }
 
 function updateOnlineStatus() {
@@ -782,7 +939,10 @@ function updateOnlineStatus() {
     banner.classList.add('show');
   }
 }
-window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('online', () => {
+  updateOnlineStatus();
+  processQueue();
+});
 window.addEventListener('offline', updateOnlineStatus);
 updateOnlineStatus();
 </script>

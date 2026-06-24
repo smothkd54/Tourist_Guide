@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pushkinskaya-guide"
+version = "0.1.0"
+description = "Pushkinskaya Street Tourist Guide — landmark identification, route planning, and browsing"
+requires-python = ">=3.10"
+dependencies = [
+    "tensorflow>=2.19.0,<2.23",
+    "numpy>=1.26.4",
+    "pillow==10.4.0",
+    "flask==3.0.3",
+    "flask-cors==4.0.1",
+    "requests>=2.21.0",
+    "gunicorn==22.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "matplotlib==3.9.0",
+    "opencv-python==4.10.0.84",
+    "imagehash==4.3.1",
+    "beautifulsoup4==4.12.3",
+    "pytest==8.2.2",
+    "ruff>=0.4.0",
+]
+
+[project.scripts]
+pushkinskaya-train = "train:main"
+pushkinskaya-evaluate = "evaluate:main"
+pushkinskaya-predict = "predict:main"
+pushkinskaya-collect = "collect_data:main"
+pushkinskaya-plan = "plan_route:main"
+pushkinskaya-preflight = "preflight_check:main"
+
+[tool.setuptools.packages.find]
+include = ["backend*"]
+
+[tool.setuptools]
+py-modules = ["train", "evaluate", "collect_data", "predict", "plan_route", "preflight_check"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
