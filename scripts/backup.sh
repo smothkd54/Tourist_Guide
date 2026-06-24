@@ -2,7 +2,7 @@
 # backup.sh — daily backup for Pushkinskaya Street Explorer
 #
 # Usage:
-#   ./scripts/backup.sh                  # backup to默认目录
+#   ./scripts/backup.sh                  # backup to default directory
 #   ./scripts/backup.sh /mnt/backup      # backup to custom directory
 #
 # Cron example (daily at 3 AM):
