@@ -16,15 +16,8 @@ matplotlib==3.9.0
 flask==3.0.3
 flask-cors==4.0.1
 
-# Image collection scripts
+# Routing / HTTP
 requests==2.32.3
-beautifulsoup4==4.12.3
-
-# Crop tool
-opencv-python==4.10.0.84
-
-# Deduplication
-imagehash==4.3.1
 
 # Production WSGI server (also in requirements-serve.txt)
 gunicorn==22.0.0

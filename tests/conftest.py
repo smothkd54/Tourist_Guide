@@ -9,16 +9,14 @@ from unittest.mock import MagicMock
 import numpy as np
 import pytest
 
-from backend.app import app, load_resources
+from backend.app import app
 
 
 @pytest.fixture
 def client():
-    """Create a test client with landmarks loaded but no model."""
+    """Test client. Resources load at backend.app import time, not per-test."""
     app.config["TESTING"] = True
     with app.test_client() as client:
-        if not app.landmarks_by_id:
-            load_resources()
         yield client
 
 

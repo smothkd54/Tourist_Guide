@@ -22,15 +22,15 @@ from pathlib import Path
 import numpy as np
 import tensorflow as tf
 import keras
-import matplotlib.pyplot as plt
 
 from backend.logging_setup import setup_logging
 
 logger = setup_logging("evaluate")
 
-# ── config ──────────────────────────────────────────────────────────────────
-DATA_DIR   = Path("data/images/test")
-MODELS_DIR = Path("models")
+# ── config (anchored to project root, independent of CWD) ───────────────────
+PROJECT_ROOT = Path(__file__).resolve().parent
+DATA_DIR   = PROJECT_ROOT / "data" / "images" / "test"
+MODELS_DIR = PROJECT_ROOT / "models"
 IMG_SIZE   = (224, 224)
 BATCH_SIZE = 32
 # ────────────────────────────────────────────────────────────────────────────
@@ -44,7 +44,7 @@ def load_class_names() -> list[str]:
         return json.load(f)
 
 
-def load_test_dataset(class_names: list[str]):
+def load_test_dataset():
     ds = keras.utils.image_dataset_from_directory(
         DATA_DIR,
         image_size=IMG_SIZE,
@@ -80,6 +80,7 @@ def per_class_metrics(cm, class_names):
 
 
 def plot_cm(cm, class_names):
+    import matplotlib.pyplot as plt
     fig, ax = plt.subplots(figsize=(8, 7))
     im = ax.imshow(cm, cmap="Blues")
     ax.set_xticks(range(len(class_names)))
@@ -119,7 +120,7 @@ def _run(model_path: Path):
     model = keras.models.load_model(model_path)
 
     logger.info("Loading test split: %s", DATA_DIR)
-    test_ds = load_test_dataset(class_names)
+    test_ds = load_test_dataset()
 
     logger.info("Running inference on test set...")
     y_true_all, y_pred_all = [], []

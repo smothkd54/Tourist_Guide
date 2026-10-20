@@ -10,8 +10,11 @@ models/confusion_matrix.png
 models/training_history.json
 models/model_metadata.json
 .venv/
-updated_files/
-logs/
+logs/*
+!logs/.gitkeep
 *.egg-info/
 dist/
 build/
+.pytest_cache/
+.ruff_cache/
+data/planned_route.json

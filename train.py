@@ -6,8 +6,7 @@ Step 2: fine-tune EfficientNetB0 on the organised landmark photos.
 USAGE
 -----
   python train.py                        # default settings
-  python train.py --epochs 30 --batch 16
-  python train.py --resume               # resume from last checkpoint
+  python train.py --epochs-head 5 --epochs-fine 10
 
 WHAT IT DOES
 ------------
@@ -35,7 +34,6 @@ import tensorflow as tf
 import keras
 from keras import layers
 from keras.applications import EfficientNetB0
-import matplotlib.pyplot as plt
 
 from backend.logging_setup import setup_logging
 
@@ -225,6 +223,7 @@ def train(args):
 
 
 def _plot_history(h1, h2):
+    import matplotlib.pyplot as plt
     fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
     all_acc  = h1.history["accuracy"]     + h2.history["accuracy"]
@@ -302,8 +301,6 @@ def main():
     parser.add_argument("--batch",       type=int, default=BATCH_SIZE)
     parser.add_argument("--epochs-head", type=int, default=EPOCHS_HEAD,  dest="epochs_head")
     parser.add_argument("--epochs-fine", type=int, default=EPOCHS_FINE,  dest="epochs_fine")
-    parser.add_argument("--resume",      action="store_true",
-                        help="Resume phase 2 from checkpoint_phase1.keras")
     args = parser.parse_args()
     train(args)
 

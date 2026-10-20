@@ -22,7 +22,6 @@ build/
 # Training data (not needed in production)
 data/raw/
 data/images/
-data/geocode_report.json
 data/planned_route.json
 
 # Model training artifacts (not needed in serving)
@@ -30,13 +29,6 @@ models/checkpoint_phase1.keras
 models/training_curves.png
 models/confusion_matrix.png
 models/training_history.json
-
-# Development/training scripts (not needed in production image)
-train.py
-evaluate.py
-predict.py
-collect_data.py
-plan_route.py
 
 # Documentation (not needed in image)
 *.md

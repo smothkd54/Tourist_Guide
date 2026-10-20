@@ -26,7 +26,9 @@ from backend.logging_setup import setup_logging
 
 logger = setup_logging("plan_route")
 
-DATA_DIR = Path("data")
+# Anchored to project root, independent of CWD
+PROJECT_ROOT = Path(__file__).resolve().parent
+DATA_DIR = PROJECT_ROOT / "data"
 LANDMARKS_JSON = DATA_DIR / "landmarks.json"
 ROUTE_OUTPUT = DATA_DIR / "planned_route.json"
 OSRM_BASE = "https://router.project-osrm.org"
@@ -59,8 +61,9 @@ def osrm_route_geometry(coords_seq):
         data = r.json()
         if data.get("code") == "Ok" and data.get("routes"):
             return data["routes"][0]["geometry"]
-    except Exception:
-        pass
+        logger.warning("OSRM returned no route geometry: %s", data.get("message"))
+    except Exception as e:
+        logger.warning("OSRM route geometry request failed: %s", e)
     return None
 
 

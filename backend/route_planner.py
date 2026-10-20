@@ -11,6 +11,10 @@ a tourist app prototype, not high-traffic production.
 import requests
 from typing import List, Dict, Any, Optional
 
+from backend.logging_setup import setup_logging
+
+logger = setup_logging("route_planner")
+
 OSRM_BASE = "https://router.project-osrm.org"
 VISIT_MINUTES_DEFAULT = 8
 
@@ -93,8 +97,9 @@ def osrm_route_geometry(coords_seq: List[tuple]) -> Optional[Dict]:
         data = r.json()
         if data.get("code") == "Ok" and data.get("routes"):
             return data["routes"][0]["geometry"]
-    except Exception:
-        pass
+        logger.warning("OSRM returned no route geometry: %s", data.get("message"))
+    except Exception as e:
+        logger.warning("OSRM route geometry request failed: %s", e)
     return None
 
 

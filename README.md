@@ -27,7 +27,7 @@ Tourist_project/
 ├── tests/
 │   ├── __init__.py
 │   ├── conftest.py              ← shared fixtures (client, client_with_mock_model)
-│   └── test_api.py              ← 32 API tests
+│   └── test_api.py              ← 54 API tests
 │
 ├── scripts/
 │   └── backup.sh                ← daily backup (models, data, logs)
@@ -44,7 +44,7 @@ Tourist_project/
 │   └── model_metadata.json
 │
 ├── .github/workflows/
-│   └── ci.yml                   ← lint (ruff), tests, Docker build, Trivy scan
+│   └── ci.yml                   ← lint (ruff), tests, Docker build, Trivy scan, container smoke test
 │
 ├── sw.js                        ← service worker (root scope, offline cache + predict queue)
 ├── Caddyfile                    ← reverse proxy (auto-HTTPS, gzip, caching)
@@ -142,10 +142,11 @@ docker compose restart
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `CORS_ORIGINS` | `http://localhost:*` | Pipe-delimited allowed origins |
+| `CORS_ORIGINS` | `http://localhost:*` | Pipe-delimited allowed origins (exact host, `:*` = any port; matched with anchored patterns) |
 | `GUNICORN_WORKERS` | `2` | Number of gunicorn worker processes |
 | `MODEL_PATH` | `/app/models/landmark_classifier.keras` | Path to model file |
 | `LOG_DIR` | `/app/logs` | Directory for log files |
+| `METRICS_TOKEN` | *(unset)* | When set, `/metrics` requires the `X-Metrics-Token` request header |
 
 ---
 
@@ -160,7 +161,7 @@ docker compose restart
 | **Manage Photos** | Upload photos per angle for each landmark (session-only) |
 
 Additional features:
-- **PWA offline support** — service worker caches landmarks, photos, and model info for offline use
+- **PWA offline support** — service worker caches landmarks and photos for offline use
 - **Offline predict queue** — queue up to 5 predictions while offline; auto-processes when connection returns
 - **Russian language toggle** — switch between EN/RU for landmark names (persisted in localStorage)
 - **Self-hosted Leaflet** — map library served locally, no CDN dependency
@@ -177,12 +178,12 @@ Additional features:
 | GET    | `/landmarks/<id>`     | —                            | single landmark object               |
 | GET    | `/nearby`             | `lat`, `lon`, `radius_m`     | landmarks within radius              |
 | GET    | `/plan`               | `start`, `minutes`, `visit`  | dynamic walking route via OSRM       |
-| POST   | `/plan-custom`        | `{ landmarks, start }`       | custom walking route via OSRM        |
+| POST   | `/plan-custom`        | `{ landmarks, start, optimize? }` | custom walking route via OSRM    |
 | GET    | `/route`              | —                            | pre-planned OSRM walking route       |
 | GET    | `/photo/<id>`         | —                            | thumbnail image for a landmark       |
 | GET    | `/photos/available`   | —                            | list of landmark IDs with photos     |
 | POST   | `/predict`            | `{ "image": "<base64>" }`    | prediction + landmark info           |
-| GET    | `/model/info`         | —                            | model training metadata              |
+| GET    | `/model/info`         | —                            | model training metadata (404 if absent) |
 | GET    | `/metrics`            | —                            | Prometheus-compatible metrics        |
 | GET    | `/sw.js`              | —                            | service worker script                |
 
@@ -257,17 +258,18 @@ pip install -e ".[dev]"
 pytest tests/ -v
 ```
 
-32 tests covering:
+54 tests covering:
 - **Health** — model status, LFS pointer detection, degraded health returns 503
+- **CORS** — localhost/loopback allowed, lookalike origins rejected
 - **Landmarks** — list, single, filter, invalid ID
 - **Nearby** — radius filter, missing params
 - **Predict** — empty body, base64 decoding, threshold enforcement, real-model smoke test
-- **Route planning** — OSRM integration, rate limiter, custom route validation
+- **Route planning** — OSRM integration, rate limiter, custom route validation (types, bounds, dedupe)
 - **Photos** — serve, available list
 - **Frontend** — serve index.html
-- **Model info** — metadata endpoint
+- **Model info** — metadata endpoint (404 when metadata absent)
 - **Logging** — log file creation
-- **Metrics** — Prometheus counters
+- **Metrics** — Prometheus counters and header-only token auth
 
 Shared fixtures live in `tests/conftest.py` (`client`, `client_with_mock_model`).
 
@@ -310,9 +312,6 @@ pip install -e .             # production only
 | Package | Purpose |
 |---------|---------|
 | matplotlib | training curves, confusion matrix |
-| opencv-python | image preprocessing |
-| imagehash | deduplication |
-| beautifulsoup4 | data collection |
 
 ### Development packages
 
@@ -327,7 +326,7 @@ pip install -e .             # production only
 pip install -r requirements-serve.txt
 ```
 
-Includes tensorflow, flask, gunicorn, pillow, numpy, requests. Excludes matplotlib, opencv, imagehash, pytest.
+Includes tensorflow, flask, gunicorn, pillow, numpy, requests. Excludes matplotlib, pytest.
 
 ---
 
@@ -338,7 +337,6 @@ The app is a Progressive Web App. The service worker (`sw.js`) runs at root scop
 - **App shell** — `/app` (HTML, JS, CSS)
 - **Landmarks** — `/landmarks` (cache-first)
 - **Photos** — `/photo/*` (cache-first)
-- **Model info** — `/model/info` (cache-first)
 
 ### Offline predict queue
 
@@ -350,7 +348,7 @@ When offline, predictions are queued in `localStorage` (5-item cap). Each item s
 
 ### Cache versioning
 
-The SW cache is versioned (`pushkinskaya-v1` in `sw.js`). Increment the version string to bust all caches on update.
+The SW cache is versioned (`pushkinskaya-v2` in `sw.js`). Increment the version string to bust all caches on update.
 
 ---
 
@@ -382,7 +380,7 @@ Services:
 
 The Docker container includes a health check:
 ```
-HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3
+HEALTHCHECK --interval=30s --timeout=5s --start-period=90s --retries=3
     CMD curl -f http://localhost:5000/ || exit 1
 ```
 
@@ -416,6 +414,8 @@ Set `LOG_DIR` to change the log directory (default: `logs/`).
 
 Metrics are per-worker, in-memory. Counters reset on worker restart — suitable for container metrics shipped to Prometheus/Grafana.
 
+If `METRICS_TOKEN` is set, scrape with the `X-Metrics-Token` header; query-string tokens are not accepted so the secret never appears in access logs.
+
 ---
 
 ## Backup & recovery
@@ -441,10 +441,11 @@ Retains 7 days of backups. Cron example (daily at 3 AM):
 
 GitHub Actions pipeline (`.github/workflows/ci.yml`):
 
-1. **Lint** — `ruff check .` (all Python files)
-2. **Test** — `pytest tests/ -v` (32 tests)
+1. **Lint** — `ruff check .` (pinned ruff version)
+2. **Test** — `pytest tests/ -v` (54 tests)
 3. **Docker build** — builds image, runs preflight check
 4. **Trivy scan** — fails on CRITICAL/HIGH vulnerabilities
+5. **Container smoke test** — boots the image, checks `/` and all 46 landmarks
 
 ---
 

@@ -29,7 +29,7 @@ jobs:
 
       - name: Lint with ruff
         run: |
-          pip install ruff
+          pip install ruff==0.15.18
           ruff check .
 
       - name: Run tests
@@ -47,8 +47,24 @@ jobs:
         run: docker build -t pushkinskaya-explorer .
 
       - name: Scan Docker image for vulnerabilities
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: pushkinskaya-explorer
           severity: CRITICAL,HIGH
           exit-code: 1
+
+      - name: Smoke test container
+        run: |
+          docker run -d --name web -p 5000:5000 pushkinskaya-explorer
+          for i in $(seq 1 45); do
+            if curl -fsS http://localhost:5000/ > /dev/null 2>&1; then break; fi
+            sleep 2
+          done
+          curl -fsS http://localhost:5000/
+          COUNT=$(curl -fsS http://localhost:5000/landmarks | python -c "import json,sys; print(len(json.load(sys.stdin)))")
+          echo "landmarks=$COUNT"
+          test "$COUNT" = "46"
+
+      - name: Container logs
+        if: always()
+        run: docker logs web || true

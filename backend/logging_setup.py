@@ -71,15 +71,20 @@ def setup_logging(name: str, log_dir: str | None = None, level: int = logging.IN
 
     # ── file handler (rotating, emoji-stripped, UTF-8) ───────────────────
     resolved_dir = Path(os.environ.get("LOG_DIR", log_dir or "logs"))
-    resolved_dir.mkdir(parents=True, exist_ok=True)
-    log_path = resolved_dir / f"{name}.log"
+    try:
+        resolved_dir.mkdir(parents=True, exist_ok=True)
+        file_handler = RotatingFileHandler(
+            resolved_dir / f"{name}.log",
+            maxBytes=5 * 1024 * 1024,  # 5 MB
+            backupCount=3,
+            encoding="utf-8",
+        )
+    except OSError as e:
+        # A read-only or foreign-owned log dir (common with Docker bind
+        # mounts) must not take the whole service down at import time.
+        logger.warning("File logging disabled (%s): %s", resolved_dir, e)
+        return logger
 
-    file_handler = RotatingFileHandler(
-        log_path,
-        maxBytes=5 * 1024 * 1024,  # 5 MB
-        backupCount=3,
-        encoding="utf-8",
-    )
     file_handler.setLevel(level)
     file_handler.setFormatter(_EmojiStripFormatter(_FORMAT, datefmt=_DATEFMT))
     logger.addHandler(file_handler)

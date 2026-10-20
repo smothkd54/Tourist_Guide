@@ -26,9 +26,12 @@ RUN useradd -m appuser && chown -R appuser /app
 RUN mkdir -p /app/logs && chown appuser:appuser /app/logs
 USER appuser
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+# Model loading happens at import inside each worker; on a slow host that
+# can exceed gunicorn's default 30 s boot timeout. Allow a generous boot
+# window, and give the healthcheck time for the first model load.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=90s --retries=3 \
     CMD curl -f http://localhost:5000/ || exit 1
 
 # Fail fast and loud if required artifacts are missing, instead of
 # starting a server that silently returns 503 on every /predict call.
-CMD python preflight_check.py && gunicorn -w ${GUNICORN_WORKERS:-2} -b 0.0.0.0:5000 backend.app:app
+CMD python preflight_check.py && gunicorn -w ${GUNICORN_WORKERS:-2} --timeout 120 -b 0.0.0.0:5000 backend.app:app

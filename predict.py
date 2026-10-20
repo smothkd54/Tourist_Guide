@@ -24,9 +24,10 @@ from backend.logging_setup import setup_logging
 
 logger = setup_logging("predict")
 
-# ── config ──────────────────────────────────────────────────────────────────
-MODELS_DIR   = Path("models")
-DATA_DIR     = Path("data")
+# ── config (anchored to project root, independent of CWD) ───────────────────
+PROJECT_ROOT = Path(__file__).resolve().parent
+MODELS_DIR   = PROJECT_ROOT / "models"
+DATA_DIR     = PROJECT_ROOT / "data"
 IMG_SIZE     = (224, 224)
 THRESHOLD    = 0.40
 # ────────────────────────────────────────────────────────────────────────────

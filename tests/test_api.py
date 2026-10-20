@@ -10,12 +10,42 @@ import json
 import base64
 import io
 
+import pytest
+
 from backend.app import app, _osrm_limiter  # noqa: E402
+
+
+# ── CORS ──────────────────────────────────────────────────────────────────────
+
+class TestCORS:
+    def test_allows_localhost_origin(self, client):
+        resp = client.get("/landmarks", headers={"Origin": "http://localhost:3000"})
+        assert resp.headers.get("Access-Control-Allow-Origin") == "http://localhost:3000"
+
+    def test_allows_loopback_ip_origin(self, client):
+        resp = client.get("/landmarks", headers={"Origin": "http://127.0.0.1:8080"})
+        assert resp.headers.get("Access-Control-Allow-Origin") == "http://127.0.0.1:8080"
+
+    @pytest.mark.parametrize("origin", [
+        "http://localhost.evil.com",
+        "http://localhostevil.com",
+        "http://127.0.0.1.evil.com",
+        "https://evil.com",
+    ])
+    def test_denies_lookalike_origins(self, client, origin):
+        resp = client.get("/landmarks", headers={"Origin": origin})
+        assert resp.headers.get("Access-Control-Allow-Origin") is None
+
 
 
 # ── Health Check ──────────────────────────────────────────────────────────────
 
 class TestHealthCheck:
+    def test_resources_loaded_at_import(self):
+        """gunicorn imports backend.app without running __main__ — resources
+        must therefore load at import time, not from the __main__ block."""
+        assert len(app.landmarks_by_id) > 0
+
     def test_health_returns_200_when_loaded(self, client_with_mock_model):
         resp = client_with_mock_model.get("/")
         assert resp.status_code == 200
@@ -81,6 +111,18 @@ class TestNearby:
         assert "nearest_landmark_distance_m" in data
         assert "nearest_landmark_name" in data
 
+    def test_nearby_non_numeric_radius_returns_400(self, client):
+        resp = client.get("/nearby?lat=47.226&lon=39.719&radius_m=abc")
+        assert resp.status_code == 400
+
+    def test_nearby_negative_radius_returns_400(self, client):
+        resp = client.get("/nearby?lat=47.226&lon=39.719&radius_m=-5")
+        assert resp.status_code == 400
+
+    def test_nearby_out_of_range_coords_returns_400(self, client):
+        resp = client.get("/nearby?lat=999&lon=39.719")
+        assert resp.status_code == 400
+
 
 # ── Predict ───────────────────────────────────────────────────────────────────
 
@@ -143,6 +185,18 @@ class TestRoute:
         resp = client.get("/plan?start=pushkin_monument&minutes=abc")
         assert resp.status_code == 400
 
+    def test_plan_minutes_below_min_returns_400(self, client):
+        resp = client.get("/plan?start=pushkin_monument&minutes=5")
+        assert resp.status_code == 400
+
+    def test_plan_minutes_above_max_returns_400(self, client):
+        resp = client.get("/plan?start=pushkin_monument&minutes=100000")
+        assert resp.status_code == 400
+
+    def test_plan_visit_out_of_range_returns_400(self, client):
+        resp = client.get("/plan?start=pushkin_monument&minutes=60&visit=999")
+        assert resp.status_code == 400
+
     def test_plan_rate_limit_blocks_after_threshold(self, client):
         _osrm_limiter._requests.clear()
         addr = "127.0.0.1"
@@ -151,6 +205,14 @@ class TestRoute:
         assert _osrm_limiter.is_allowed(addr) is False
         _osrm_limiter._requests.clear()
 
+    def test_rate_limiter_prunes_stale_keys(self):
+        from backend.app import RateLimiter
+        limiter = RateLimiter(max_requests=5, window_seconds=60)
+        limiter._requests["stale"] = [0.0]
+        limiter._calls = 99  # the next call triggers the periodic prune
+        assert limiter.is_allowed("fresh") is True
+        assert "stale" not in limiter._requests
+
     def test_plan_custom_missing_body(self, client):
         resp = client.post("/plan-custom", json={})
         assert resp.status_code == 400
@@ -158,6 +220,58 @@ class TestRoute:
     def test_plan_custom_empty_landmarks(self, client):
         resp = client.post("/plan-custom", json={"landmarks": [], "start": "pushkin_monument"})
         assert resp.status_code == 400
+
+    def test_plan_custom_unknown_id_returns_400(self, client):
+        resp = client.post("/plan-custom",
+                           json={"landmarks": ["pushkin_monument", "bogus_id"],
+                                 "start": "pushkin_monument"})
+        assert resp.status_code == 400
+        assert "bogus_id" in resp.get_json()["error"]
+
+    def test_plan_custom_bad_start_returns_400(self, client):
+        resp = client.post("/plan-custom",
+                           json={"landmarks": ["pushkin_monument", "kirov_monument"],
+                                 "start": "bogus_start"})
+        assert resp.status_code == 400
+
+    def test_plan_custom_non_string_ids_returns_400(self, client):
+        resp = client.post("/plan-custom",
+                           json={"landmarks": ["pushkin_monument", 5],
+                                 "start": "pushkin_monument"})
+        assert resp.status_code == 400
+
+    def test_plan_custom_non_string_start_returns_400(self, client):
+        resp = client.post("/plan-custom",
+                           json={"landmarks": ["pushkin_monument"], "start": 5})
+        assert resp.status_code == 400
+
+    def test_plan_custom_non_bool_optimize_returns_400(self, client):
+        resp = client.post("/plan-custom",
+                           json={"landmarks": ["pushkin_monument"],
+                                 "start": "pushkin_monument", "optimize": "yes"})
+        assert resp.status_code == 400
+
+    def test_plan_custom_dedupes_ids_before_routing(self, client, monkeypatch):
+        from backend import app as app_module
+
+        seen = {}
+
+        def fake_plan(landmarks, start_id, optimize_order=True):
+            seen["ids"] = [lm["id"] for lm in landmarks]
+            seen["optimize"] = optimize_order
+            return {"stops": [], "total_walking_minutes": 0,
+                    "total_visit_minutes": 0, "total_minutes": 0,
+                    "route_geometry": None}
+
+        monkeypatch.setattr(app_module, "plan_custom_route", fake_plan)
+        resp = client.post("/plan-custom", json={
+            "landmarks": ["pushkin_monument", "kirov_monument", "pushkin_monument"],
+            "start": "pushkin_monument",
+            "optimize": False,
+        })
+        assert resp.status_code == 200
+        assert seen["ids"] == ["pushkin_monument", "kirov_monument"]
+        assert seen["optimize"] is False
 
     def test_route_fallback_no_file(self, client):
         """GET /route returns 404 when planned_route.json doesn't exist."""
@@ -220,8 +334,9 @@ class TestInferenceSmoke:
         import keras
         from keras.applications import EfficientNetB0
 
-        # Build a tiny real model (untrained)
+        # Build a tiny real model (untrained, no weight download)
         base = EfficientNetB0(include_top=False, pooling="avg",
+                              weights=None,
                               input_shape=(224, 224, 3))
         inputs = keras.Input(shape=(224, 224, 3))
         x = base(inputs, training=False)
@@ -305,3 +420,22 @@ class TestMetrics:
         resp = client_with_mock_model.get("/metrics")
         body = resp.get_data(as_text=True)
         assert "pushkinskaya_prediction_confidence_count" in body
+
+    def test_metrics_confidence_histogram_is_cumulative(self, client):
+        from backend.app import _metrics
+        before = _metrics._confidence_count
+        _metrics.record_confidence(0.05)
+        _metrics.record_confidence(0.25)
+        body = _metrics.render()
+        assert f"pushkinskaya_prediction_confidence_count {before + 2}" in body
+        assert 'pushkinskaya_prediction_confidence_bucket{le="0.1"} ' in body
+        assert 'pushkinskaya_prediction_confidence_bucket{le="0.3"} ' in body
+        assert 'pushkinskaya_prediction_confidence_sum ' in body
+
+    def test_metrics_token_required_when_set(self, client, monkeypatch):
+        monkeypatch.setenv("METRICS_TOKEN", "s3cret")
+        assert client.get("/metrics").status_code == 401
+        # Query-string token is no longer accepted (keeps secrets out of logs)
+        assert client.get("/metrics?token=s3cret").status_code == 401
+        resp = client.get("/metrics", headers={"X-Metrics-Token": "s3cret"})
+        assert resp.status_code == 200

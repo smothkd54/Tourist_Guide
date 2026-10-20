@@ -46,8 +46,9 @@ from backend.logging_setup import setup_logging
 
 logger = setup_logging("collect_data")
 
-# ── config ──────────────────────────────────────────────────────────────────
-DATA_DIR        = Path("data")
+# ── config (anchored to project root, independent of CWD) ───────────────────
+PROJECT_ROOT    = Path(__file__).resolve().parent
+DATA_DIR        = PROJECT_ROOT / "data"
 RAW_DIR         = DATA_DIR / "raw"
 IMAGES_DIR      = DATA_DIR / "images"
 LANDMARKS_JSON  = DATA_DIR / "landmarks.json"
@@ -92,7 +93,7 @@ def split_and_copy(paths: list[Path], landmark_id: str):
         dest_dir.mkdir(parents=True, exist_ok=True)
         for i, src in enumerate(files):
             dest = dest_dir / f"{landmark_id}_{split}_{i:04d}{src.suffix.lower()}"
-            shutil.move(str(src), str(dest))
+            shutil.copy2(str(src), str(dest))
 
     return {k: len(v) for k, v in buckets.items()}
 
@@ -104,7 +105,7 @@ def report(landmark_id: str, counts: dict, total: int):
                 counts['train'], counts['val'], counts['test'])
 
 
-def main(source: Path):
+def main(source: Path = RAW_DIR):
     random.seed(SEED)
     landmark_ids = load_landmark_ids()
 

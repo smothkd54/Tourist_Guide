@@ -1,10 +1,25 @@
-const CACHE_NAME = "pushkinskaya-v1";
-const APP_SHELL = ["/app"];
+const CACHE_NAME = "pushkinskaya-v2";
+const APP_SHELL = [
+  "/app",
+  "/app/static/leaflet/leaflet.js",
+  "/app/static/leaflet/leaflet.css",
+  "/app/manifest.json",
+];
 const LANDMARKS_CACHE = "pushkinskaya-data-v1";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL))
+    caches.open(CACHE_NAME).then((cache) =>
+      Promise.all(
+        APP_SHELL.map((url) =>
+          cache.add(url).catch((err) => {
+            // One missing asset must not abort the whole service worker
+            // install — cache the rest and try this URL again at runtime.
+            console.warn("Precache failed:", url, err);
+          })
+        )
+      )
+    )
   );
   self.skipWaiting();
 });
@@ -90,22 +105,6 @@ self.addEventListener("fetch", (event) => {
             if (response.ok) {
               cache.put(event.request, response.clone());
             }
-            return response;
-          }).catch(() => cached);
-          return cached || fetched;
-        })
-      )
-    );
-    return;
-  }
-
-  // Model metadata — cache first (rarely changes)
-  if (url.pathname === "/model/info") {
-    event.respondWith(
-      caches.open(LANDMARKS_CACHE).then((cache) =>
-        cache.match(event.request).then((cached) => {
-          const fetched = fetch(event.request).then((response) => {
-            if (response.ok) cache.put(event.request, response.clone());
             return response;
           }).catch(() => cached);
           return cached || fetched;

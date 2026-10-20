@@ -22,6 +22,7 @@ import json
 import base64
 import io
 import os
+import re
 import time
 from pathlib import Path
 
@@ -33,6 +34,7 @@ from PIL import Image
 
 from backend.route_planner import plan_route, plan_custom_route
 from backend.logging_setup import setup_logging
+from backend.artifacts import is_lfs_pointer
 
 
 class RateLimiter:
@@ -42,21 +44,45 @@ class RateLimiter:
         self.max_requests = max_requests
         self.window_seconds = window_seconds
         self._requests = {}  # ip -> [timestamps]
+        self._calls = 0
+
+    def _prune_stale(self, cutoff):
+        """Drop keys with no timestamps inside the window (bounds memory)."""
+        stale = [k for k, ts in self._requests.items() if not any(t > cutoff for t in ts)]
+        for k in stale:
+            del self._requests[k]
 
     def is_allowed(self, key):
-        import time
         now = time.time()
         cutoff = now - self.window_seconds
-        self._requests.setdefault(key, [])
-        self._requests[key] = [t for t in self._requests[key] if t > cutoff]
-        if len(self._requests[key]) >= self.max_requests:
+        self._calls += 1
+        if self._calls % 100 == 0:
+            self._prune_stale(cutoff)
+        timestamps = [t for t in self._requests.get(key, []) if t > cutoff]
+        if len(timestamps) >= self.max_requests:
+            self._requests[key] = timestamps
             return False
-        self._requests[key].append(now)
+        timestamps.append(now)
+        self._requests[key] = timestamps
         return True
 
 
 _workers = int(os.environ.get("GUNICORN_WORKERS", "2"))
-_osrm_limiter = RateLimiter(max_requests=10 // _workers, window_seconds=60)
+_osrm_limiter = RateLimiter(max_requests=max(1, 10 // _workers), window_seconds=60)
+
+
+def _client_key() -> str:
+    """Rate-limit key that survives reverse proxies.
+
+    Behind Caddy/Docker every request arrives from the proxy's IP, so
+    keying on remote_addr would put all users in one shared bucket.
+    X-Forwarded-For (set by Caddy) gives the real client address —
+    first hop when the header chains multiple proxies.
+    """
+    xff = request.headers.get("X-Forwarded-For", "")
+    if xff:
+        return xff.split(",")[0].strip()
+    return request.remote_addr or "unknown"
 
 logger = setup_logging("app")
 
@@ -74,7 +100,9 @@ class MetricsCollector:
 
     def __init__(self):
         self._requests: dict[tuple[str, str, str], int] = {}
-        self._confidences: list[float] = []
+        self._confidence_counts = [0] * len(self._BUCKETS)
+        self._confidence_count = 0
+        self._confidence_sum = 0.0
         self._osrm_ok = 0
         self._osrm_fail = 0
         self._start_time = time.time()
@@ -84,7 +112,12 @@ class MetricsCollector:
         self._requests[key] = self._requests.get(key, 0) + 1
 
     def record_confidence(self, confidence: float):
-        self._confidences.append(confidence)
+        self._confidence_count += 1
+        self._confidence_sum += confidence
+        for i, boundary in enumerate(self._BUCKETS):
+            if confidence <= boundary:
+                self._confidence_counts[i] += 1
+                break
 
     def record_osrm(self, success: bool):
         if success:
@@ -104,18 +137,13 @@ class MetricsCollector:
 
         lines.append("# HELP pushkinskaya_prediction_confidence Prediction confidence distribution")
         lines.append("# TYPE pushkinskaya_prediction_confidence histogram")
-        buckets = [0] * len(self._BUCKETS)
-        for c in self._confidences:
-            for i, boundary in enumerate(self._BUCKETS):
-                if c <= boundary:
-                    buckets[i] += 1
-                    break
+        running = 0
         for i, boundary in enumerate(self._BUCKETS):
-            lines.append(f"pushkinskaya_prediction_confidence_bucket{{le=\"{boundary}\"}} {buckets[i]}")
-        lines.append(f"pushkinskaya_prediction_confidence_bucket{{le=\"+Inf\"}} {len(self._confidences)}")
-        lines.append(f"pushkinskaya_prediction_confidence_count {len(self._confidences)}")
-        if self._confidences:
-            lines.append(f"pushkinskaya_prediction_confidence_sum {sum(self._confidences):.6f}")
+            running += self._confidence_counts[i]
+            lines.append(f"pushkinskaya_prediction_confidence_bucket{{le=\"{boundary}\"}} {running}")
+        lines.append(f"pushkinskaya_prediction_confidence_bucket{{le=\"+Inf\"}} {self._confidence_count}")
+        lines.append(f"pushkinskaya_prediction_confidence_count {self._confidence_count}")
+        lines.append(f"pushkinskaya_prediction_confidence_sum {self._confidence_sum:.6f}")
 
         lines.append("# HELP pushkinskaya_osrm_requests_total OSRM routing requests")
         lines.append("# TYPE pushkinskaya_osrm_requests_total counter")
@@ -150,13 +178,32 @@ MAX_CONTENT_MB       = 10     # max request body size in MB
 
 app = Flask(__name__, static_folder=str(FRONTEND_DIR))
 app.config["MAX_CONTENT_LENGTH"] = MAX_CONTENT_MB * 1024 * 1024
-_cors_origins = os.environ.get("CORS_ORIGINS", "http://localhost:*|http://127.0.0.1:*")
-CORS(app, origins=[o.strip() for o in _cors_origins.split("|")])
 
 
-@app.before_request
-def _start_timer():
-    request._start_time = time.time()
+def _cors_patterns() -> list[str]:
+    """Build anchored origin patterns for flask-cors.
+
+    flask-cors matches origins as unanchored regexes, so a bare
+    "http://localhost:*" also matches http://localhost.evil.com. Every
+    configured origin is escaped and anchored; a trailing ":*" means
+    "any port". Pipe-delimited via the CORS_ORIGINS env var.
+    """
+    patterns = [
+        r"^http://localhost(:\d+)?$",
+        r"^http://127\.0\.0\.1(:\d+)?$",
+    ]
+    for origin in os.environ.get("CORS_ORIGINS", "").split("|"):
+        origin = origin.strip()
+        if not origin:
+            continue
+        if origin.endswith(":*"):
+            patterns.append("^" + re.escape(origin[:-2]) + r"(:\d+)?$")
+        else:
+            patterns.append("^" + re.escape(origin) + "$")
+    return patterns
+
+
+CORS(app, origins=_cors_patterns())
 
 
 @app.after_request
@@ -177,20 +224,9 @@ app.class_names     = []
 app.landmarks_by_id = {}
 
 
-def _is_lfs_pointer(path: Path) -> bool:
-    """Return True if the file is a Git LFS pointer stub, not the real content."""
-    if path.stat().st_size > 1024:
-        return False
-    try:
-        return path.read_text(encoding="utf-8", errors="ignore") \
-                   .startswith("version https://git-lfs.github.com")
-    except Exception:
-        return False
-
-
 def load_resources():
     """Load model, class names, and landmark metadata into app state."""
-    if MODEL_PATH.exists() and not _is_lfs_pointer(MODEL_PATH):
+    if MODEL_PATH.exists() and not is_lfs_pointer(MODEL_PATH):
         app.model = keras.models.load_model(MODEL_PATH)
         logger.info("Model loaded from %s", MODEL_PATH)
     elif MODEL_PATH.exists():
@@ -219,6 +255,13 @@ def load_resources():
 
     logger.info("Classes loaded: %d", len(app.class_names))
     logger.info("Landmarks in DB: %d", len(app.landmarks_by_id))
+
+
+# Load at import time, not under __main__. gunicorn (Docker) imports this
+# module without ever executing the __main__ block — the old placement
+# meant production containers served an empty, model-less app (health
+# check 503, /landmarks [], /predict 503).
+load_resources()
 
 
 def preprocess_image(image_bytes: bytes) -> np.ndarray:
@@ -270,8 +313,17 @@ def health():
 
 @app.route("/metrics")
 def metrics():
-    """Prometheus-compatible metrics endpoint."""
+    """Prometheus-compatible metrics endpoint.
+
+    If METRICS_TOKEN is set, requests must supply it in the
+    X-Metrics-Token header — otherwise 401. Unset (the default) keeps
+    the endpoint open for local dev. The token is header-only so it
+    never lands in URLs or access logs.
+    """
     from flask import Response
+    token = os.environ.get("METRICS_TOKEN", "")
+    if token and request.headers.get("X-Metrics-Token", "") != token:
+        return jsonify({"error": "Unauthorized"}), 401
     return Response(_metrics.render(), mimetype="text/plain; version=0.0.4; charset=utf-8")
 
 
@@ -293,9 +345,13 @@ def nearby():
     try:
         lat = float(request.args.get("lat"))
         lon = float(request.args.get("lon"))
+        radius_m = float(request.args.get("radius_m", 500))
     except (TypeError, ValueError):
-        return jsonify({"error": "Provide numeric lat and lon query params"}), 400
-    radius_m = float(request.args.get("radius_m", 500))
+        return jsonify({"error": "Provide numeric lat, lon and radius_m query params"}), 400
+    if not (-90 <= lat <= 90 and -180 <= lon <= 180):
+        return jsonify({"error": "lat must be in [-90, 90] and lon in [-180, 180]"}), 400
+    if radius_m <= 0:
+        return jsonify({"error": "radius_m must be a positive number"}), 400
 
     geocoded = [
         lm for lm in current_app.landmarks_by_id.values()
@@ -358,12 +414,16 @@ def dynamic_plan():
         visit_minutes = int(visit_param) if visit_param is not None else None
     except ValueError:
         return jsonify({"error": "minutes and visit must be integers"}), 400
+    if not 15 <= minutes <= 480:
+        return jsonify({"error": "minutes must be between 15 and 480"}), 400
+    if visit_minutes is not None and not 0 <= visit_minutes <= 120:
+        return jsonify({"error": "visit must be between 0 and 120 minutes"}), 400
 
     geocoded = [lm for lm in current_app.landmarks_by_id.values() if lm.get("lat") is not None]
     if len(geocoded) < 2:
         return jsonify({"error": "Not enough geocoded landmarks (need at least 2)."}), 400
 
-    if not _osrm_limiter.is_allowed(request.remote_addr):
+    if not _osrm_limiter.is_allowed(_client_key()):
         return jsonify({"error": "Rate limit exceeded. Try again in a minute."}), 429
 
     try:
@@ -376,7 +436,7 @@ def dynamic_plan():
     except Exception as e:
         _metrics.record_osrm(False)
         logger.error("OSRM routing failed for start=%s minutes=%s: %s", start_id, minutes, e)
-        return jsonify({"error": f"OSRM routing failed: {str(e)}"}), 503
+        return jsonify({"error": "OSRM routing failed"}), 503
 
     _metrics.record_osrm(True)
     return jsonify(route_data)
@@ -404,24 +464,40 @@ def plan_custom():
 
     if not isinstance(landmark_ids, list) or len(landmark_ids) == 0:
         return jsonify({"error": "'landmarks' must be a non-empty list of landmark IDs"}), 400
+    if not isinstance(start_id, str):
+        return jsonify({"error": "'start' must be a landmark ID string"}), 400
+    if not all(isinstance(lid, str) for lid in landmark_ids):
+        return jsonify({"error": "'landmarks' must contain only landmark ID strings"}), 400
+    if not isinstance(optimize, bool):
+        return jsonify({"error": "'optimize' must be true or false"}), 400
 
-    landmarks = [current_app.landmarks_by_id[lid] for lid in landmark_ids if lid in current_app.landmarks_by_id]
-    if len(landmarks) == 0:
-        return jsonify({"error": "None of the provided landmark IDs were found"}), 404
+    landmark_ids = list(dict.fromkeys(landmark_ids))
+    if len(landmark_ids) > len(current_app.landmarks_by_id):
+        return jsonify({"error": "Too many landmarks requested"}), 400
+
+    unknown = [lid for lid in landmark_ids if lid not in current_app.landmarks_by_id]
+    if unknown:
+        return jsonify({"error": f"Unknown landmark IDs: {unknown}"}), 400
+    if start_id not in current_app.landmarks_by_id or start_id not in landmark_ids:
+        return jsonify({"error": f"Start landmark '{start_id}' must be one of the provided landmark IDs"}), 400
+
+    landmarks = [current_app.landmarks_by_id[lid] for lid in landmark_ids]
 
     geocoded = [lm for lm in landmarks if lm.get("lat") is not None]
     if len(geocoded) < 1:
         return jsonify({"error": "Selected landmarks need GPS coordinates"}), 400
 
-    if not _osrm_limiter.is_allowed(request.remote_addr):
+    if not _osrm_limiter.is_allowed(_client_key()):
         return jsonify({"error": "Rate limit exceeded. Try again in a minute."}), 429
 
     try:
         route_data = plan_custom_route(geocoded, start_id, optimize_order=optimize)
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
     except Exception as e:
         _metrics.record_osrm(False)
         logger.error("OSRM routing failed for custom route: %s", e)
-        return jsonify({"error": f"OSRM routing failed: {str(e)}"}), 503
+        return jsonify({"error": "OSRM routing failed"}), 503
 
     _metrics.record_osrm(True)
     return jsonify(route_data)
@@ -459,7 +535,7 @@ def predict():
         tensor    = preprocess_image(img_bytes)
     except Exception as e:
         logger.warning("Image decode failed: %s", e)
-        return jsonify({"error": f"Image decode failed: {e}"}), 400
+        return jsonify({"error": "Image decode failed. Send a valid JPEG or PNG."}), 400
 
     probs = current_app.model.predict(tensor, verbose=0)[0]
 
@@ -536,7 +612,6 @@ def serve_static(filename):
 
 # ── main ──────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
-    load_resources()
     print(f"\nServer running at http://localhost:{PORT}")
     print(f"Frontend: http://localhost:{PORT}/app")
     app.run(host=HOST, port=PORT, debug=False, use_reloader=False)

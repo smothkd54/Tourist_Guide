@@ -21,6 +21,8 @@ import os
 import sys
 from pathlib import Path
 
+from backend.artifacts import is_lfs_pointer
+
 PROJECT_ROOT     = Path(__file__).resolve().parent
 MODEL_PATH       = Path(os.environ.get("MODEL_PATH", str(PROJECT_ROOT / "models" / "landmark_classifier.keras")))
 CLASS_NAMES_PATH = PROJECT_ROOT / "models" / "class_names.json"
@@ -52,6 +54,12 @@ def main():
     model_exists = MODEL_PATH.exists()
     all_ok &= check("trained model exists", model_exists,
                      f"expected at {MODEL_PATH} — run train.py")
+    if model_exists:
+        all_ok &= check(
+            "trained model is real content (not an LFS pointer)",
+            not is_lfs_pointer(MODEL_PATH),
+            "run 'git lfs pull' to fetch the real model file",
+        )
 
     classes_exist = CLASS_NAMES_PATH.exists()
     all_ok &= check("class_names.json exists", classes_exist,
