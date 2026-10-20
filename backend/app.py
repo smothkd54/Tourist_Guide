@@ -20,7 +20,9 @@ ENDPOINTS
 
 import json
 import base64
+import hmac
 import io
+import math
 import os
 import re
 import time
@@ -171,7 +173,9 @@ PHOTOS_DIR       = DATA_DIR / "photos"
 
 IMG_SIZE             = (224, 224)
 PORT                 = 5000
-HOST                 = "0.0.0.0"
+# Dev server only (gunicorn in Docker binds via -b 0.0.0.0:5000).
+# Loopback by default so `python backend/app.py` isn't exposed on the LAN.
+HOST                 = os.environ.get("HOST", "127.0.0.1")
 CONFIDENCE_THRESHOLD = 0.40   # predictions below this are reported as "unknown"
 MAX_CONTENT_MB       = 10     # max request body size in MB
 # ────────────────────────────────────────────────────────────────────────────
@@ -322,7 +326,9 @@ def metrics():
     """
     from flask import Response
     token = os.environ.get("METRICS_TOKEN", "")
-    if token and request.headers.get("X-Metrics-Token", "") != token:
+    supplied = request.headers.get("X-Metrics-Token", "")
+    if token and not hmac.compare_digest(
+            supplied.encode("utf-8"), token.encode("utf-8")):
         return jsonify({"error": "Unauthorized"}), 401
     return Response(_metrics.render(), mimetype="text/plain; version=0.0.4; charset=utf-8")
 
@@ -348,10 +354,12 @@ def nearby():
         radius_m = float(request.args.get("radius_m", 500))
     except (TypeError, ValueError):
         return jsonify({"error": "Provide numeric lat, lon and radius_m query params"}), 400
+    if not (math.isfinite(lat) and math.isfinite(lon) and math.isfinite(radius_m)):
+        return jsonify({"error": "lat, lon and radius_m must be finite numbers"}), 400
     if not (-90 <= lat <= 90 and -180 <= lon <= 180):
         return jsonify({"error": "lat must be in [-90, 90] and lon in [-180, 180]"}), 400
-    if radius_m <= 0:
-        return jsonify({"error": "radius_m must be a positive number"}), 400
+    if not 0 < radius_m <= 50_000:
+        return jsonify({"error": "radius_m must be between 1 and 50000"}), 400
 
     geocoded = [
         lm for lm in current_app.landmarks_by_id.values()
@@ -603,6 +611,12 @@ def serve_sw():
     from flask import Response
     sw_path = PROJECT_ROOT / "sw.js"
     return Response(sw_path.read_text(), mimetype="application/javascript")
+
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory(FRONTEND_DIR / "static", "favicon.svg",
+                               mimetype="image/svg+xml")
 
 
 @app.route("/app/<path:filename>")

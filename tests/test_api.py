@@ -123,6 +123,11 @@ class TestNearby:
         resp = client.get("/nearby?lat=999&lon=39.719")
         assert resp.status_code == 400
 
+    def test_nearby_nan_values_return_400(self, client):
+        for qs in ("lat=nan&lon=39.719", "lat=47.226&lon=inf",
+                   "lat=47.226&lon=39.719&radius_m=nan"):
+            assert client.get(f"/nearby?{qs}").status_code == 400
+
 
 # ── Predict ───────────────────────────────────────────────────────────────────
 
@@ -303,6 +308,11 @@ class TestFrontend:
     def test_serve_frontend_slash(self, client):
         resp = client.get("/app/")
         assert resp.status_code == 200
+
+    def test_favicon_served(self, client):
+        resp = client.get("/favicon.ico")
+        assert resp.status_code == 200
+        assert "svg" in resp.content_type
 
 
 # ── Model Info ───────────────────────────────────────────────────────────────

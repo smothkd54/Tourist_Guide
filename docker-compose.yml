@@ -16,6 +16,10 @@ services:
     build: .
     expose:
       - "5000"
+    environment:
+      # Fail fast if unset: /metrics must never be served without a token
+      # in a composed deployment. Caddy forwards the header unchanged.
+      METRICS_TOKEN: ${METRICS_TOKEN:?Set METRICS_TOKEN in .env (see .env.example)}
     env_file:
       - .env
     volumes:

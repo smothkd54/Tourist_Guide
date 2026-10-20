@@ -1,8 +1,9 @@
-const CACHE_NAME = "pushkinskaya-v2";
+const CACHE_NAME = "pushkinskaya-v3";
 const APP_SHELL = [
   "/app",
   "/app/static/leaflet/leaflet.js",
   "/app/static/leaflet/leaflet.css",
+  "/app/static/favicon.svg",
   "/app/manifest.json",
 ];
 const LANDMARKS_CACHE = "pushkinskaya-data-v1";
@@ -37,25 +38,37 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
+function fetchWithTimeout(request, ms) {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error("timeout")), ms);
+    fetch(request).then(
+      (response) => { clearTimeout(timer); resolve(response); },
+      (err) => { clearTimeout(timer); reject(err); }
+    );
+  });
+}
+
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
   // Only handle same-origin requests
   if (url.origin !== self.location.origin) return;
 
-  // App shell — cache first, network fallback
+  // App shell — network first, cache fallback. Serving the shell
+  // cache-first would pin users to the old HTML after a deploy. The
+  // 3 s timeout keeps weak connections from waiting on a dead request
+  // before the cached copy is shown.
   if (url.pathname === "/app" || url.pathname === "/app/") {
     event.respondWith(
-      caches.match(event.request).then((cached) => {
-        const fetched = fetch(event.request).then((response) => {
-          if (response.ok) {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then((c) => c.put(event.request, clone));
-          }
-          return response;
-        }).catch(() => cached);
-        return cached || fetched;
-      })
+      fetchWithTimeout(event.request, 3000).then((response) => {
+        if (response.ok) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((c) => c.put(event.request, clone));
+        }
+        return response;
+      }).catch(() =>
+        caches.match(event.request).then((cached) => cached || Response.error())
+      )
     );
     return;
   }
