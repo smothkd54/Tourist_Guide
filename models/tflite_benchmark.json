@@ -1,0 +1,32 @@
+{
+  "source_model": "models\\v2\\landmark_classifier.keras",
+  "num_samples": 40,
+  "interpreter_runtime": "ai-edge-litert",
+  "baseline_rss_mb": 725.1,
+  "float16": {
+    "file_mb": 8.39,
+    "runs": 40,
+    "p50_ms": 54.44,
+    "p95_ms": 60.36,
+    "max_ms": 63.61,
+    "peak_rss_mb": 862.1
+  },
+  "int8": {
+    "skipped": "ImportError: numpy.core.multiarray failed to import"
+  },
+  "parity_vs_keras": {
+    "float16": {
+      "top1_agreement": 1.0,
+      "mean_abs_diff": 6e-05,
+      "max_abs_diff": 0.00233
+    }
+  },
+  "budget": {
+    "image_mb_target": 150,
+    "rss_mb_target": 350,
+    "p95_ms_target": 3000,
+    "file_mb_ok": true,
+    "rss_mb_ok": false,
+    "p95_ms_ok": true
+  }
+}

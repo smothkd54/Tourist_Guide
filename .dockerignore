@@ -25,7 +25,7 @@ data/images/
 data/planned_route.json
 
 # Model training artifacts (not needed in serving)
-models/checkpoint_phase1.keras
+models/*.keras
 models/training_curves.png
 models/confusion_matrix.png
 models/training_history.json

@@ -449,3 +449,63 @@ class TestMetrics:
         assert client.get("/metrics?token=s3cret").status_code == 401
         resp = client.get("/metrics", headers={"X-Metrics-Token": "s3cret"})
         assert resp.status_code == 200
+
+# ── class masking & preprocessing parity ─────────────────────────────────────
+
+class TestClassMasking:
+    """The two train-only classes must never be returned as an identification."""
+
+    def test_masked_classes_are_zeroed_and_renormalised(self):
+        import numpy as np
+        from backend.app import mask_unvalidated, UNVALIDATED_CLASSES
+
+        names = ["annunciation_church", "lashch_revenue_house",
+                 "tkachenko_revenue_house", "zvorykin_house"]
+        probs = np.array([0.5, 0.3, 0.15, 0.05])
+
+        out = mask_unvalidated(probs, names)
+
+        masked_idx = [i for i, n in enumerate(names) if n in UNVALIDATED_CLASSES]
+        assert all(out[i] == 0.0 for i in masked_idx)
+        # renormalised: the surviving mass sums back to 1
+        assert out.sum() == pytest.approx(1.0)
+        assert out[0] == pytest.approx(0.5 / 0.55)
+
+    def test_mask_is_a_noop_when_no_unvalidated_class_is_present(self):
+        import numpy as np
+        from backend.app import mask_unvalidated
+
+        probs = np.array([0.7, 0.2, 0.1])
+        out = mask_unvalidated(probs, ["a", "b", "c"])
+        assert np.allclose(out, probs)
+
+    def test_preprocess_returns_batch_of_224(self):
+        import numpy as np
+        from io import BytesIO
+        from PIL import Image
+        from backend.app import preprocess_image
+
+        buf = BytesIO()
+        Image.new("RGB", (640, 480), color=(10, 20, 30)).save(buf, format="JPEG")
+        tensor = preprocess_image(buf.getvalue())
+
+        assert tensor.shape == (1, 224, 224, 3)
+        assert tensor.dtype == np.float32
+        # must stay in [0, 255]: EfficientNet rescales internally
+        assert 0.0 <= float(tensor.min()) and float(tensor.max()) <= 255.0
+
+class TestResizeParity:
+    """Serving resize must match the resize used during training."""
+
+    def test_matches_tensorflow_bilinear(self):
+        tf = pytest.importorskip("tensorflow", reason="TensorFlow is a dev dependency")
+        import numpy as np
+        from backend.tflite_model import resize_bilinear
+
+        rng = np.random.default_rng(0)
+        for shape in [(480, 640), (2276, 1280), (333, 777)]:
+            img = (rng.random((*shape, 3)) * 255).astype(np.float32)
+            ours = resize_bilinear(img, (224, 224))
+            theirs = tf.image.resize(img, (224, 224), method="bilinear", antialias=False).numpy()
+            # float32 accumulation differences only; 0.1/255 is far below one pixel step
+            assert np.abs(ours - theirs).max() < 0.1

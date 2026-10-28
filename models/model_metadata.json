@@ -1,0 +1,31 @@
+{
+  "trained_at": "2026-10-27T11:09:25.642033+00:00",
+  "model_file": "landmark_classifier.keras",
+  "model_size_bytes": 33004242,
+  "num_classes": 29,
+  "training": {
+    "epochs_head": 30,
+    "epochs_fine": 25,
+    "actual_head_epochs": 20,
+    "actual_fine_epochs": 8,
+    "batch_size": 16,
+    "unfreeze_from": -30,
+    "lr_head": 0.001,
+    "lr_fine": 1e-05
+  },
+  "results": {
+    "best_val_acc": 0.7091,
+    "final_val_acc": 0.6909,
+    "final_train_acc": 0.8894,
+    "early_stopped_phase1": true,
+    "early_stopped_phase2": true
+  },
+  "data": {
+    "train_images": 208,
+    "val_images": 55,
+    "img_size": [
+      224,
+      224
+    ]
+  }
+}

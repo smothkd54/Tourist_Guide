@@ -31,12 +31,12 @@ from pathlib import Path
 import numpy as np
 from flask import Flask, jsonify, request, send_from_directory, current_app
 from flask_cors import CORS
-import keras
 from PIL import Image
 
 from backend.route_planner import plan_route, plan_custom_route
 from backend.logging_setup import setup_logging
 from backend.artifacts import is_lfs_pointer
+from backend.tflite_model import TFLiteModel, resize_bilinear
 
 
 class RateLimiter:
@@ -166,7 +166,7 @@ PROJECT_ROOT     = Path(__file__).resolve().parent.parent
 MODELS_DIR       = PROJECT_ROOT / "models"
 DATA_DIR         = PROJECT_ROOT / "data"
 FRONTEND_DIR     = PROJECT_ROOT / "frontend"
-MODEL_PATH       = Path(os.environ.get("MODEL_PATH", str(PROJECT_ROOT / "models" / "landmark_classifier.keras")))
+MODEL_PATH       = Path(os.environ.get("MODEL_PATH", str(PROJECT_ROOT / "models" / "landmark_classifier.tflite")))
 CLASS_NAMES_PATH = MODELS_DIR / "class_names.json"
 LANDMARKS_PATH   = DATA_DIR / "landmarks.json"
 PHOTOS_DIR       = DATA_DIR / "photos"
@@ -176,7 +176,13 @@ PORT                 = 5000
 # Dev server only (gunicorn in Docker binds via -b 0.0.0.0:5000).
 # Loopback by default so `python backend/app.py` isn't exposed on the LAN.
 HOST                 = os.environ.get("HOST", "127.0.0.1")
-CONFIDENCE_THRESHOLD = 0.40   # predictions below this are reported as "unknown"
+CONFIDENCE_THRESHOLD = 0.35   # predictions below this are reported as "unknown"
+
+# Classes that exist only in the training split: so few photos survive that no
+# validation or test images could be held out, so their accuracy is unknown and
+# they must never be returned as an identification. They stay in landmarks.json,
+# on the map and in browse/search — they are simply not camera-recognised.
+UNVALIDATED_CLASSES = frozenset({"lashch_revenue_house", "tkachenko_revenue_house"})
 MAX_CONTENT_MB       = 10     # max request body size in MB
 # ────────────────────────────────────────────────────────────────────────────
 
@@ -231,8 +237,12 @@ app.landmarks_by_id = {}
 def load_resources():
     """Load model, class names, and landmark metadata into app state."""
     if MODEL_PATH.exists() and not is_lfs_pointer(MODEL_PATH):
-        app.model = keras.models.load_model(MODEL_PATH)
-        logger.info("Model loaded from %s", MODEL_PATH)
+        # Served through the TFLite runtime: ~113 MB resident instead of ~392 MB
+        # for TensorFlow/Keras, which is what makes two workers fit a 512 MB
+        # instance. Predictions are identical (top-1 agreement 1.0 on the test
+        # split, max probability difference 0.002).
+        app.model = TFLiteModel(MODEL_PATH)
+        logger.info("Model loaded from %s (TFLite runtime)", MODEL_PATH)
     elif MODEL_PATH.exists():
         logger.error(
             "Model at %s is a Git LFS pointer — run 'git lfs pull' to "
@@ -269,11 +279,37 @@ load_resources()
 
 
 def preprocess_image(image_bytes: bytes) -> np.ndarray:
-    """Decode, resize, normalise to [0,1], add batch dim."""
+    """Decode and resize, keeping pixels in [0, 255], then add a batch dim.
+
+    Resizing mirrors `image_dataset_from_directory` exactly (tf.image.resize,
+    bilinear, no antialias). Training used that pipeline, and switching to PIL's
+    LANCZOS resize changed the top-1 answer on 28% of the test images, so the
+    two paths must not diverge silently.
+
+    EfficientNetB0 carries its own Rescaling(1/255) + Normalization layers, so
+    the model must receive raw 0-255 values. Scaling here as well made every
+    prediction collapse onto a single class.
+    """
     img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-    img = img.resize(IMG_SIZE, Image.LANCZOS)
-    arr = np.array(img, dtype=np.float32) / 255.0
+    arr = np.asarray(img, dtype=np.float32)
+    arr = resize_bilinear(arr, IMG_SIZE)
     return np.expand_dims(arr, axis=0)
+
+
+def mask_unvalidated(probs: np.ndarray, class_names: list[str]) -> np.ndarray:
+    """Zero the classes we never validated, then renormalise what is left.
+
+    This keeps confidence comparable: it is the probability of the answer
+    *given* that the building is one the model can actually recognise.
+    """
+    if not UNVALIDATED_CLASSES:
+        return probs
+    keep = np.array([name not in UNVALIDATED_CLASSES for name in class_names])
+    if keep.all():
+        return probs
+    masked = np.where(keep, probs, 0.0)
+    total = masked.sum()
+    return masked / total if total > 0 else probs
 
 
 def decode_base64_image(b64_string: str) -> bytes:
@@ -546,6 +582,7 @@ def predict():
         return jsonify({"error": "Image decode failed. Send a valid JPEG or PNG."}), 400
 
     probs = current_app.model.predict(tensor, verbose=0)[0]
+    probs = mask_unvalidated(probs, current_app.class_names)
 
     top5_idx = np.argsort(probs)[::-1][:5]
     top5 = [

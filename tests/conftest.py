@@ -23,8 +23,11 @@ def client():
 @pytest.fixture
 def client_with_mock_model(client):
     """Create a test client with a mock model that returns random predictions."""
+    # Size the mock output to whatever classes the app actually loaded, so the
+    # fixture cannot drift out of sync with models/class_names.json.
+    n_classes = len(app.class_names) or 1
     mock_model = MagicMock()
-    mock_model.predict.return_value = [np.random.dirichlet(np.ones(31))]
+    mock_model.predict.return_value = [np.random.dirichlet(np.ones(n_classes))]
     app.model = mock_model
     yield client
     app.model = None

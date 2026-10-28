@@ -36,23 +36,23 @@ BATCH_SIZE = 32
 # ────────────────────────────────────────────────────────────────────────────
 
 
-def load_class_names() -> list[str]:
-    path = MODELS_DIR / "class_names.json"
+def load_class_names(models_dir: Path = MODELS_DIR) -> list[str]:
+    path = Path(models_dir) / "class_names.json"
     if not path.exists():
         raise FileNotFoundError("class_names.json not found. Run train.py first.")
     with open(path) as f:
         return json.load(f)
 
 
-def load_test_dataset():
+def load_test_dataset(data_dir: Path = DATA_DIR):
     ds = keras.utils.image_dataset_from_directory(
-        DATA_DIR,
+        Path(data_dir),
         image_size=IMG_SIZE,
         batch_size=BATCH_SIZE,
         label_mode="categorical",
         shuffle=False,
     )
-    ds = ds.map(lambda x, y: (tf.cast(x, tf.float32) / 255.0, y))
+    ds = ds.map(lambda x, y: (tf.cast(x, tf.float32), y))
     return ds
 
 
@@ -79,7 +79,7 @@ def per_class_metrics(cm, class_names):
         print(f"  {name:<22} {precision:>10.3f} {recall:>10.3f} {f1:>8.3f} {support:>9}  {bar}")
 
 
-def plot_cm(cm, class_names):
+def plot_cm(cm, class_names, models_dir: Path = MODELS_DIR):
     import matplotlib.pyplot as plt
     fig, ax = plt.subplots(figsize=(8, 7))
     im = ax.imshow(cm, cmap="Blues")
@@ -98,7 +98,7 @@ def plot_cm(cm, class_names):
                     color="white" if cm[i, j] > thresh else "black", fontsize=9)
     plt.colorbar(im, ax=ax)
     plt.tight_layout()
-    out = MODELS_DIR / "confusion_matrix.png"
+    out = Path(models_dir) / "confusion_matrix.png"
     plt.savefig(out, dpi=120)
     logger.info("Confusion matrix → %s", out)
     plt.close()
@@ -108,19 +108,23 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=Path,
                         default=Path(os.environ.get("MODEL_PATH", str(MODELS_DIR / "landmark_classifier.keras"))))
+    parser.add_argument("--data-dir", type=Path, default=DATA_DIR, dest="data_dir",
+                        help="directory containing the test split class folders")
+    parser.add_argument("--models-dir", type=Path, default=MODELS_DIR, dest="models_dir",
+                        help="directory holding class_names.json and receiving the confusion matrix")
     args = parser.parse_args()
-    _run(args.model)
+    _run(args.model, args.data_dir, args.models_dir)
 
 
-def _run(model_path: Path):
-    class_names = load_class_names()
+def _run(model_path: Path, data_dir: Path = DATA_DIR, models_dir: Path = MODELS_DIR):
+    class_names = load_class_names(models_dir)
     n_classes   = len(class_names)
 
     logger.info("Loading model: %s", model_path)
     model = keras.models.load_model(model_path)
 
-    logger.info("Loading test split: %s", DATA_DIR)
-    test_ds = load_test_dataset()
+    logger.info("Loading test split: %s", data_dir)
+    test_ds = load_test_dataset(data_dir)
 
     logger.info("Running inference on test set...")
     y_true_all, y_pred_all = [], []
@@ -138,7 +142,7 @@ def _run(model_path: Path):
 
     cm = confusion_matrix_manual(y_true, y_pred, n_classes)
     per_class_metrics(cm, class_names)
-    plot_cm(cm, class_names)
+    plot_cm(cm, class_names, models_dir)
 
     logger.info("Next step:  python backend/app.py")
 

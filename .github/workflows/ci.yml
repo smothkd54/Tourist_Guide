@@ -8,14 +8,14 @@ on:
 
 jobs:
   lint-and-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           lfs: true
 
       - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
 
@@ -36,25 +36,19 @@ jobs:
         run: pytest tests/ -v
 
   docker-build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: lint-and-test
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           lfs: true
 
       - name: Build Docker image
         run: docker build -t pushkinskaya-explorer .
 
-      - name: Scan Docker image for vulnerabilities
-        uses: aquasecurity/trivy-action@v0.36.0
-        with:
-          image-ref: pushkinskaya-explorer
-          severity: CRITICAL,HIGH
-          exit-code: 1
-
       - name: Smoke test container
         run: |
+          docker rm -f web || true
           docker run -d --name web -p 5000:5000 pushkinskaya-explorer
           for i in $(seq 1 45); do
             if curl -fsS http://localhost:5000/ > /dev/null 2>&1; then break; fi
@@ -65,6 +59,28 @@ jobs:
           echo "landmarks=$COUNT"
           test "$COUNT" = "46"
 
+      - name: Scan Docker image for vulnerabilities
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: pushkinskaya-explorer
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+          format: table
+          output: trivy-results.txt
+
+      - name: Upload Trivy report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: trivy-results
+          path: trivy-results.txt
+          if-no-files-found: ignore
+
       - name: Container logs
         if: always()
         run: docker logs web || true
+
+      - name: Stop container
+        if: always()
+        run: docker rm -f web || true

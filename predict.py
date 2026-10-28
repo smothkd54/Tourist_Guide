@@ -17,6 +17,7 @@ import os
 from pathlib import Path
 
 import numpy as np
+import tensorflow as tf
 from PIL import Image
 import keras
 
@@ -54,8 +55,11 @@ def load_resources(model_path: Path):
 
 
 def preprocess(image_path: Path) -> np.ndarray:
-    img = Image.open(image_path).convert("RGB").resize(IMG_SIZE, Image.LANCZOS)
-    arr = np.array(img, dtype=np.float32) / 255.0
+    img = Image.open(image_path).convert("RGB")
+    # keep [0, 255]: EfficientNet rescales internally. Resize must match
+    # training (image_dataset_from_directory -> tf.image.resize, bilinear).
+    arr = np.asarray(img, dtype=np.float32)
+    arr = tf.image.resize(arr, IMG_SIZE, method="bilinear", antialias=False).numpy()
     return np.expand_dims(arr, axis=0)
 
 

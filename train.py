@@ -28,6 +28,7 @@ REQUIREMENTS
 import json
 import argparse
 import os
+from collections import Counter
 from pathlib import Path
 
 import tensorflow as tf
@@ -43,6 +44,7 @@ logger = setup_logging("train")
 DATA_DIR     = Path("data/images")
 MODELS_DIR   = Path("models")
 IMG_SIZE     = (224, 224)
+IMG_EXT      = {".jpg", ".jpeg", ".png", ".webp", ".bmp"}
 BATCH_SIZE   = 32
 EPOCHS_HEAD  = 10       # phase 1: train head only
 EPOCHS_FINE  = 20       # phase 2: fine-tune top layers
@@ -68,8 +70,9 @@ def build_augmentation():
 
 
 # ── dataset loading ───────────────────────────────────────────────────────────
-def load_dataset(split: str, batch_size: int, augment: bool = False):
-    split_dir = DATA_DIR / split
+def load_dataset(split: str, batch_size: int, augment: bool = False,
+                 data_dir: Path = DATA_DIR):
+    split_dir = Path(data_dir) / split
     if not split_dir.exists():
         raise FileNotFoundError(
             f"No '{split}' split found at {split_dir}. "
@@ -86,8 +89,11 @@ def load_dataset(split: str, batch_size: int, augment: bool = False):
     )
     class_names = ds.class_names
 
-    # normalise to [0, 1]
-    ds = ds.map(lambda x, y: (tf.cast(x, tf.float32) / 255.0, y),
+    # Keep pixels in [0, 255]. EfficientNetB0 already contains its own
+    # Rescaling(1/255) + Normalization layers; dividing by 255 here fed the
+    # network a near-constant vector (~-2.1 after normalisation) and collapsed
+    # the model onto a single class.
+    ds = ds.map(lambda x, y: (tf.cast(x, tf.float32), y),
                 num_parallel_calls=AUTOTUNE)
 
     if augment:
@@ -133,28 +139,46 @@ def build_model(num_classes: int, trainable_base: bool = False) -> keras.Model:
 
 # ── training ──────────────────────────────────────────────────────────────────
 def train(args):
-    logger.info("Loading datasets...")
-    train_ds, class_names = load_dataset("train", args.batch, augment=True)
-    val_ds,   _           = load_dataset("val",   args.batch, augment=False)
+    data_dir = Path(args.data_dir)
+    out_dir  = Path(args.out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    logger.info("Loading datasets from %s ...", data_dir)
+    train_ds, class_names = load_dataset("train", args.batch, augment=True, data_dir=data_dir)
+    val_ds,   _           = load_dataset("val",   args.batch, augment=False, data_dir=data_dir)
     num_classes = len(class_names)
     logger.info("Classes (%d): %s", num_classes, class_names)
 
     # save class names now so inference always has them
-    with open(MODELS_DIR / "class_names.json", "w") as f:
+    with open(out_dir / "class_names.json", "w") as f:
         json.dump(class_names, f, indent=2)
+
+    # Balanced class weights, capped so the 1-3 image classes cannot dominate.
+    counts = Counter(
+        p.parent.name
+        for p in (data_dir / "train").rglob("*")
+        if p.is_file() and p.suffix.lower() in IMG_EXT
+    )
+    total = sum(counts.values())
+    class_weight = {
+        i: min(total / (num_classes * counts[c]), 3.0)
+        for i, c in enumerate(class_names) if counts.get(c)
+    }
+    logger.info("Class weights: %s",
+                {c: round(class_weight[i], 2) for i, c in enumerate(class_names) if counts.get(c)})
 
     # ── phase 1: head only ────────────────────────────────────────────────
     logger.info("Phase 1 — training classification head (base frozen)...")
     model, base = build_model(num_classes, trainable_base=False)
     model.compile(
         optimizer=keras.optimizers.Adam(LR_HEAD),
-        loss="categorical_crossentropy",
+        loss=keras.losses.CategoricalCrossentropy(label_smoothing=0.1),
         metrics=["accuracy"],
     )
     model.summary(line_length=80)
 
     cb_ckpt = keras.callbacks.ModelCheckpoint(
-        MODELS_DIR / "checkpoint_phase1.keras",
+        out_dir / "checkpoint_phase1.keras",
         save_best_only=True, monitor="val_accuracy", verbose=1
     )
     cb_es = keras.callbacks.EarlyStopping(
@@ -164,6 +188,7 @@ def train(args):
     h1 = model.fit(
         train_ds, validation_data=val_ds,
         epochs=args.epochs_head,
+        class_weight=class_weight,
         callbacks=[cb_ckpt, cb_es],
     )
 
@@ -175,12 +200,12 @@ def train(args):
 
     model.compile(
         optimizer=keras.optimizers.Adam(LR_FINE),
-        loss="categorical_crossentropy",
+        loss=keras.losses.CategoricalCrossentropy(label_smoothing=0.1),
         metrics=["accuracy"],
     )
 
     cb_ckpt2 = keras.callbacks.ModelCheckpoint(
-        Path(os.environ.get("MODEL_PATH", str(MODELS_DIR / "landmark_classifier.keras"))),
+        Path(os.environ.get("MODEL_PATH", str(out_dir / "landmark_classifier.keras"))),
         save_best_only=True, monitor="val_accuracy", verbose=1
     )
     cb_es2 = keras.callbacks.EarlyStopping(
@@ -193,6 +218,7 @@ def train(args):
     h2 = model.fit(
         train_ds, validation_data=val_ds,
         epochs=args.epochs_fine,
+        class_weight=class_weight,
         callbacks=[cb_ckpt2, cb_es2, cb_lr],
     )
 
@@ -207,22 +233,22 @@ def train(args):
         "phase2_loss":    h2.history["loss"],
         "phase2_val_loss":h2.history["val_loss"],
     }
-    with open(MODELS_DIR / "training_history.json", "w") as f:
+    with open(out_dir / "training_history.json", "w") as f:
         json.dump(history, f, indent=2)
 
-    _plot_history(h1, h2)
+    _plot_history(h1, h2, out_dir)
 
     # ── write model metadata ─────────────────────────────────────────────
-    _write_metadata(h1, h2, class_names, args)
+    _write_metadata(h1, h2, class_names, args, out_dir, data_dir)
 
     logger.info("Training complete.")
-    logger.info("Model  → %s/landmark_classifier.keras", MODELS_DIR)
-    logger.info("Labels → %s/class_names.json", MODELS_DIR)
+    logger.info("Model  → %s/landmark_classifier.keras", out_dir)
+    logger.info("Labels → %s/class_names.json", out_dir)
     logger.info("Next step:  python evaluate.py")
     logger.info("            python backend/app.py   (to start the API)")
 
 
-def _plot_history(h1, h2):
+def _plot_history(h1, h2, out_dir: Path = MODELS_DIR):
     import matplotlib.pyplot as plt
     fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
@@ -245,22 +271,23 @@ def _plot_history(h1, h2):
     axes[1].legend()
 
     plt.tight_layout()
-    path = Path("models/training_curves.png")
+    path = out_dir / "training_curves.png"
     plt.savefig(path, dpi=120)
     logger.info("Curves → %s", path)
     plt.close()
 
 
-def _count_images(split: str) -> int:
-    split_dir = DATA_DIR / split
+def _count_images(split: str, data_dir: Path = DATA_DIR) -> int:
+    split_dir = Path(data_dir) / split
     if not split_dir.exists():
         return 0
-    return sum(1 for _ in split_dir.rglob("*") if _.suffix.lower() in (".jpg", ".jpeg", ".png", ".webp"))
+    return sum(1 for _ in split_dir.rglob("*") if _.suffix.lower() in IMG_EXT)
 
 
-def _write_metadata(h1, h2, class_names, args):
+def _write_metadata(h1, h2, class_names, args, out_dir: Path = MODELS_DIR,
+                    data_dir: Path = DATA_DIR):
     from datetime import datetime, timezone
-    model_path = Path(os.environ.get("MODEL_PATH", str(MODELS_DIR / "landmark_classifier.keras")))
+    model_path = Path(os.environ.get("MODEL_PATH", str(out_dir / "landmark_classifier.keras")))
     meta = {
         "trained_at": datetime.now(timezone.utc).isoformat(),
         "model_file": model_path.name,
@@ -284,12 +311,12 @@ def _write_metadata(h1, h2, class_names, args):
             "early_stopped_phase2": len(h2.history["accuracy"]) < args.epochs_fine,
         },
         "data": {
-            "train_images": _count_images("train"),
-            "val_images": _count_images("val"),
+            "train_images": _count_images("train", data_dir),
+            "val_images": _count_images("val", data_dir),
             "img_size": list(IMG_SIZE),
         },
     }
-    out = MODELS_DIR / "model_metadata.json"
+    out = out_dir / "model_metadata.json"
     with open(out, "w") as f:
         json.dump(meta, f, indent=2)
     logger.info("Metadata → %s", out)
@@ -301,6 +328,8 @@ def main():
     parser.add_argument("--batch",       type=int, default=BATCH_SIZE)
     parser.add_argument("--epochs-head", type=int, default=EPOCHS_HEAD,  dest="epochs_head")
     parser.add_argument("--epochs-fine", type=int, default=EPOCHS_FINE,  dest="epochs_fine")
+    parser.add_argument("--data-dir",    default=str(DATA_DIR), dest="data_dir")
+    parser.add_argument("--out-dir",     default=str(MODELS_DIR), dest="out_dir")
     args = parser.parse_args()
     train(args)
 

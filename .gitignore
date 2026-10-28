@@ -4,11 +4,20 @@ __pycache__/
 *.zip
 .env
 data/images/
+# Dataset images are never committed: data/images/ was already ignored, and
+# data/images_v2/ is a derived 316 MB tree rebuilt from it plus the Commons
+# downloads. The small manifests that record the split ARE committed.
+data/images_v2/**/*.jpg
+data/images_v2/**/*.jpeg
+data/images_v2/**/*.png
+data/images_v2/**/*.webp
+data/images_enriched/**/*.jpg
+data/images_enriched/**/*.jpeg
+data/images_enriched/**/*.png
 models/checkpoint_phase1.keras
 models/training_curves.png
 models/confusion_matrix.png
 models/training_history.json
-models/model_metadata.json
 .venv/
 logs/*
 !logs/.gitkeep
@@ -18,3 +27,4 @@ build/
 .pytest_cache/
 .ruff_cache/
 data/planned_route.json
+trivy-results.txt

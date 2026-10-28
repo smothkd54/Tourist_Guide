@@ -1,10 +1,12 @@
 # Pushkinskaya Street Explorer — backend container
-FROM python:3.11-slim
+FROM python:3.11-slim@sha256:0a236bf8f0b6013383df04d1cd02cb0abe5fbfa1a7012141d7ff9202b7cb30a6
 
 WORKDIR /app
 
 # System deps for Pillow/TensorFlow + curl for healthcheck
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends \
     libjpeg-dev zlib1g-dev curl \
     && rm -rf /var/lib/apt/lists/*
 
@@ -13,6 +15,7 @@ RUN pip install --no-cache-dir -r requirements-serve.txt
 
 COPY . .
 RUN pip install --no-cache-dir .
+RUN pip uninstall -y setuptools wheel
 
 ENV PYTHONUNBUFFERED=1
 ENV CORS_ORIGINS=http://localhost:*|http://127.0.0.1:*

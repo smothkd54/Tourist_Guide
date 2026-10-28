@@ -1,11 +1,11 @@
 # Core ML — pinned to TF 2.19+ which ships with Keras 3 and supports
 # `import keras` natively.  The old `from tensorflow import keras` shim
 # was removed in recent TF; using `import keras` is now the standard.
-tensorflow>=2.19.0,<2.23
+tensorflow==2.21.0
 numpy>=1.26.4
 
 # Image processing
-pillow==10.4.0
+pillow==13.0.0
 
 # Training visualisation (only needed for train.py / evaluate.py,
 # not for serving — see requirements-serve.txt if you want a
@@ -13,11 +13,12 @@ pillow==10.4.0
 matplotlib==3.9.0
 
 # API server
-flask==3.0.3
-flask-cors==4.0.1
+flask==3.1.3
+flask-cors==6.0.5
+werkzeug==3.1.9
 
 # Routing / HTTP
-requests==2.32.3
+requests==2.34.2
 
 # Production WSGI server (also in requirements-serve.txt)
 gunicorn==22.0.0

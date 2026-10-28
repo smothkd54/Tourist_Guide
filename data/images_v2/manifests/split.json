@@ -1,0 +1,2626 @@
+[
+ {
+  "split": "train",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0001.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_02.jpg",
+  "sha": "863d1999a58f5d9d2844f233515297d825b37edf6fc5ee94fa43e8e9115e4e94",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0002.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_04.jpg",
+  "sha": "ebed6c22616da4689c7251bec058d68b8904adae31b3e84687558b02a06848e8",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0003.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_05.jpg",
+  "sha": "08d0c402722b1168cd04548bf94cd1c30824cf0d3d27140b34e6afd038a602f6",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0004.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_08.jpg",
+  "sha": "5f5ed1941fe0ddf3b94b5ff623ac617e66e1f5aba19faf5beaffa192a45929e1",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0005.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_09.jpg",
+  "sha": "697ded5f2870f8700438ce1fac351b91cecacb4920870f10efa007cfea485a38",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0006.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_10.jpg",
+  "sha": "d33d587a0b3771d69d1beb11c6dc5e79c32aec760821d07928858b2d5c506713",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0007.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_11.jpg",
+  "sha": "1e50e418c4168e0db9679f25d5863d20abca050193c97153d56519e089404034",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0008.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_14.jpg",
+  "sha": "99378a5866dde2ca4055b4509edaae5043abbb06cf26d78ad45a0d73bdf087a2",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0009.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_15.jpg",
+  "sha": "1568c468421509505c1330a030cae3b9eafbd302056f5f7d5a97df568abf114c",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0010.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_16.jpg",
+  "sha": "56a34bdf15a2c08aad085644d22de1a01c50d33559f07ada4cf9033dcb28433c",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0011.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_17.jpg",
+  "sha": "413100de3e23fbf38809e511e081698ce4244bd3e7b8ee2b8e7a75ad762ee106",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0012.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_18.jpg",
+  "sha": "dbc75ca181e0d0414598c7a361860f463a35a9983c7d0bdb5fa1f33c0ac5bd85",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "bostrikiny_house",
+  "path": "data/images_v2/train/bostrikiny_house/bostrikiny_house_train_0001.jpg",
+  "src": "data/images/train/bostrikiny_house/bostrikiny_house_train_0004.jpg",
+  "sha": "18d41db4c75bee84e9f9fa8adae7a5275ce29439550e523a7daa45c3814497b7",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "bostrikiny_house",
+  "path": "data/images_v2/train/bostrikiny_house/bostrikiny_house_train_0002.jpg",
+  "src": "data/images/train/bostrikiny_house/bostrikiny_house_train_0005.jpg",
+  "sha": "9f821547bf8ab2bf388ce5934dbbd78c1940d51b5dd46b6667dfeda3056f4e61",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "bostrikiny_house",
+  "path": "data/images_v2/train/bostrikiny_house/bostrikiny_house_train_0003.jpg",
+  "src": "data/images/train/bostrikiny_house/bostrikiny_house_train_0007.jpg",
+  "sha": "47f99d8e6053ddee7394966148099fe43b1a46b6a204fa2dd408356d6b285eea",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "bostrikiny_house",
+  "path": "data/images_v2/train/bostrikiny_house/bostrikiny_house_train_0004.jpg",
+  "src": "data/images/train/bostrikiny_house/bostrikiny_house_train_0008.jpg",
+  "sha": "6a3cf786090ebe9769ea76f3195bae755beadce21be3bd5b98e72c08d69e6257",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "bostrikiny_house",
+  "path": "data/images_v2/train/bostrikiny_house/bostrikiny_house_train_0005.jpg",
+  "src": "data/images/train/bostrikiny_house/bostrikiny_house_train_0011.jpg",
+  "sha": "7ad16b5123dd774bf3627f7ed1917335e20a1ba9257648f07f87ac4881f2eaa7",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "bostrikiny_house",
+  "path": "data/images_v2/train/bostrikiny_house/bostrikiny_house_train_0006.jpg",
+  "src": "data/images/test/bostrikiny_house/bostrikiny_house_test_0000.jpg",
+  "sha": "2d3977755aa60eb510a13aa31bb1dc8c97c2c121fd3eec1758b5a5fb91bb5815",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "bostrikiny_house",
+  "path": "data/images_v2/train/bostrikiny_house/bostrikiny_house_train_0007.jpg",
+  "src": "data/images/test/bostrikiny_house/bostrikiny_house_test_0001.jpg",
+  "sha": "02e8a31206684514a07004c87e36ea43fb7044e9db9e81920ef159cad434eb59",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "cathedral_nativity",
+  "path": "data/images_v2/train/cathedral_nativity/cathedral_nativity_train_0001.jpg",
+  "src": "data/images/train/cathedral_nativity/cathedral_nativity_train_0006.jpg",
+  "sha": "d43d1b85cce6ffdb54b2ad9688251f4a7a7f6215b9094870b7fc92a485ee6292",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "cathedral_nativity",
+  "path": "data/images_v2/train/cathedral_nativity/cathedral_nativity_train_0002.jpg",
+  "src": "data/images/train/cathedral_nativity/cathedral_nativity_train_0007.jpg",
+  "sha": "121d4444538a07cf981e97d593114406d38a3988d99dbc8f30b5465331527850",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "cathedral_nativity",
+  "path": "data/images_v2/train/cathedral_nativity/cathedral_nativity_train_0003.jpg",
+  "src": "data/images/train/cathedral_nativity/cathedral_nativity_train_0008.jpg",
+  "sha": "c05817ae533b7ffbb0136b5c87f1d52988ecb49432567eaeb00a34f1b4bbd367",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "cathedral_nativity",
+  "path": "data/images_v2/train/cathedral_nativity/cathedral_nativity_train_0004.jpg",
+  "src": "data/images/train/cathedral_nativity/cathedral_nativity_train_0009.jpg",
+  "sha": "e4b0350375b01a921b8f532d0c07644a83ae40132c373a74e5a9f02d8eb59e04",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "cathedral_nativity",
+  "path": "data/images_v2/train/cathedral_nativity/cathedral_nativity_train_0005.jpg",
+  "src": "data/images/train/cathedral_nativity/cathedral_nativity_train_0010.jpg",
+  "sha": "90d2d797fcba96054dec8dcf33b51e7c52857618801a41660bdafaf02b4e2b49",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "cathedral_nativity",
+  "path": "data/images_v2/train/cathedral_nativity/cathedral_nativity_train_0006.jpg",
+  "src": "data/images/train/cathedral_nativity/cathedral_nativity_train_0011.jpg",
+  "sha": "993d72f0d936f9df774a0247caded3cc0a13190f345fcafdc37bf24486111b4e",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "cathedral_nativity",
+  "path": "data/images_v2/train/cathedral_nativity/cathedral_nativity_train_0007.jpg",
+  "src": "data/images/val/cathedral_nativity/cathedral_nativity_val_0000.jpg",
+  "sha": "146faf7c883022b25cfc61a35cbb25be49370abd5d0383cdc78a1f745273fbcb",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "cathedral_nativity",
+  "path": "data/images_v2/train/cathedral_nativity/cathedral_nativity_train_0008.jpg",
+  "src": "data/images/test/cathedral_nativity/cathedral_nativity_test_0001.jpg",
+  "sha": "b7e75f14ca76dc8742b710b7ba3e88c34f1eced8143c07ce3b1ca1faf5a5c871",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "chekhov_monument",
+  "path": "data/images_v2/train/chekhov_monument/chekhov_monument_train_0001.jpg",
+  "src": "data/images/train/chekhov_monument/chekhov_monument_train_0006.jpg",
+  "sha": "9b6e051333cb4f9433f5f4f378108f5d5ed95363e1a0fca0d612287893ed3ecc",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "chekhov_monument",
+  "path": "data/images_v2/train/chekhov_monument/chekhov_monument_train_0002.jpg",
+  "src": "data/images/train/chekhov_monument/chekhov_monument_train_0007.jpg",
+  "sha": "0eaf8b46e634b501abf430bda82f931d04fca7fb676d4687547b04fcfd6e4b09",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "chekhov_monument",
+  "path": "data/images_v2/train/chekhov_monument/chekhov_monument_train_0003.jpg",
+  "src": "data/images/train/chekhov_monument/chekhov_monument_train_0008.jpg",
+  "sha": "8438644e9a09ee7abf48fe69f304ae3303ec20b5afe281e76e7264c5707937e1",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "chekhov_monument",
+  "path": "data/images_v2/train/chekhov_monument/chekhov_monument_train_0004.jpg",
+  "src": "data/images/train/chekhov_monument/chekhov_monument_train_0009.jpg",
+  "sha": "3df6465b642947a8bf7fbf8e465a23ac03988534b0199c0ef8445e05364988d6",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "chekhov_monument",
+  "path": "data/images_v2/train/chekhov_monument/chekhov_monument_train_0005.jpg",
+  "src": "data/images/train/chekhov_monument/chekhov_monument_train_0010.jpg",
+  "sha": "0abdd4e8f5bfccfd17e6daa27e484c9a775f00ddd96a5fd66eea5c6e8303b897",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "chekhov_monument",
+  "path": "data/images_v2/train/chekhov_monument/chekhov_monument_train_0006.jpg",
+  "src": "data/images/train/chekhov_monument/chekhov_monument_train_0011.jpg",
+  "sha": "20ca398748cda10359b077ad230c9ba9e2ff34fbea66284665b47b34644cc316",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "chekhov_monument",
+  "path": "data/images_v2/train/chekhov_monument/chekhov_monument_train_0007.jpg",
+  "src": "data/images/val/chekhov_monument/chekhov_monument_val_0000.jpg",
+  "sha": "cbca6c6d04f1c95fac92579f8eb7e023f659764ef95226939f12c2fd6bb2cad4",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "chekhov_monument",
+  "path": "data/images_v2/train/chekhov_monument/chekhov_monument_train_0008.jpg",
+  "src": "data/images/test/chekhov_monument/chekhov_monument_test_0001.jpg",
+  "sha": "e23d9e0d2bcd06c0107df7e1b53457b9907d7c290bc7ac8be9f67f1de41ada96",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "cinema_house",
+  "path": "data/images_v2/train/cinema_house/cinema_house_train_0001.jpg",
+  "src": "data/images/train/cinema_house/cinema_house_train_0003.jpg",
+  "sha": "ae8a391c7f245693ac8cbcee609e7b09a0f310e4b3c1717e3ac51a94720572e0",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "cinema_house",
+  "path": "data/images_v2/train/cinema_house/cinema_house_train_0002.jpg",
+  "src": "data/images/train/cinema_house/cinema_house_train_0004.jpg",
+  "sha": "b7c312c505e92f4306747d751334258c712a48666a8d33e0924fea541a06b72f",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "cinema_house",
+  "path": "data/images_v2/train/cinema_house/cinema_house_train_0003.jpg",
+  "src": "data/images/train/cinema_house/cinema_house_train_0005.jpg",
+  "sha": "98271e912d272cd48a345a48585b820bd58d783be807f019bc4ad37737f2e7f9",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "cinema_house",
+  "path": "data/images_v2/train/cinema_house/cinema_house_train_0004.jpg",
+  "src": "data/images/train/cinema_house/cinema_house_train_0006.jpg",
+  "sha": "f1f5b3870c23d8b62d635bf29101e07c490da44df8dbdaf5fd48f533e8a935f6",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "cinema_house",
+  "path": "data/images_v2/train/cinema_house/cinema_house_train_0005.jpg",
+  "src": "data/images/test/cinema_house/cinema_house_test_0000.jpg",
+  "sha": "f3068a8ff285d3fe7e353fa82f26e3f63030c0836e610fb2e64f7e413c2309ea",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "cinema_house",
+  "path": "data/images_v2/train/cinema_house/cinema_house_train_0006.jpg",
+  "src": "data/images/test/cinema_house/cinema_house_test_0001.jpg",
+  "sha": "19e0f8ed87fae9011108c5951ae82cd14d14e890d80e3762a17ff914f471c629",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "don_state_library",
+  "path": "data/images_v2/train/don_state_library/don_state_library_train_0001.jpg",
+  "src": "data/images/train/don_state_library/don_state_library_train_0007.jpg",
+  "sha": "db9d8a5b9f384c5596f57a4351ff78eb2e24ea8bdd2740f6390023aff2cbca51",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "don_state_library",
+  "path": "data/images_v2/train/don_state_library/don_state_library_train_0002.jpg",
+  "src": "data/images/train/don_state_library/don_state_library_train_0008.jpg",
+  "sha": "fbb3ac6c8d518d26da8ceeb457bdc069e7f60923d53e0e5d4a77566cdfa112d6",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "don_state_library",
+  "path": "data/images_v2/train/don_state_library/don_state_library_train_0003.jpg",
+  "src": "data/images/train/don_state_library/don_state_library_train_0009.jpg",
+  "sha": "3f92cdc453ccf9477700a5f8dd7f190841bc273f5fe4036b9922609643e843ab",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "don_state_library",
+  "path": "data/images_v2/train/don_state_library/don_state_library_train_0004.jpg",
+  "src": "data/images/train/don_state_library/don_state_library_train_0010.jpg",
+  "sha": "4edd96f227d19884b27393023ab1ac353e1d20d3eea0294d3cdaae88411c87e8",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "don_state_library",
+  "path": "data/images_v2/train/don_state_library/don_state_library_train_0005.jpg",
+  "src": "data/images/train/don_state_library/don_state_library_train_0011.jpg",
+  "sha": "2d311ab356084518259b7f2cfbdf9c35a1dc603f672c1dc5dfe30371cb1fa72d",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "don_state_library",
+  "path": "data/images_v2/train/don_state_library/don_state_library_train_0006.jpg",
+  "src": "data/images/val/don_state_library/don_state_library_val_0000.jpg",
+  "sha": "7a10a203a4b3e08baf5ad6886e7c6c67ce5dbf8ae7272293dbc19726779c4869",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "don_state_library",
+  "path": "data/images_v2/train/don_state_library/don_state_library_train_0007.jpg",
+  "src": "data/images/test/don_state_library/don_state_library_test_0000.jpg",
+  "sha": "0d7e50accf69247f84e442502f47713345215ce1eb1ba4f263b4a73623a3953c",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "don_state_library",
+  "path": "data/images_v2/train/don_state_library/don_state_library_train_0008.jpg",
+  "src": "data/images/test/don_state_library/don_state_library_test_0001.jpg",
+  "sha": "b7ff1f59551c502e8dd611abf6a2e8b32a0598c73fe8c3f2420a5d10f56db488",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gavala_house",
+  "path": "data/images_v2/train/gavala_house/gavala_house_train_0001.jpg",
+  "src": "data/images_enriched/gavala_house/commons_01.jpg",
+  "sha": "0b80f753894f591914e74c7dc1897897dad85aa2b156322c997aca41de470c4d",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "gavala_house",
+  "path": "data/images_v2/train/gavala_house/gavala_house_train_0002.jpg",
+  "src": "data/images_enriched/gavala_house/commons_02.jpg",
+  "sha": "d18c53afd5679fff6fb8f293883f85a0a39d36ba17d3f541ffe6219372bdbcac",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "gavala_house",
+  "path": "data/images_v2/train/gavala_house/gavala_house_train_0003.jpg",
+  "src": "data/images_enriched/gavala_house/commons_03.jpg",
+  "sha": "de05d4fadc4c262ad608655decc5d159643edb1f30d2786e8b49277c6012ab35",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "gavala_house",
+  "path": "data/images_v2/train/gavala_house/gavala_house_train_0004.jpg",
+  "src": "data/images_enriched/gavala_house/commons_04.jpg",
+  "sha": "8df5c844d1c33957653c3ddcc398be76c6fbafc1c8c404d3767d8328417a67dc",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "gavala_house",
+  "path": "data/images_v2/train/gavala_house/gavala_house_train_0005.jpg",
+  "src": "data/images_enriched/gavala_house/commons_05.jpg",
+  "sha": "10d32683f63ae3df00ee3c096313cc5419b88c5ecc6beeef27979c0b57df4868",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_park_gate",
+  "path": "data/images_v2/train/gorky_park_gate/gorky_park_gate_train_0001.jpg",
+  "src": "data/images/train/gorky_park_gate/gorky_park_gate_train_0005.jpg",
+  "sha": "3ca556948a1a3e11caff6a62a0f1c71c8078d8e18a8b3a6588bc9b58509e5ad3",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_park_gate",
+  "path": "data/images_v2/train/gorky_park_gate/gorky_park_gate_train_0002.jpg",
+  "src": "data/images/train/gorky_park_gate/gorky_park_gate_train_0006.jpg",
+  "sha": "6d11bc01a7164a111db742ed5d141a10570c44f73969f83f7c24f1178bd29e6e",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_park_gate",
+  "path": "data/images_v2/train/gorky_park_gate/gorky_park_gate_train_0003.jpg",
+  "src": "data/images/train/gorky_park_gate/gorky_park_gate_train_0007.jpg",
+  "sha": "24d24693de17fd6fcf52bc219cf50e730cbae0726d588f7a7d70015a7403cf87",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_park_gate",
+  "path": "data/images_v2/train/gorky_park_gate/gorky_park_gate_train_0004.jpg",
+  "src": "data/images/train/gorky_park_gate/gorky_park_gate_train_0008.jpg",
+  "sha": "8b1cc04a2ab7ce5054748e1dd6a9dc7a3dc44fea8452a76345957146d382dd18",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_park_gate",
+  "path": "data/images_v2/train/gorky_park_gate/gorky_park_gate_train_0005.jpg",
+  "src": "data/images/train/gorky_park_gate/gorky_park_gate_train_0010.jpg",
+  "sha": "3e9eeefe04f8aa0044f2f057edba79e378f2f18b50a0acd2d7433cd4619765a5",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_park_gate",
+  "path": "data/images_v2/train/gorky_park_gate/gorky_park_gate_train_0006.jpg",
+  "src": "data/images/train/gorky_park_gate/gorky_park_gate_train_0011.jpg",
+  "sha": "2a0763c5b8b129431fbb18fd608bb6086e3aada6f27b988e23279d4aeddc084e",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_park_gate",
+  "path": "data/images_v2/train/gorky_park_gate/gorky_park_gate_train_0007.jpg",
+  "src": "data/images/val/gorky_park_gate/gorky_park_gate_val_0000.jpg",
+  "sha": "2bdc561f9a0e02d0c0fd80f686daad604bc8ee4522bf74cd2e7e2da92557dde5",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_park_gate",
+  "path": "data/images_v2/train/gorky_park_gate/gorky_park_gate_train_0008.jpg",
+  "src": "data/images/test/gorky_park_gate/gorky_park_gate_test_0001.jpg",
+  "sha": "93ac30f38e5abcc77d1fd70f644d8200319331d7e36edac1f603c3bbfbf1b4a8",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_theater",
+  "path": "data/images_v2/train/gorky_theater/gorky_theater_train_0001.jpg",
+  "src": "data/images/train/gorky_theater/gorky_theater_train_0007.jpg",
+  "sha": "59f3d526dc609683785926b7566267a5facd490d15917e90af8893d311f272de",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_theater",
+  "path": "data/images_v2/train/gorky_theater/gorky_theater_train_0002.jpg",
+  "src": "data/images/train/gorky_theater/gorky_theater_train_0008.jpg",
+  "sha": "e0ff3ee660f1b83393d80d317d94e02c738201c286e89388613e6bffe04625c7",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_theater",
+  "path": "data/images_v2/train/gorky_theater/gorky_theater_train_0003.jpg",
+  "src": "data/images/train/gorky_theater/gorky_theater_train_0009.jpg",
+  "sha": "00e0717af438d7d4996281176b4237260a11b8f644feefe1b30b9aaab8977127",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_theater",
+  "path": "data/images_v2/train/gorky_theater/gorky_theater_train_0004.jpg",
+  "src": "data/images/train/gorky_theater/gorky_theater_train_0010.jpg",
+  "sha": "fed99e595a6e42450b9a243eb0709f523d5721be50f6a31eec1ad6d520e05bd6",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_theater",
+  "path": "data/images_v2/train/gorky_theater/gorky_theater_train_0005.jpg",
+  "src": "data/images/train/gorky_theater/gorky_theater_train_0011.jpg",
+  "sha": "6a8c1275a1b2d898e63a0b82c1fe3e543726bd74cbac3c0d349c69b456df6511",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_theater",
+  "path": "data/images_v2/train/gorky_theater/gorky_theater_train_0006.jpg",
+  "src": "data/images/val/gorky_theater/gorky_theater_val_0000.jpg",
+  "sha": "a765e5fec0a4af15834f062cde6d31589ea0071a197a7c815773d59e7efe6f5c",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_theater",
+  "path": "data/images_v2/train/gorky_theater/gorky_theater_train_0007.jpg",
+  "src": "data/images/test/gorky_theater/gorky_theater_test_0000.jpg",
+  "sha": "3ab4c2ed8b0fdbde0c46cc18674390666d4f12fa1ea583c40ccb16ce3d1c432b",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_theater",
+  "path": "data/images_v2/train/gorky_theater/gorky_theater_train_0008.jpg",
+  "src": "data/images/test/gorky_theater/gorky_theater_test_0001.jpg",
+  "sha": "d2cf06fd86d8df065bcd4a6c90b531f81685f03c41ccd06393e837486a250672",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_theater_fountain",
+  "path": "data/images_v2/train/gorky_theater_fountain/gorky_theater_fountain_train_0001.jpg",
+  "src": "data/images/train/gorky_theater_fountain/gorky_theater_fountain_train_0005.jpg",
+  "sha": "822ab9ef81245e03134d26d3746a50194bceb7c81d1384dd9c3a7476460a291e",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_theater_fountain",
+  "path": "data/images_v2/train/gorky_theater_fountain/gorky_theater_fountain_train_0002.jpg",
+  "src": "data/images/train/gorky_theater_fountain/gorky_theater_fountain_train_0006.jpg",
+  "sha": "9e04aa6654976b0e7754e3b49f64bdccf06f460570738912461ee890edfa550a",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_theater_fountain",
+  "path": "data/images_v2/train/gorky_theater_fountain/gorky_theater_fountain_train_0003.jpg",
+  "src": "data/images/train/gorky_theater_fountain/gorky_theater_fountain_train_0007.jpg",
+  "sha": "34b50fc7b01b38daffb07fdff274ff37892c16ed647534c8ee2e65abb7ac1949",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_theater_fountain",
+  "path": "data/images_v2/train/gorky_theater_fountain/gorky_theater_fountain_train_0004.jpg",
+  "src": "data/images/train/gorky_theater_fountain/gorky_theater_fountain_train_0008.jpg",
+  "sha": "0531f0d42fc60d48e000068a670664def806d984ac29c35d4fb60cc2629e1ea3",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_theater_fountain",
+  "path": "data/images_v2/train/gorky_theater_fountain/gorky_theater_fountain_train_0005.jpg",
+  "src": "data/images/train/gorky_theater_fountain/gorky_theater_fountain_train_0009.jpg",
+  "sha": "2be150cff7b1b2bf7b16c1533f6682cb21bd3617e68ce6b0ec60e3690a0b3e3c",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_theater_fountain",
+  "path": "data/images_v2/train/gorky_theater_fountain/gorky_theater_fountain_train_0006.jpg",
+  "src": "data/images/train/gorky_theater_fountain/gorky_theater_fountain_train_0010.jpg",
+  "sha": "aed216dc550c20490fb78ec4074a48042aea73908d122e114e63229ebdb5d539",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_theater_fountain",
+  "path": "data/images_v2/train/gorky_theater_fountain/gorky_theater_fountain_train_0007.jpg",
+  "src": "data/images/train/gorky_theater_fountain/gorky_theater_fountain_train_0011.jpg",
+  "sha": "8d879d1b6705d443821ae1145ea58158eb6a86ed5a5b4d28bdb78bf441e2b1c7",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "gorky_theater_fountain",
+  "path": "data/images_v2/train/gorky_theater_fountain/gorky_theater_fountain_train_0008.jpg",
+  "src": "data/images/val/gorky_theater_fountain/gorky_theater_fountain_val_0000.jpg",
+  "sha": "2c83454e5a49c75d2c50fd7931e1b8a842109e27333b5f90a5a8b4bdfca93244",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kirov_monument",
+  "path": "data/images_v2/train/kirov_monument/kirov_monument_train_0001.jpg",
+  "src": "data/images/train/kirov_monument/kirov_monument_train_0006.jpg",
+  "sha": "0b2dbac734cb35bc52902780c0933fbd30a13749bd960c6a5f6a8634a66dcaac",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kirov_monument",
+  "path": "data/images_v2/train/kirov_monument/kirov_monument_train_0002.jpg",
+  "src": "data/images/train/kirov_monument/kirov_monument_train_0007.jpg",
+  "sha": "2b05cd2ce7dbe7e53b13194f9c7d4810e74c1be167c10b0fa58bb5953d300405",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kirov_monument",
+  "path": "data/images_v2/train/kirov_monument/kirov_monument_train_0003.jpg",
+  "src": "data/images/train/kirov_monument/kirov_monument_train_0008.jpg",
+  "sha": "dfafad4818c4a5203b56389227871334d2d6e40f1bdcfc94a258d0eca398495a",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kirov_monument",
+  "path": "data/images_v2/train/kirov_monument/kirov_monument_train_0004.jpg",
+  "src": "data/images/train/kirov_monument/kirov_monument_train_0009.jpg",
+  "sha": "cc661dff92fd0d1bbf67ba79373368ae7e528a897f64d78d6bc55bc314f3983f",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kirov_monument",
+  "path": "data/images_v2/train/kirov_monument/kirov_monument_train_0005.jpg",
+  "src": "data/images/train/kirov_monument/kirov_monument_train_0010.jpg",
+  "sha": "4829b0b81a06a30e59fd9da5136b716f36105c60197c858d834c91393af7bd23",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kirov_monument",
+  "path": "data/images_v2/train/kirov_monument/kirov_monument_train_0006.jpg",
+  "src": "data/images/train/kirov_monument/kirov_monument_train_0011.jpg",
+  "sha": "9618d684f685258fba2ec0ac6d239b2aef280c33b8df9c4f80ea30d44d45f9d2",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kirov_monument",
+  "path": "data/images_v2/train/kirov_monument/kirov_monument_train_0007.jpg",
+  "src": "data/images/val/kirov_monument/kirov_monument_val_0000.jpg",
+  "sha": "ef0f49f7b764eb2fff11777f89c382e6c7d20c79a3963eac401d52efc25c8e0b",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kirov_monument",
+  "path": "data/images_v2/train/kirov_monument/kirov_monument_train_0008.jpg",
+  "src": "data/images/test/kirov_monument/kirov_monument_test_0001.jpg",
+  "sha": "d3aa5bcdb6200b16693d5b503e6faf64f1e26aab6a009e6e312ec1a4d0f7d40e",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kirov_monument",
+  "path": "data/images_v2/train/kirov_monument/kirov_monument_train_0009.jpg",
+  "src": "data/images/test/kirov_monument/kirov_monument_test_0002.jpg",
+  "sha": "c25c6522e55e80f2a30b7dfd081276e2639c13c49264fee74a134d9010ac6799",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kramer_estate",
+  "path": "data/images_v2/train/kramer_estate/kramer_estate_train_0001.jpg",
+  "src": "data/images/train/kramer_mansion/kramer_mansion_train_0003.jpg",
+  "sha": "5b2351e4375d15c622aff3422a80f20f5e824d73f5021e07629b239e4ffc256b",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kramer_estate",
+  "path": "data/images_v2/train/kramer_estate/kramer_estate_train_0002.jpg",
+  "src": "data/images/train/kramer_revenue_house/kramer_revenue_house_train_0007.jpg",
+  "sha": "23edb5d4d8dbd2970bf9fec0efb8bef437be1f0afc2360e280bb7d137070623b",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kramer_estate",
+  "path": "data/images_v2/train/kramer_estate/kramer_estate_train_0003.jpg",
+  "src": "data/images/train/kramer_mansion/kramer_mansion_train_0004.jpg",
+  "sha": "19d32079474bb5a581d228a56d39282907321e55f621634ecf064d337cf50f2a",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kramer_estate",
+  "path": "data/images_v2/train/kramer_estate/kramer_estate_train_0004.jpg",
+  "src": "data/images/train/kramer_mansion/kramer_mansion_train_0005.jpg",
+  "sha": "1d45d8060326719148e6310b08f1fa2705941c9fadbbde9071796632085cc299",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kramer_estate",
+  "path": "data/images_v2/train/kramer_estate/kramer_estate_train_0005.jpg",
+  "src": "data/images/train/kramer_mansion/kramer_mansion_train_0006.jpg",
+  "sha": "66ba547ec9fa13faa42e361366b836bdd5d37177c84d54686d2d45fcee4ca843",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kramer_estate",
+  "path": "data/images_v2/train/kramer_estate/kramer_estate_train_0006.jpg",
+  "src": "data/images/train/kramer_revenue_house/kramer_revenue_house_train_0005.jpg",
+  "sha": "f58a8b43f8f9b49e08bebfaf7729d46ace44109d5bbe16683a71a207018b2ffc",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kramer_estate",
+  "path": "data/images_v2/train/kramer_estate/kramer_estate_train_0007.jpg",
+  "src": "data/images/train/kramer_revenue_house/kramer_revenue_house_train_0000.jpg",
+  "sha": "97b44915381b4dc7a6d3bf7f45e9453c5c13811d9a473c2ec9a8a95acbcc455c",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kramer_estate",
+  "path": "data/images_v2/train/kramer_estate/kramer_estate_train_0008.jpg",
+  "src": "data/images/train/kramer_revenue_house/kramer_revenue_house_train_0003.jpg",
+  "sha": "f2df8608afdffd491da105fd104c8d3aaec3723df67ead080cafb26eeae728ec",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kramer_estate",
+  "path": "data/images_v2/train/kramer_estate/kramer_estate_train_0009.jpg",
+  "src": "data/images_enriched/kramer_revenue_house/commons_01.jpg",
+  "sha": "1acfcf236c810333d4d9a01a3c60a5fb25d0e2d9b3609ef623708fb9a7b9a35b",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "kramer_estate",
+  "path": "data/images_v2/train/kramer_estate/kramer_estate_train_0010.jpg",
+  "src": "data/images_enriched/kramer_revenue_house/commons_02.jpg",
+  "sha": "330114245674af613d5f9a78b845aad7134ef66ba86d6521663ca8fa01992d76",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "kushnarev_house",
+  "path": "data/images_v2/train/kushnarev_house/kushnarev_house_train_0001.jpg",
+  "src": "data/images/train/kushnarev_house/kushnarev_house_train_0003.jpg",
+  "sha": "f880558ed95db2a2378eb8b08c8b32eb015023ed03691d60a317b059d41167b1",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kushnarev_house",
+  "path": "data/images_v2/train/kushnarev_house/kushnarev_house_train_0002.jpg",
+  "src": "data/images/val/kushnarev_house/kushnarev_house_val_0000.jpg",
+  "sha": "5a3d7508f32f02c73f3fab5b1d1dd7286fe77db032b750e5994d1f480c2f72af",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kushnarev_house",
+  "path": "data/images_v2/train/kushnarev_house/kushnarev_house_train_0003.jpg",
+  "src": "data/images/train/kushnarev_house/kushnarev_house_train_0004.jpg",
+  "sha": "b728eeab59ef5457aa8797674ad3078088f93508c5af77d173f07f6f36d44349",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kushnarev_house",
+  "path": "data/images_v2/train/kushnarev_house/kushnarev_house_train_0004.jpg",
+  "src": "data/images/test/kushnarev_house/kushnarev_house_test_0000.jpg",
+  "sha": "48450fada6cbbb5a7a96b4a256adb9d62163828e81c9e3d1db9a2864377bbf88",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kushnarev_house",
+  "path": "data/images_v2/train/kushnarev_house/kushnarev_house_train_0005.jpg",
+  "src": "data/images/train/kushnarev_house/kushnarev_house_train_0005.jpg",
+  "sha": "ed685931e51ec5cf93578706a1d8592b0f5f7ff7e9fed89369be44e933c88631",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kushnarev_house",
+  "path": "data/images_v2/train/kushnarev_house/kushnarev_house_train_0006.jpg",
+  "src": "data/images/test/kushnarev_house/kushnarev_house_test_0001.jpg",
+  "sha": "666d60fc808a9657c4072185059963a2507134e9a6f3d48557613a96f29ad7b7",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kushnarev_house",
+  "path": "data/images_v2/train/kushnarev_house/kushnarev_house_train_0007.jpg",
+  "src": "data/images/train/kushnarev_house/kushnarev_house_train_0006.jpg",
+  "sha": "88e7c950cb231aca59793c1b7a3b85d3aeb84bc694669b1a28f3c7f78a7394e6",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kushnarev_house",
+  "path": "data/images_v2/train/kushnarev_house/kushnarev_house_train_0008.jpg",
+  "src": "data/images/train/kushnarev_house/kushnarev_house_train_0010.jpg",
+  "sha": "91bb7437e8607682607f9cfb0796490fff5de5eb066d9e215c18c00b34f1abd9",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "kushnarev_house",
+  "path": "data/images_v2/train/kushnarev_house/kushnarev_house_train_0009.jpg",
+  "src": "data/images/train/kushnarev_house/kushnarev_house_train_0008.jpg",
+  "sha": "9d4cb6704761c68cd54b9159d334c9b3568a2434c8b5e6f6e1e2a41008a4365a",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "lashch_revenue_house",
+  "path": "data/images_v2/train/lashch_revenue_house/lashch_revenue_house_train_0001.jpg",
+  "src": "data/images/train/lashch_revenue_house/lashch_revenue_house_train_0000.jpg",
+  "sha": "749b20e5e0e8722cda393e850079d3f8f5c1333f846eed812edb55b44d118cea",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "lashch_revenue_house",
+  "path": "data/images_v2/train/lashch_revenue_house/lashch_revenue_house_train_0002.jpg",
+  "src": "data/images/train/lashch_revenue_house/lashch_revenue_house_train_0002.jpg",
+  "sha": "1d2e21d4ed3ab2a220a0ce211d9361cfd4d4cf7f77476d93f284c9a787117612",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "lashch_revenue_house",
+  "path": "data/images_v2/train/lashch_revenue_house/lashch_revenue_house_train_0003.jpg",
+  "src": "data/images/train/lashch_revenue_house/lashch_revenue_house_train_0004.jpg",
+  "sha": "a88b312635ec524117cd8197bfac61715dcea3ac628755e8b71e8cabb43df094",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "lashch_revenue_house",
+  "path": "data/images_v2/train/lashch_revenue_house/lashch_revenue_house_train_0004.jpg",
+  "src": "data/images/train/lashch_revenue_house/lashch_revenue_house_train_0005.jpg",
+  "sha": "02447e3bd8d9c00529261fe8012aa48886a7ac0efbd8f64d97814d228a524e5b",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "library_fountain",
+  "path": "data/images_v2/train/library_fountain/library_fountain_train_0001.jpg",
+  "src": "data/images/train/library_fountain/library_fountain_train_0003.jpg",
+  "sha": "177d61391d9d0f7e1a15573fbc896379eafe61c0ef0c30d749093a7a8b508dc0",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "library_fountain",
+  "path": "data/images_v2/train/library_fountain/library_fountain_train_0002.jpg",
+  "src": "data/images/train/library_fountain/library_fountain_train_0004.jpg",
+  "sha": "674f1a8f2e8132f49b109097959566f686e80f91eb39ae2016f459b69f74516a",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "library_fountain",
+  "path": "data/images_v2/train/library_fountain/library_fountain_train_0003.jpg",
+  "src": "data/images/train/library_fountain/library_fountain_train_0005.jpg",
+  "sha": "8fb73c195a80197b0a3f80d38b5c614b5756fd8d4ce048cd91f833d9fa2bcd77",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "library_fountain",
+  "path": "data/images_v2/train/library_fountain/library_fountain_train_0004.jpg",
+  "src": "data/images/train/library_fountain/library_fountain_train_0006.jpg",
+  "sha": "d5bf1ae9186f177b188ca3bffebab6c0bca5bd9572dd764245bb758f5757de54",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "library_fountain",
+  "path": "data/images_v2/train/library_fountain/library_fountain_train_0005.jpg",
+  "src": "data/images/train/library_fountain/library_fountain_train_0007.jpg",
+  "sha": "6a4c850d9dc33f2f2d83eda38bac4404468fffa773a3515d3515dc02f6046436",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "library_fountain",
+  "path": "data/images_v2/train/library_fountain/library_fountain_train_0006.jpg",
+  "src": "data/images/train/library_fountain/library_fountain_train_0011.jpg",
+  "sha": "4caff629de84e15c7f97554615a0e2a27aa134d7ddc599fce053b8c5b08f76cd",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "memorial_nazi_victims",
+  "path": "data/images_v2/train/memorial_nazi_victims/memorial_nazi_victims_train_0001.jpg",
+  "src": "data/images/train/memorial_nazi_victims/memorial_nazi_victims_train_0007.jpg",
+  "sha": "05427fee7728f865e349fafbff7226807f60de3bbe54c017b418e86b65bb7821",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "memorial_nazi_victims",
+  "path": "data/images_v2/train/memorial_nazi_victims/memorial_nazi_victims_train_0002.jpg",
+  "src": "data/images/train/memorial_nazi_victims/memorial_nazi_victims_train_0008.jpg",
+  "sha": "96b0e36c54c10d70d831d83bf925ee8d1303a01935d5704eba4e8d02fcaf1506",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "memorial_nazi_victims",
+  "path": "data/images_v2/train/memorial_nazi_victims/memorial_nazi_victims_train_0003.jpg",
+  "src": "data/images/train/memorial_nazi_victims/memorial_nazi_victims_train_0009.jpg",
+  "sha": "4a3f73d0a84429188fabddeb7c43b61cf162b528bae0d17d5943e61916ed1fff",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "memorial_nazi_victims",
+  "path": "data/images_v2/train/memorial_nazi_victims/memorial_nazi_victims_train_0004.jpg",
+  "src": "data/images/train/memorial_nazi_victims/memorial_nazi_victims_train_0010.jpg",
+  "sha": "393ca93ce51cb20a5e08921c3836c9906ccd5eb3b21779fcf0f62974044d4db5",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "memorial_nazi_victims",
+  "path": "data/images_v2/train/memorial_nazi_victims/memorial_nazi_victims_train_0005.jpg",
+  "src": "data/images/train/memorial_nazi_victims/memorial_nazi_victims_train_0011.jpg",
+  "sha": "aa9a0f0cdde0b9992c42f937c619e880b88df1f913de6279cb6a938cbd2cfe72",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "memorial_nazi_victims",
+  "path": "data/images_v2/train/memorial_nazi_victims/memorial_nazi_victims_train_0006.jpg",
+  "src": "data/images/val/memorial_nazi_victims/memorial_nazi_victims_val_0000.jpg",
+  "sha": "71726685a28826b0ed95db74a8f5f6588aa916894ab0dcd6a4130ac5f56fe889",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "memorial_nazi_victims",
+  "path": "data/images_v2/train/memorial_nazi_victims/memorial_nazi_victims_train_0007.jpg",
+  "src": "data/images/test/memorial_nazi_victims/memorial_nazi_victims_test_0000.jpg",
+  "sha": "755609873219db8b10cd334bb879ed4a69310d4813df47371137dc554de02610",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "memorial_nazi_victims",
+  "path": "data/images_v2/train/memorial_nazi_victims/memorial_nazi_victims_train_0008.jpg",
+  "src": "data/images/test/memorial_nazi_victims/memorial_nazi_victims_test_0001.jpg",
+  "sha": "e6194c04e60cebc0e6f364346478d8737700ca24411c1db5dcc8a376946a6111",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "mnatsakanova_house",
+  "path": "data/images_v2/train/mnatsakanova_house/mnatsakanova_house_train_0001.jpg",
+  "src": "data/images/train/mnatsakanova_house/mnatsakanova_house_train_0000.jpg",
+  "sha": "4683533f8256ffa54e439dad7418ff412ca138c29927d5e3c13b6f4ba5517d0f",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "mnatsakanova_house",
+  "path": "data/images_v2/train/mnatsakanova_house/mnatsakanova_house_train_0002.jpg",
+  "src": "data/images/train/mnatsakanova_house/mnatsakanova_house_train_0007.jpg",
+  "sha": "7cf2ccd03296d7e47d5cb9ec202cf92affe211310469ad14a856727eb7b1a1c2",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "mnatsakanova_house",
+  "path": "data/images_v2/train/mnatsakanova_house/mnatsakanova_house_train_0003.jpg",
+  "src": "data/images/train/mnatsakanova_house/mnatsakanova_house_train_0002.jpg",
+  "sha": "66edad2e272c09515f3bde6657c27f440fa509fd877309c57f821a60b0e851fe",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "mnatsakanova_house",
+  "path": "data/images_v2/train/mnatsakanova_house/mnatsakanova_house_train_0004.jpg",
+  "src": "data/images/train/mnatsakanova_house/mnatsakanova_house_train_0004.jpg",
+  "sha": "d8f139fe8f01a4a1742d430c59bc3e6bbc8abadc5d6d1402b21480d40f527a6a",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "museum_fine_arts",
+  "path": "data/images_v2/train/museum_fine_arts/museum_fine_arts_train_0001.jpg",
+  "src": "data/images/train/museum_fine_arts/museum_fine_arts_train_0007.jpg",
+  "sha": "1f9fb88641aaf22c89aa9b7b2739619e63916fc92914b735c34d8e58efcbbb13",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "museum_fine_arts",
+  "path": "data/images_v2/train/museum_fine_arts/museum_fine_arts_train_0002.jpg",
+  "src": "data/images/train/museum_fine_arts/museum_fine_arts_train_0008.jpg",
+  "sha": "1afbb0a3e86a74d733bcf2ab07243b69b1afb0a29242076c04a1826bfd91035d",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "museum_fine_arts",
+  "path": "data/images_v2/train/museum_fine_arts/museum_fine_arts_train_0003.jpg",
+  "src": "data/images/train/museum_fine_arts/museum_fine_arts_train_0009.jpg",
+  "sha": "29ef4a4621ad3009bcef5d8ba3c3b1d455cc584f9cfc6bf420365d4504264d2c",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "museum_fine_arts",
+  "path": "data/images_v2/train/museum_fine_arts/museum_fine_arts_train_0004.jpg",
+  "src": "data/images/train/museum_fine_arts/museum_fine_arts_train_0010.jpg",
+  "sha": "80f5c79073cde14a07b68fd937df415b537e827a26738e11ddc769488a76d7f0",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "museum_fine_arts",
+  "path": "data/images_v2/train/museum_fine_arts/museum_fine_arts_train_0005.jpg",
+  "src": "data/images/train/museum_fine_arts/museum_fine_arts_train_0011.jpg",
+  "sha": "019f58c2584f6c6cff3d33450c756b9803deda0f4e7c6746e918be5e71610540",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "museum_fine_arts",
+  "path": "data/images_v2/train/museum_fine_arts/museum_fine_arts_train_0006.jpg",
+  "src": "data/images/val/museum_fine_arts/museum_fine_arts_val_0000.jpg",
+  "sha": "c7d8bb199464bc6849412b2e75c25c52e43e074f4c1d1dbdf2c85ea73ee670b1",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "museum_fine_arts",
+  "path": "data/images_v2/train/museum_fine_arts/museum_fine_arts_train_0007.jpg",
+  "src": "data/images/test/museum_fine_arts/museum_fine_arts_test_0000.jpg",
+  "sha": "2a7176112d75b391212da0bafe2cb50b2348bf3c6a596d3785db2fa0ec7c3236",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "museum_fine_arts",
+  "path": "data/images_v2/train/museum_fine_arts/museum_fine_arts_train_0008.jpg",
+  "src": "data/images/test/museum_fine_arts/museum_fine_arts_test_0001.jpg",
+  "sha": "7b4244e64ff4cb3e0986fc7c853eb5bbdf088b364a88ee7669d8e6f73df7cbec",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "musical_theater",
+  "path": "data/images_v2/train/musical_theater/musical_theater_train_0001.jpg",
+  "src": "data/images/train/musical_theater/musical_theater_train_0000.jpg",
+  "sha": "4f49dcaf9cb9d3e2c4f22d46de5b1a4b0ede5245fd589ec91d0c487619df9c61",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "musical_theater",
+  "path": "data/images_v2/train/musical_theater/musical_theater_train_0002.jpg",
+  "src": "data/images/train/musical_theater/musical_theater_train_0002.jpg",
+  "sha": "a594ea9946e0d4f3976ebe05c3894581d75b5476291834781b23117a29ea546e",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "musical_theater",
+  "path": "data/images_v2/train/musical_theater/musical_theater_train_0003.jpg",
+  "src": "data/images/train/musical_theater/musical_theater_train_0003.jpg",
+  "sha": "1b95edc69fb327dac535db7ad894e8bff43f252ff2e70e728d4288c9ae2d2bc4",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "musical_theater",
+  "path": "data/images_v2/train/musical_theater/musical_theater_train_0004.jpg",
+  "src": "data/images/train/musical_theater/musical_theater_train_0004.jpg",
+  "sha": "760a095300887759499f9ac5235117061b15041c33214ccf212e82678b93626e",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "musical_theater",
+  "path": "data/images_v2/train/musical_theater/musical_theater_train_0005.jpg",
+  "src": "data/images/val/musical_theater/musical_theater_val_0000.jpg",
+  "sha": "a4f680b72fd6daa1ab567cf6f56981490fb2e856fa8b01677d04f4781008142c",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "musical_theater",
+  "path": "data/images_v2/train/musical_theater/musical_theater_train_0006.jpg",
+  "src": "data/images/test/musical_theater/musical_theater_test_0000.jpg",
+  "sha": "3725bffd2689e5c80b56d066bb0c95df815eb176bbdfb1552a01dda218b73265",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "paramonov_mansion_sfeu",
+  "path": "data/images_v2/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0001.jpg",
+  "src": "data/images/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0003.jpg",
+  "sha": "1200f45f0bf61d222e1512bf1126de2c43e99a5ff5fd48b42ed10c34c2e6f4a5",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "paramonov_mansion_sfeu",
+  "path": "data/images_v2/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0002.jpg",
+  "src": "data/images/train/sfeu_library/sfeu_library_train_0000.jpg",
+  "sha": "7e7ef8f60d76142ab0dc3e9fca7529db66f5b69fca9e94c4e8ebbdefb8a3136f",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "paramonov_mansion_sfeu",
+  "path": "data/images_v2/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0003.jpg",
+  "src": "data/images_enriched/paramonov_mansion_sfeu/commons_02.jpg",
+  "sha": "7f95dbdce8b6ea7fe89d5d2fb26406e76a59ffdca1f4440c07033012012d1c03",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "paramonov_mansion_sfeu",
+  "path": "data/images_v2/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0004.jpg",
+  "src": "data/images_enriched/paramonov_mansion_sfeu/commons_03.jpg",
+  "sha": "4e68c11482bbb44674cf6cb67c7f444624b182d20ff0874ae49f39ca7904900e",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "paramonov_mansion_sfeu",
+  "path": "data/images_v2/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0005.jpg",
+  "src": "data/images_enriched/paramonov_mansion_sfeu/commons_04.jpg",
+  "sha": "692e4f14ac278983fd4aed9b9df9a5e57e1dda7c5eee57429ddb4a5209fe0ac8",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "paramonov_mansion_sfeu",
+  "path": "data/images_v2/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0006.jpg",
+  "src": "data/images_enriched/paramonov_mansion_sfeu/commons_05.jpg",
+  "sha": "28e7d7257311c2ff482ff1211be2531f14e4d2861116dcfed44263ae6fce9062",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "paramonov_mansion_sfeu",
+  "path": "data/images_v2/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0007.jpg",
+  "src": "data/images_enriched/paramonov_mansion_sfeu/commons_06.jpg",
+  "sha": "b05c3f9c6392b481130fcab0f38757e3b6369011aa3565856fd4098b6d0a0fb6",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "paramonov_mansion_sfeu",
+  "path": "data/images_v2/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0008.jpg",
+  "src": "data/images_enriched/paramonov_mansion_sfeu/commons_07.jpg",
+  "sha": "b15d89c5703d1926c706fedb0db7ccc147e64b1dcc7449e9bd6ef2bb31d371cb",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "paramonov_mansion_sfeu",
+  "path": "data/images_v2/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0009.jpg",
+  "src": "data/images_enriched/paramonov_mansion_sfeu/commons_08.jpg",
+  "sha": "b6371766cb4cca90815e9d77be9ac3ef5dcddb604dd2cce4437a28b3297a87b2",
+  "origin": "commons"
+ },
+ {
+  "split": "train",
+  "cls": "pushkin_monument",
+  "path": "data/images_v2/train/pushkin_monument/pushkin_monument_train_0001.jpg",
+  "src": "data/images/train/pushkin_monument/pushkin_monument_train_0000.jpg",
+  "sha": "a5e2ea808cf8131325fd4a1a2c9ff4ede1495b3d78fa1dd3aabb52df7f465568",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "pushkin_monument",
+  "path": "data/images_v2/train/pushkin_monument/pushkin_monument_train_0002.jpg",
+  "src": "data/images/train/pushkin_monument/pushkin_monument_train_0002.jpg",
+  "sha": "529c62ae148f97c2ba2c334bf077c3bc9c6054656ed701982459a6976f5871e1",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "pushkin_monument",
+  "path": "data/images_v2/train/pushkin_monument/pushkin_monument_train_0003.jpg",
+  "src": "data/images/train/pushkin_monument/pushkin_monument_train_0004.jpg",
+  "sha": "3dbd55338bd083ab934e2d0028d64f2bb74d944ae01d8ffc5c7598f3c4a12cec",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "pushkin_monument",
+  "path": "data/images_v2/train/pushkin_monument/pushkin_monument_train_0004.jpg",
+  "src": "data/images/train/pushkin_monument/pushkin_monument_train_0005.jpg",
+  "sha": "5dc3504892c177054e70bc4deacaab40c3be0d8dc00d85a1ec14f9067982b175",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "pushkin_monument",
+  "path": "data/images_v2/train/pushkin_monument/pushkin_monument_train_0005.jpg",
+  "src": "data/images/train/pushkin_monument/pushkin_monument_train_0009.jpg",
+  "sha": "653038dea81891b1e3549994214330d3b64f51493579dfd4aca99e865078f9f5",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "pushkin_monument",
+  "path": "data/images_v2/train/pushkin_monument/pushkin_monument_train_0006.jpg",
+  "src": "data/images/train/pushkin_monument/pushkin_monument_train_0011.jpg",
+  "sha": "30d2016138d872abc8068bf9c8f14e28bba0f90ab08f7c9ef3c55c25d4bd4d41",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "pushkin_monument",
+  "path": "data/images_v2/train/pushkin_monument/pushkin_monument_train_0007.jpg",
+  "src": "data/images/test/pushkin_monument/pushkin_monument_test_0001.jpg",
+  "sha": "9661f5f3223699cdf1781040ef652122b3020e55e637e7d1e834307e5b71092d",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "reznichenko_house",
+  "path": "data/images_v2/train/reznichenko_house/reznichenko_house_train_0001.jpg",
+  "src": "data/images/train/reznichenko_house/reznichenko_house_train_0003.jpg",
+  "sha": "64bc8283648f593349d39a0c4f6a03c44d98b4da9f89245c0b28dcdb48e1c9ee",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "reznichenko_house",
+  "path": "data/images_v2/train/reznichenko_house/reznichenko_house_train_0002.jpg",
+  "src": "data/images/train/reznichenko_house/reznichenko_house_train_0004.jpg",
+  "sha": "9e25729765592059b9b80d40fbcf6290052946e3d11158479d8a9b18ad7437ed",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "reznichenko_house",
+  "path": "data/images_v2/train/reznichenko_house/reznichenko_house_train_0003.jpg",
+  "src": "data/images/train/reznichenko_house/reznichenko_house_train_0006.jpg",
+  "sha": "1cbea3f0c1f431f9f48c05cfbfd6f0868907bf4c242ac1e0ba3776ee7b5802d6",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "reznichenko_house",
+  "path": "data/images_v2/train/reznichenko_house/reznichenko_house_train_0004.jpg",
+  "src": "data/images/train/reznichenko_house/reznichenko_house_train_0008.jpg",
+  "sha": "3eb80e76ab7da1ac2631d324af5cc6c0977e9658e91577a70f4545c8c627d611",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "reznichenko_house",
+  "path": "data/images_v2/train/reznichenko_house/reznichenko_house_train_0005.jpg",
+  "src": "data/images/train/reznichenko_house/reznichenko_house_train_0010.jpg",
+  "sha": "59082006f3a0399a49772e8d4371698a3125385efa33093d43c45cc3594b686a",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "rostov_medical_university",
+  "path": "data/images_v2/train/rostov_medical_university/rostov_medical_university_train_0001.jpg",
+  "src": "data/images/train/rostov_medical_university/rostov_medical_university_train_0001.jpg",
+  "sha": "3dd9100ae11c48b0cb9f387fd248c70d60ac7001b58c2d33801539b1b3ab99fe",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "rostov_medical_university",
+  "path": "data/images_v2/train/rostov_medical_university/rostov_medical_university_train_0002.jpg",
+  "src": "data/images/train/rostov_medical_university/rostov_medical_university_train_0009.jpg",
+  "sha": "60e318a81c212902df5296a0e5cdbcfdbcab98c2e09d7ae072b1b9a66ad453bb",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "rostov_medical_university",
+  "path": "data/images_v2/train/rostov_medical_university/rostov_medical_university_train_0003.jpg",
+  "src": "data/images/train/rostov_medical_university/rostov_medical_university_train_0003.jpg",
+  "sha": "5ee83a6c76fd60a0f89ac326aa16f09664d85c271a05f77e52c22554e68f8b0e",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "rostov_medical_university",
+  "path": "data/images_v2/train/rostov_medical_university/rostov_medical_university_train_0004.jpg",
+  "src": "data/images/train/rostov_medical_university/rostov_medical_university_train_0007.jpg",
+  "sha": "c2a705146fd9df3c03e0195cfe9f00dd5322f8a5c5e780c4af8426faacbf8ce6",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "sholokhov_monument",
+  "path": "data/images_v2/train/sholokhov_monument/sholokhov_monument_train_0001.jpg",
+  "src": "data/images/train/sholokhov_monument/sholokhov_monument_train_0001.jpg",
+  "sha": "808c9cdccf39896734e4154a34294cfba5e729304c3f8ec5df3afb7141d4fb22",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "sholokhov_monument",
+  "path": "data/images_v2/train/sholokhov_monument/sholokhov_monument_train_0002.jpg",
+  "src": "data/images/train/sholokhov_monument/sholokhov_monument_train_0002.jpg",
+  "sha": "664c9d10ae53aede661fc71487a30fd29f257694d0f2ec1482ebc4a7934fec91",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "sholokhov_monument",
+  "path": "data/images_v2/train/sholokhov_monument/sholokhov_monument_train_0003.jpg",
+  "src": "data/images/train/sholokhov_monument/sholokhov_monument_train_0004.jpg",
+  "sha": "0ca0013b01bef9dc2509527088b2b9d3911da92fff49d984d20ba2ab18977124",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "sholokhov_monument",
+  "path": "data/images_v2/train/sholokhov_monument/sholokhov_monument_train_0004.jpg",
+  "src": "data/images/train/sholokhov_monument/sholokhov_monument_train_0005.jpg",
+  "sha": "31ad5d85febc3b4c3a69ac35b4e65b3a1e9a1dc5b3729dd98dd81d4841fdcc78",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "sholokhov_monument",
+  "path": "data/images_v2/train/sholokhov_monument/sholokhov_monument_train_0005.jpg",
+  "src": "data/images/train/sholokhov_monument/sholokhov_monument_train_0006.jpg",
+  "sha": "e8e2d863ec9b1b8206d55e906f35f597a34b9fd9754f08b0b06cdd9a31c56765",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "sholokhov_monument",
+  "path": "data/images_v2/train/sholokhov_monument/sholokhov_monument_train_0006.jpg",
+  "src": "data/images/train/sholokhov_monument/sholokhov_monument_train_0008.jpg",
+  "sha": "6d4d34c35997091f68f0e06b73cd9dc7b293cf5c4fd6bfa5e042a11abfd90bd7",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "sholokhov_monument",
+  "path": "data/images_v2/train/sholokhov_monument/sholokhov_monument_train_0007.jpg",
+  "src": "data/images/train/sholokhov_monument/sholokhov_monument_train_0009.jpg",
+  "sha": "c345b84f31b5989f8ac2bffce6d376a64653912a79270d3673146f07df97db36",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "sholokhov_monument",
+  "path": "data/images_v2/train/sholokhov_monument/sholokhov_monument_train_0008.jpg",
+  "src": "data/images/train/sholokhov_monument/sholokhov_monument_train_0010.jpg",
+  "sha": "37ca1349738f5bfa67f3688cfdafac09e9d05ed6f0b3991fea7c9e893c5c10db",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "sholokhov_monument",
+  "path": "data/images_v2/train/sholokhov_monument/sholokhov_monument_train_0009.jpg",
+  "src": "data/images/val/sholokhov_monument/sholokhov_monument_val_0000.jpg",
+  "sha": "892ad9a2e5c42849790210bc30694597ce1104b7565b37fdd38bdb9ca77c234d",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "sholokhov_monument",
+  "path": "data/images_v2/train/sholokhov_monument/sholokhov_monument_train_0010.jpg",
+  "src": "data/images/test/sholokhov_monument/sholokhov_monument_test_0001.jpg",
+  "sha": "bb8e6a6d7cb6e74b3bf035375fb171dee4eb05dee120bcc83c997ce106365680",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "spielrein_mansion",
+  "path": "data/images_v2/train/spielrein_mansion/spielrein_mansion_train_0001.jpg",
+  "src": "data/images/train/spielrein_mansion/spielrein_mansion_train_0007.jpg",
+  "sha": "4a7aff7a0a1aa3afe17eab91cf17a51ea5bd1426790ccfb8864c9bf5ed2c4326",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "spielrein_mansion",
+  "path": "data/images_v2/train/spielrein_mansion/spielrein_mansion_train_0002.jpg",
+  "src": "data/images/train/spielrein_mansion/spielrein_mansion_train_0008.jpg",
+  "sha": "26ff31f84c541ff9465d450ca02fd6a25b0ebbf59fcbd923f0467343fd23dfa7",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "spielrein_mansion",
+  "path": "data/images_v2/train/spielrein_mansion/spielrein_mansion_train_0003.jpg",
+  "src": "data/images/train/spielrein_mansion/spielrein_mansion_train_0009.jpg",
+  "sha": "cbd7ab3c426610dda80d9035fb57bf341948829897ddc55de73c371a840c7c71",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "spielrein_mansion",
+  "path": "data/images_v2/train/spielrein_mansion/spielrein_mansion_train_0004.jpg",
+  "src": "data/images/train/spielrein_mansion/spielrein_mansion_train_0010.jpg",
+  "sha": "2d353dad632e56cf1d40461034c280dff1e6cd4ce67d96a638aa834aab3d8645",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "spielrein_mansion",
+  "path": "data/images_v2/train/spielrein_mansion/spielrein_mansion_train_0005.jpg",
+  "src": "data/images/val/spielrein_mansion/spielrein_mansion_val_0000.jpg",
+  "sha": "a1ee0727936191662501788c4136f3faa9b8f0079e8fdc554041de0d36d6a292",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "spielrein_mansion",
+  "path": "data/images_v2/train/spielrein_mansion/spielrein_mansion_train_0006.jpg",
+  "src": "data/images/test/spielrein_mansion/spielrein_mansion_test_0000.jpg",
+  "sha": "d99a55a883edc1afdb7665a9d07b33008620f18dcc7879fc47306d0949be00f5",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "spielrein_mansion",
+  "path": "data/images_v2/train/spielrein_mansion/spielrein_mansion_train_0007.jpg",
+  "src": "data/images/test/spielrein_mansion/spielrein_mansion_test_0001.jpg",
+  "sha": "d41852a27591a69a42337e5b5df80bf22bb4ee6374d23e058eb27126e685c657",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "spielrein_mansion",
+  "path": "data/images_v2/train/spielrein_mansion/spielrein_mansion_train_0008.jpg",
+  "src": "data/images/test/spielrein_mansion/spielrein_mansion_test_0002.jpg",
+  "sha": "835912116d07d2d2f3b8ecf0e641cf96b099bbe8a62ca1f1a6f539388485fcfd",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "suprunov_mansion",
+  "path": "data/images_v2/train/suprunov_mansion/suprunov_mansion_train_0001.jpg",
+  "src": "data/images/train/suprunov_mansion/suprunov_mansion_train_0000.jpg",
+  "sha": "22e1bf917d76f16c447f0ef6d1413423ea5d04c21dbe049ab77769303878b745",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "suprunov_mansion",
+  "path": "data/images_v2/train/suprunov_mansion/suprunov_mansion_train_0002.jpg",
+  "src": "data/images/train/suprunov_mansion/suprunov_mansion_train_0006.jpg",
+  "sha": "39516e170859ff2d82201ceee2a332cdf6f762fec8b0dd04546b8abd033beaa5",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "suprunov_mansion",
+  "path": "data/images_v2/train/suprunov_mansion/suprunov_mansion_train_0003.jpg",
+  "src": "data/images/train/suprunov_mansion/suprunov_mansion_train_0002.jpg",
+  "sha": "968260013681db18599338f17fe8f1592f193ef5066eea47e62c7ae3ea43b9be",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "suprunov_mansion",
+  "path": "data/images_v2/train/suprunov_mansion/suprunov_mansion_train_0004.jpg",
+  "src": "data/images/val/suprunov_mansion/suprunov_mansion_val_0000.jpg",
+  "sha": "579f758df773265b998d1089abbd0b05eb57081691d7206e23ad2f76420068eb",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "tkachenko_revenue_house",
+  "path": "data/images_v2/train/tkachenko_revenue_house/tkachenko_revenue_house_train_0001.jpg",
+  "src": "data/images/train/tkachenko_revenue_house/tkachenko_revenue_house_train_0000.jpg",
+  "sha": "c8d04763172be958eac77deb895e6b2c85337965db0172ef4f6378a7beb6b1b5",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "tkachenko_revenue_house",
+  "path": "data/images_v2/train/tkachenko_revenue_house/tkachenko_revenue_house_train_0002.jpg",
+  "src": "data/images/train/tkachenko_revenue_house/tkachenko_revenue_house_train_0002.jpg",
+  "sha": "80527b04aeadc43bee6fe763b95e4b9603ab397dc6fbc158da7e73e560608821",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "tkachenko_revenue_house",
+  "path": "data/images_v2/train/tkachenko_revenue_house/tkachenko_revenue_house_train_0003.jpg",
+  "src": "data/images/test/tkachenko_revenue_house/tkachenko_revenue_house_test_0000.jpg",
+  "sha": "01c1627e34d5deb5b4877dabb7bc38431df6354de982daab2fb3c77acb170df6",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "underground_mosaics",
+  "path": "data/images_v2/train/underground_mosaics/underground_mosaics_train_0001.jpg",
+  "src": "data/images/train/underground_mosaics/underground_mosaics_train_0006.jpg",
+  "sha": "1da9dfa9753fdb92aa115dcefb33261947651e2ee797895941e3faff8651a94f",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "underground_mosaics",
+  "path": "data/images_v2/train/underground_mosaics/underground_mosaics_train_0002.jpg",
+  "src": "data/images/train/underground_mosaics/underground_mosaics_train_0007.jpg",
+  "sha": "1c33936cfeaae3a4328d77b6a235f83e8f7a334a1ad05bca34d69430e5a6c34a",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "underground_mosaics",
+  "path": "data/images_v2/train/underground_mosaics/underground_mosaics_train_0003.jpg",
+  "src": "data/images/train/underground_mosaics/underground_mosaics_train_0008.jpg",
+  "sha": "f6a5e5d7e262a7b6d5458136ace661e2f3a71b750ceaa5106d590e9ddb2ce474",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "underground_mosaics",
+  "path": "data/images_v2/train/underground_mosaics/underground_mosaics_train_0004.jpg",
+  "src": "data/images/train/underground_mosaics/underground_mosaics_train_0009.jpg",
+  "sha": "db490cc913c4fdf6f82717eb9110e1834000a19a90ec680f2b4fe22adf5f3a00",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "underground_mosaics",
+  "path": "data/images_v2/train/underground_mosaics/underground_mosaics_train_0005.jpg",
+  "src": "data/images/train/underground_mosaics/underground_mosaics_train_0010.jpg",
+  "sha": "487bc86e7b6c2a9f6c21eb589513f54c7141235f3687e66c768bfe50ff66cfbe",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "underground_mosaics",
+  "path": "data/images_v2/train/underground_mosaics/underground_mosaics_train_0006.jpg",
+  "src": "data/images/train/underground_mosaics/underground_mosaics_train_0011.jpg",
+  "sha": "2356f64f89a801648a883d94f7273d7ea4e0b63fcc7813f98150edfa0fde9619",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "underground_mosaics",
+  "path": "data/images_v2/train/underground_mosaics/underground_mosaics_train_0007.jpg",
+  "src": "data/images/val/underground_mosaics/underground_mosaics_val_0000.jpg",
+  "sha": "47d523f562af67cb36b65eb7a37cde8a1de4b0a445c78dc34062f129ff39c2d1",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "underground_mosaics",
+  "path": "data/images_v2/train/underground_mosaics/underground_mosaics_train_0008.jpg",
+  "src": "data/images/test/underground_mosaics/underground_mosaics_test_0001.jpg",
+  "sha": "cde8d6ae57b06650a7a4a8c535d7ecbe42b9368eb3aac416539e5fa9ed9589c8",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "zvorykin_house",
+  "path": "data/images_v2/train/zvorykin_house/zvorykin_house_train_0001.jpg",
+  "src": "data/images/train/zvorykin_house/zvorykin_house_train_0005.jpg",
+  "sha": "ffdbb6815da87da9391e33a2a2c6d38b4466bc7ba30c0e3895110c6fce927f02",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "zvorykin_house",
+  "path": "data/images_v2/train/zvorykin_house/zvorykin_house_train_0002.jpg",
+  "src": "data/images/train/zvorykin_house/zvorykin_house_train_0006.jpg",
+  "sha": "187799753914f66e7d2f541e0ba9bc6bca70583fabb0e1b063ad87de832afc48",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "zvorykin_house",
+  "path": "data/images_v2/train/zvorykin_house/zvorykin_house_train_0003.jpg",
+  "src": "data/images/train/zvorykin_house/zvorykin_house_train_0007.jpg",
+  "sha": "37ba4ec02887195e059019fa12a2691633dec7f201ce275a8b76ba99e67fde0f",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "zvorykin_house",
+  "path": "data/images_v2/train/zvorykin_house/zvorykin_house_train_0004.jpg",
+  "src": "data/images/train/zvorykin_house/zvorykin_house_train_0008.jpg",
+  "sha": "ff88e27d7b8f336bd88ad0c75b3191363763c44b2bacdabda70ed2e1e81e8c1b",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "zvorykin_house",
+  "path": "data/images_v2/train/zvorykin_house/zvorykin_house_train_0005.jpg",
+  "src": "data/images/train/zvorykin_house/zvorykin_house_train_0010.jpg",
+  "sha": "4ea2dae88ea1336b43447c0e2170849ec14f95ed9f18fc448a2bc7816a0025c7",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "zvorykin_house",
+  "path": "data/images_v2/train/zvorykin_house/zvorykin_house_train_0006.jpg",
+  "src": "data/images/train/zvorykin_house/zvorykin_house_train_0011.jpg",
+  "sha": "2005277c76b7f39fe32fa122c8ff8789b6abc57809d586815535a60f6aac5e59",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "zvorykin_house",
+  "path": "data/images_v2/train/zvorykin_house/zvorykin_house_train_0007.jpg",
+  "src": "data/images/val/zvorykin_house/zvorykin_house_val_0000.jpg",
+  "sha": "f47694f6695c9883bea6efa500e0826fb76a047119f7abe83e04d1246da96584",
+  "origin": "dataset"
+ },
+ {
+  "split": "train",
+  "cls": "zvorykin_house",
+  "path": "data/images_v2/train/zvorykin_house/zvorykin_house_train_0008.jpg",
+  "src": "data/images/test/zvorykin_house/zvorykin_house_test_0001.jpg",
+  "sha": "15568ea2ce3464fec6a25534d590cc269d5250df78052d24eb3e6fe1cba8f567",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/val/annunciation_church/annunciation_church_val_0001.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_12.jpg",
+  "sha": "6cc2554ec87f11a31e841a6639e0f1de276eb82a633ab8d3ea7c6381e754db7f",
+  "origin": "commons"
+ },
+ {
+  "split": "val",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/val/annunciation_church/annunciation_church_val_0002.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_13.jpg",
+  "sha": "a16dabb247f4f4623733ccfd5c461755f8bb082c411908aa57848aefe6db0f8c",
+  "origin": "commons"
+ },
+ {
+  "split": "val",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/val/annunciation_church/annunciation_church_val_0003.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_01.jpg",
+  "sha": "9381dcfdf77e28c033f0ed68e59ef8e9fb93b9d0abaa58dff7731b87bbf0f5ad",
+  "origin": "commons"
+ },
+ {
+  "split": "val",
+  "cls": "bostrikiny_house",
+  "path": "data/images_v2/val/bostrikiny_house/bostrikiny_house_val_0001.jpg",
+  "src": "data/images/train/bostrikiny_house/bostrikiny_house_train_0003.jpg",
+  "sha": "9ca87694ac2416c31c015e1531fe910f176cc7b0d46787c0cea1393e06cc9eff",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "cathedral_nativity",
+  "path": "data/images_v2/val/cathedral_nativity/cathedral_nativity_val_0001.jpg",
+  "src": "data/images/train/cathedral_nativity/cathedral_nativity_train_0003.jpg",
+  "sha": "20c664bc6ed19b29a9c0eedb41ac79367e6c8442211d926c3e80ff87873c809c",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "cathedral_nativity",
+  "path": "data/images_v2/val/cathedral_nativity/cathedral_nativity_val_0002.jpg",
+  "src": "data/images/train/cathedral_nativity/cathedral_nativity_train_0004.jpg",
+  "sha": "605ff6ee395730bf6e432e542905e8717f80bfc7aeda965ab4d079f235b0fd93",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "cathedral_nativity",
+  "path": "data/images_v2/val/cathedral_nativity/cathedral_nativity_val_0003.jpg",
+  "src": "data/images/train/cathedral_nativity/cathedral_nativity_train_0005.jpg",
+  "sha": "cd5ea94a316e143507bbdb25af75b7e112435e43fd7741e3759f519cf623d412",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "chekhov_monument",
+  "path": "data/images_v2/val/chekhov_monument/chekhov_monument_val_0001.jpg",
+  "src": "data/images/train/chekhov_monument/chekhov_monument_train_0003.jpg",
+  "sha": "c8789d878975131c6e8ca81f8746df4205344fae19ceebd5f804dd155b84fe70",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "chekhov_monument",
+  "path": "data/images_v2/val/chekhov_monument/chekhov_monument_val_0002.jpg",
+  "src": "data/images/train/chekhov_monument/chekhov_monument_train_0004.jpg",
+  "sha": "ff9b12ffebc484768b51d8ce7b5e8e8fdaf8c65cb29d3bff31217f8061b6846b",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "chekhov_monument",
+  "path": "data/images_v2/val/chekhov_monument/chekhov_monument_val_0003.jpg",
+  "src": "data/images/train/chekhov_monument/chekhov_monument_train_0005.jpg",
+  "sha": "1fc751c0b41fbc8e2fbf6cf28de92b29459ca247aadf4624b2e0193904d2af7d",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "cinema_house",
+  "path": "data/images_v2/val/cinema_house/cinema_house_val_0001.jpg",
+  "src": "data/images/train/cinema_house/cinema_house_train_0002.jpg",
+  "sha": "af64b5914939f079f56b9e591442bce1765e4cd5e9499e0af1e17c4cd58d78e6",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "don_state_library",
+  "path": "data/images_v2/val/don_state_library/don_state_library_val_0001.jpg",
+  "src": "data/images/train/don_state_library/don_state_library_train_0004.jpg",
+  "sha": "ba7efb37a7fc3e5dad1afc699b6ccc23ab412bcb1b0c8769fa6de498e68b7a46",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "don_state_library",
+  "path": "data/images_v2/val/don_state_library/don_state_library_val_0002.jpg",
+  "src": "data/images/train/don_state_library/don_state_library_train_0005.jpg",
+  "sha": "b432a9153b8f401d372f503694e0ed8d8461d6c93b0c92fe8dfec4c00ddc9c60",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "don_state_library",
+  "path": "data/images_v2/val/don_state_library/don_state_library_val_0003.jpg",
+  "src": "data/images/train/don_state_library/don_state_library_train_0006.jpg",
+  "sha": "593aadd473d1fd228534e63e5b47b14d2e9d80579cc5204dce8579f820783817",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "gavala_house",
+  "path": "data/images_v2/val/gavala_house/gavala_house_val_0001.jpg",
+  "src": "data/images_enriched/gavala_house/commons_00.jpg",
+  "sha": "0bb0da0553a41ff54e62a8d377ee4225d19e757e1ed783e564b64925ee0621cb",
+  "origin": "commons"
+ },
+ {
+  "split": "val",
+  "cls": "gorky_park_gate",
+  "path": "data/images_v2/val/gorky_park_gate/gorky_park_gate_val_0001.jpg",
+  "src": "data/images/train/gorky_park_gate/gorky_park_gate_train_0001.jpg",
+  "sha": "57f4e41d679e224197f0d6278c9c542f01210964a70c9439293a31e325c238f5",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "gorky_park_gate",
+  "path": "data/images_v2/val/gorky_park_gate/gorky_park_gate_val_0002.jpg",
+  "src": "data/images/train/gorky_park_gate/gorky_park_gate_train_0003.jpg",
+  "sha": "da2a6f60abd77276eb4e3195f79a0de69f334cad59887d99a9904b87c505a18a",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "gorky_park_gate",
+  "path": "data/images_v2/val/gorky_park_gate/gorky_park_gate_val_0003.jpg",
+  "src": "data/images/train/gorky_park_gate/gorky_park_gate_train_0004.jpg",
+  "sha": "a716d7d5d221685e7240e73f4f38a06df37939c595bc33bd9f23926f6b413275",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "gorky_theater",
+  "path": "data/images_v2/val/gorky_theater/gorky_theater_val_0001.jpg",
+  "src": "data/images/train/gorky_theater/gorky_theater_train_0004.jpg",
+  "sha": "c845f0c8133e1ed735f148fd7c04be6f0e48a0d9048cd2ab608cc9e12b9dc36a",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "gorky_theater",
+  "path": "data/images_v2/val/gorky_theater/gorky_theater_val_0002.jpg",
+  "src": "data/images/train/gorky_theater/gorky_theater_train_0005.jpg",
+  "sha": "ccdd6d47e76f60ea7808f06911316e6fccfff9298dba63842a586287fc96a77a",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "gorky_theater",
+  "path": "data/images_v2/val/gorky_theater/gorky_theater_val_0003.jpg",
+  "src": "data/images/train/gorky_theater/gorky_theater_train_0006.jpg",
+  "sha": "3bb220fa2a6329b69d7b0d2fbca06611fa864df8d11a88095ff432cb8f7ac9c6",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "gorky_theater_fountain",
+  "path": "data/images_v2/val/gorky_theater_fountain/gorky_theater_fountain_val_0001.jpg",
+  "src": "data/images/train/gorky_theater_fountain/gorky_theater_fountain_train_0002.jpg",
+  "sha": "01d29a234ffeb0163a1b15cb6b29529960b4b0917c68de9b623a138b08c09bb8",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "gorky_theater_fountain",
+  "path": "data/images_v2/val/gorky_theater_fountain/gorky_theater_fountain_val_0002.jpg",
+  "src": "data/images/train/gorky_theater_fountain/gorky_theater_fountain_train_0003.jpg",
+  "sha": "7faae8710d4f3122c1f14a40890c1c0ceb1aaff7f2c0a5dc8662fbfefb245372",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "gorky_theater_fountain",
+  "path": "data/images_v2/val/gorky_theater_fountain/gorky_theater_fountain_val_0003.jpg",
+  "src": "data/images/train/gorky_theater_fountain/gorky_theater_fountain_train_0004.jpg",
+  "sha": "0c31b3d112c663c7bfd56ca841d4205378f7fbf24a43624c55644a139ade14e8",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "kirov_monument",
+  "path": "data/images_v2/val/kirov_monument/kirov_monument_val_0001.jpg",
+  "src": "data/images/train/kirov_monument/kirov_monument_train_0003.jpg",
+  "sha": "2d43a6e7cc16147c7ba146a160db709983a235c766bb6bdb82b620687cb48729",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "kirov_monument",
+  "path": "data/images_v2/val/kirov_monument/kirov_monument_val_0002.jpg",
+  "src": "data/images/train/kirov_monument/kirov_monument_train_0004.jpg",
+  "sha": "5f312747c1efd69d3bf847762079cd7d573d181940a1302c67a0e21a2227f1e2",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "kirov_monument",
+  "path": "data/images_v2/val/kirov_monument/kirov_monument_val_0003.jpg",
+  "src": "data/images/train/kirov_monument/kirov_monument_train_0005.jpg",
+  "sha": "f0cbfdeb4d1ac5ec465ee1304fe1c95b54a0d569eda991ba0c8bfd3a5b67e9cc",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "kramer_estate",
+  "path": "data/images_v2/val/kramer_estate/kramer_estate_val_0001.jpg",
+  "src": "data/images_enriched/kramer_revenue_house/commons_00.jpg",
+  "sha": "808b750525e9f05258c62ca4652da1b633312e4ade53983c888373de1b3948ef",
+  "origin": "commons"
+ },
+ {
+  "split": "val",
+  "cls": "kushnarev_house",
+  "path": "data/images_v2/val/kushnarev_house/kushnarev_house_val_0001.jpg",
+  "src": "data/images/train/kushnarev_house/kushnarev_house_train_0009.jpg",
+  "sha": "5a841c9bfc35dff23ab88f5d1cfa12d399e2bace49a62d44aacc2678542e2867",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "library_fountain",
+  "path": "data/images_v2/val/library_fountain/library_fountain_val_0001.jpg",
+  "src": "data/images/train/library_fountain/library_fountain_train_0000.jpg",
+  "sha": "3af3d83c3e10b5227c370ad10b0b275b01cfb3928751e53e88d7db265f4fed31",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "memorial_nazi_victims",
+  "path": "data/images_v2/val/memorial_nazi_victims/memorial_nazi_victims_val_0001.jpg",
+  "src": "data/images/train/memorial_nazi_victims/memorial_nazi_victims_train_0004.jpg",
+  "sha": "737e7e8ac9c1f9a075215b5901fe67a3dd152cd4e28f62e3affdf1090fcbf8bb",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "memorial_nazi_victims",
+  "path": "data/images_v2/val/memorial_nazi_victims/memorial_nazi_victims_val_0002.jpg",
+  "src": "data/images/train/memorial_nazi_victims/memorial_nazi_victims_train_0005.jpg",
+  "sha": "8184d2445f95c7ab486531e4b0adab1c7db45f89fdeb62227a022965ae475733",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "memorial_nazi_victims",
+  "path": "data/images_v2/val/memorial_nazi_victims/memorial_nazi_victims_val_0003.jpg",
+  "src": "data/images/train/memorial_nazi_victims/memorial_nazi_victims_train_0006.jpg",
+  "sha": "f2bdc1113f46242a976ce2ca33b53796d5f1cde7c7cb379f46d17fc237521cc6",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "mnatsakanova_house",
+  "path": "data/images_v2/val/mnatsakanova_house/mnatsakanova_house_val_0001.jpg",
+  "src": "data/images/train/mnatsakanova_house/mnatsakanova_house_train_0003.jpg",
+  "sha": "1b7a332e9b8ab68ab6538dd2c70ae6abf40b6fe3fd4e31f35e168600a497cf2f",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "museum_fine_arts",
+  "path": "data/images_v2/val/museum_fine_arts/museum_fine_arts_val_0001.jpg",
+  "src": "data/images/train/museum_fine_arts/museum_fine_arts_train_0004.jpg",
+  "sha": "907433622095baa03f3078a0d5768c38c5c97409fb6003c0355b419a2f12c81f",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "museum_fine_arts",
+  "path": "data/images_v2/val/museum_fine_arts/museum_fine_arts_val_0002.jpg",
+  "src": "data/images/train/museum_fine_arts/museum_fine_arts_train_0005.jpg",
+  "sha": "1e4ad495bc79f1dbe709cb89856eec35a289e764cd09df4c4ea3b37631215f8a",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "museum_fine_arts",
+  "path": "data/images_v2/val/museum_fine_arts/museum_fine_arts_val_0003.jpg",
+  "src": "data/images/train/museum_fine_arts/museum_fine_arts_train_0006.jpg",
+  "sha": "13119cb6ff24e86dc3af7dafefcea760b9e099d44b5bb0df4750e1237357d3a5",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "musical_theater",
+  "path": "data/images_v2/val/musical_theater/musical_theater_val_0001.jpg",
+  "src": "data/images/train/musical_theater/musical_theater_train_0007.jpg",
+  "sha": "4ef237370cbc5792eb27e7ab5bbd9e7ac62f524f65f2da3c7eb05b4edae17d01",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "paramonov_mansion_sfeu",
+  "path": "data/images_v2/val/paramonov_mansion_sfeu/paramonov_mansion_sfeu_val_0001.jpg",
+  "src": "data/images/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0002.jpg",
+  "sha": "da9c7ce6f341fe29152c23d736ba1518bec6d2279289edc4cb67bfa11f71bc3f",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "paramonov_mansion_sfeu",
+  "path": "data/images_v2/val/paramonov_mansion_sfeu/paramonov_mansion_sfeu_val_0002.jpg",
+  "src": "data/images/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0005.jpg",
+  "sha": "ac4a7449cf7116b7c9be2fec518b9c026200a32007fe8123da84dcefda304d61",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "paramonov_mansion_sfeu",
+  "path": "data/images_v2/val/paramonov_mansion_sfeu/paramonov_mansion_sfeu_val_0003.jpg",
+  "src": "data/images_enriched/paramonov_mansion_sfeu/commons_01.jpg",
+  "sha": "798fd4461d2b9fbd202b84ccb3b7ac9af95ad15aa2b82fc2f6928fe2c663f529",
+  "origin": "commons"
+ },
+ {
+  "split": "val",
+  "cls": "pushkin_monument",
+  "path": "data/images_v2/val/pushkin_monument/pushkin_monument_val_0001.jpg",
+  "src": "data/images/train/pushkin_monument/pushkin_monument_train_0008.jpg",
+  "sha": "a41b2f4b796df1481d669888b26fd89e6d633dca701c5733790d67c3ce0c82ab",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "reznichenko_house",
+  "path": "data/images_v2/val/reznichenko_house/reznichenko_house_val_0001.jpg",
+  "src": "data/images/train/reznichenko_house/reznichenko_house_train_0002.jpg",
+  "sha": "216d0f6a7bd7b32edf096b3eb46979f5d9ca8eca2d39cfe9632553773866c8b0",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "rostov_medical_university",
+  "path": "data/images_v2/val/rostov_medical_university/rostov_medical_university_val_0001.jpg",
+  "src": "data/images/train/rostov_medical_university/rostov_medical_university_train_0002.jpg",
+  "sha": "1eac22c1762bbc984e5708672aeca5c2926e68e7993c79c5595497984b9aa2e2",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "sholokhov_monument",
+  "path": "data/images_v2/val/sholokhov_monument/sholokhov_monument_val_0001.jpg",
+  "src": "data/images/train/sholokhov_monument/sholokhov_monument_train_0000.jpg",
+  "sha": "5a9d3174b9354174e220c2fd175437d9565de6351c849746ccaef59db1e090a7",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "spielrein_mansion",
+  "path": "data/images_v2/val/spielrein_mansion/spielrein_mansion_val_0001.jpg",
+  "src": "data/images/train/spielrein_mansion/spielrein_mansion_train_0004.jpg",
+  "sha": "a52cd2920a6432f1216b167b46590195902403c49526f39de95d2f17f9367e06",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "spielrein_mansion",
+  "path": "data/images_v2/val/spielrein_mansion/spielrein_mansion_val_0002.jpg",
+  "src": "data/images/train/spielrein_mansion/spielrein_mansion_train_0005.jpg",
+  "sha": "a1c054acc087854e46f7de0389808ad9b1b2e728c703cd3f615d1b0b69bf1b10",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "spielrein_mansion",
+  "path": "data/images_v2/val/spielrein_mansion/spielrein_mansion_val_0003.jpg",
+  "src": "data/images/train/spielrein_mansion/spielrein_mansion_train_0006.jpg",
+  "sha": "13e98e232b8700a404513cb2f5b2307e2ad653eabc29c4bb5196860436d9376d",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "suprunov_mansion",
+  "path": "data/images_v2/val/suprunov_mansion/suprunov_mansion_val_0001.jpg",
+  "src": "data/images/train/suprunov_mansion/suprunov_mansion_train_0003.jpg",
+  "sha": "5fe4e575112ec643e6e67c73c8be66ee2c7f7134f7088f9a156977cdc50f36c2",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "underground_mosaics",
+  "path": "data/images_v2/val/underground_mosaics/underground_mosaics_val_0001.jpg",
+  "src": "data/images/train/underground_mosaics/underground_mosaics_train_0003.jpg",
+  "sha": "5a82d3d9ae5d5e1a2b326d7338dd81b9f19d0b5dd92a6bfce68bf3473efd0ad5",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "underground_mosaics",
+  "path": "data/images_v2/val/underground_mosaics/underground_mosaics_val_0002.jpg",
+  "src": "data/images/train/underground_mosaics/underground_mosaics_train_0004.jpg",
+  "sha": "0f4be5b74fe0e614a81a00c30573bbfe86e651f85d50a9c800ff4cf11cd82ae3",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "underground_mosaics",
+  "path": "data/images_v2/val/underground_mosaics/underground_mosaics_val_0003.jpg",
+  "src": "data/images/train/underground_mosaics/underground_mosaics_train_0005.jpg",
+  "sha": "960775136b54d2e874e5dc1b693686022131ca1c131e392c8d93b7ca617528ab",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "zvorykin_house",
+  "path": "data/images_v2/val/zvorykin_house/zvorykin_house_val_0001.jpg",
+  "src": "data/images/train/zvorykin_house/zvorykin_house_train_0002.jpg",
+  "sha": "58540fcb6c8c8c760633e1f265929bbdbb41f0cda5848ca132effd56aadc9912",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "zvorykin_house",
+  "path": "data/images_v2/val/zvorykin_house/zvorykin_house_val_0002.jpg",
+  "src": "data/images/train/zvorykin_house/zvorykin_house_train_0003.jpg",
+  "sha": "55c740d08c70c2f2598f8afd7f0fdd9de558dab3cabfbeb96c83a1c4b2096802",
+  "origin": "dataset"
+ },
+ {
+  "split": "val",
+  "cls": "zvorykin_house",
+  "path": "data/images_v2/val/zvorykin_house/zvorykin_house_val_0003.jpg",
+  "src": "data/images/train/zvorykin_house/zvorykin_house_train_0004.jpg",
+  "sha": "e9ec65801586d0b0863405ea4da608d36416c688c38a9cc57b83a4a4d4009a24",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/test/annunciation_church/annunciation_church_test_0001.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_06.jpg",
+  "sha": "e6674cd4641bba80678d8cec835efd62a6d0f8e24da2c8733893f2db9c72a62c",
+  "origin": "commons"
+ },
+ {
+  "split": "test",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/test/annunciation_church/annunciation_church_test_0002.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_07.jpg",
+  "sha": "00620203a6fccf11863dac59af00aecacd37f8b3e71a8cfc9df511538554cdc9",
+  "origin": "commons"
+ },
+ {
+  "split": "test",
+  "cls": "annunciation_church",
+  "path": "data/images_v2/test/annunciation_church/annunciation_church_test_0003.jpg",
+  "src": "data/images_enriched/annunciation_church/commons_00.jpg",
+  "sha": "bf30ecf9e36397a721ddf83f354fc1476d46301c8ff6444515a9af290ed7e69b",
+  "origin": "commons"
+ },
+ {
+  "split": "test",
+  "cls": "bostrikiny_house",
+  "path": "data/images_v2/test/bostrikiny_house/bostrikiny_house_test_0001.jpg",
+  "src": "data/images/train/bostrikiny_house/bostrikiny_house_train_0000.jpg",
+  "sha": "c19aec83b007992180d12f8cebd08cf56ddb9ab71986e9535051f65b3f804b08",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "bostrikiny_house",
+  "path": "data/images_v2/test/bostrikiny_house/bostrikiny_house_test_0002.jpg",
+  "src": "data/images/train/bostrikiny_house/bostrikiny_house_train_0002.jpg",
+  "sha": "55c6b2fb7aeb69d94ab6fed0212a8b2b923e1aa475f393ff537d175dc2222869",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "cathedral_nativity",
+  "path": "data/images_v2/test/cathedral_nativity/cathedral_nativity_test_0001.jpg",
+  "src": "data/images/train/cathedral_nativity/cathedral_nativity_train_0000.jpg",
+  "sha": "8f5b5ffcbeeaafc790f3a288324c9e81d87c09be823d6a0c6589ddd0ab8b75fa",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "cathedral_nativity",
+  "path": "data/images_v2/test/cathedral_nativity/cathedral_nativity_test_0002.jpg",
+  "src": "data/images/train/cathedral_nativity/cathedral_nativity_train_0001.jpg",
+  "sha": "91bd35cbf431f14a91ebf2b7a8d6306c3dcd63a6170ff78b419b03a6f6f36338",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "cathedral_nativity",
+  "path": "data/images_v2/test/cathedral_nativity/cathedral_nativity_test_0003.jpg",
+  "src": "data/images/train/cathedral_nativity/cathedral_nativity_train_0002.jpg",
+  "sha": "daa6089dee11259b0200dea43e38ebe15ad19f27e84f6154ef115ed61c502b35",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "chekhov_monument",
+  "path": "data/images_v2/test/chekhov_monument/chekhov_monument_test_0001.jpg",
+  "src": "data/images/train/chekhov_monument/chekhov_monument_train_0000.jpg",
+  "sha": "252f116cf48857208ee4abc8aacad20f3df1cc2b3cd5ec4c39ea85a0a5cccbac",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "chekhov_monument",
+  "path": "data/images_v2/test/chekhov_monument/chekhov_monument_test_0002.jpg",
+  "src": "data/images/train/chekhov_monument/chekhov_monument_train_0001.jpg",
+  "sha": "ae0abf576ff145db61d578ae677b2d75e6f1dc8cd615003ba96c5d3a7716749d",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "chekhov_monument",
+  "path": "data/images_v2/test/chekhov_monument/chekhov_monument_test_0003.jpg",
+  "src": "data/images/train/chekhov_monument/chekhov_monument_train_0002.jpg",
+  "sha": "48ad5c22f192f08c5e27e79298cb3ab4b0545005b2914eea5f8721c96bab37f2",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "cinema_house",
+  "path": "data/images_v2/test/cinema_house/cinema_house_test_0001.jpg",
+  "src": "data/images/train/cinema_house/cinema_house_train_0000.jpg",
+  "sha": "75fe59a6ada60378739353d4047c8d37a7f66802e70b92caa080fa6ebadbdcb4",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "cinema_house",
+  "path": "data/images_v2/test/cinema_house/cinema_house_test_0002.jpg",
+  "src": "data/images/train/cinema_house/cinema_house_train_0001.jpg",
+  "sha": "9458f12177f91415372b7a66b32a7820082a5e089b0284748f7810a3e1f3dd12",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "don_state_library",
+  "path": "data/images_v2/test/don_state_library/don_state_library_test_0001.jpg",
+  "src": "data/images/train/don_state_library/don_state_library_train_0000.jpg",
+  "sha": "55ec60eefa93330ab80df96796bbc41fe86f7ece511af2c80a29a8c840453bdb",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "don_state_library",
+  "path": "data/images_v2/test/don_state_library/don_state_library_test_0002.jpg",
+  "src": "data/images/train/don_state_library/don_state_library_train_0002.jpg",
+  "sha": "addb7ec123e24f94976cf6167249942079dce7b4a84ed9b9859d2fbbcf005684",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "don_state_library",
+  "path": "data/images_v2/test/don_state_library/don_state_library_test_0003.jpg",
+  "src": "data/images/train/don_state_library/don_state_library_train_0003.jpg",
+  "sha": "38c5a6d52a73d4d77e3cbcd7a86e3616c2c7ee5591f419095a66f18e3962e373",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "gavala_house",
+  "path": "data/images_v2/test/gavala_house/gavala_house_test_0001.jpg",
+  "src": "data/images/train/gavala_house/gavala_house_train_0000.jpg",
+  "sha": "dea83e7c710bfd491f80ddce6e180a438e8e16a0be5de506af48e2123659b655",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "gavala_house",
+  "path": "data/images_v2/test/gavala_house/gavala_house_test_0002.jpg",
+  "src": "data/images/train/gavala_house/gavala_house_train_0002.jpg",
+  "sha": "675862320a5affbefcaa23d6228265c00c8659c18fe7b43887be2f195a94762a",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "gorky_park_gate",
+  "path": "data/images_v2/test/gorky_park_gate/gorky_park_gate_test_0001.jpg",
+  "src": "data/images/train/gorky_park_gate/gorky_park_gate_train_0002.jpg",
+  "sha": "c3c1bb1b783e6a3cd6e41dfe9f889049f3cc532ca70cba78f5194d9d863f18e6",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "gorky_park_gate",
+  "path": "data/images_v2/test/gorky_park_gate/gorky_park_gate_test_0002.jpg",
+  "src": "data/images/train/gorky_park_gate/gorky_park_gate_train_0009.jpg",
+  "sha": "d6703b567d5b08c688420568129fa440fd99de224f0216f8d101184cf0716384",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "gorky_park_gate",
+  "path": "data/images_v2/test/gorky_park_gate/gorky_park_gate_test_0003.jpg",
+  "src": "data/images/train/gorky_park_gate/gorky_park_gate_train_0000.jpg",
+  "sha": "1717597aeb428b93cfc960214917305d9c29ec706555e964f3aa45490e53194a",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "gorky_theater",
+  "path": "data/images_v2/test/gorky_theater/gorky_theater_test_0001.jpg",
+  "src": "data/images/train/gorky_theater/gorky_theater_train_0000.jpg",
+  "sha": "3bfa148d7596e02b362121a08e555ae5d58fae6a92b1cad90910495d82762e1d",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "gorky_theater",
+  "path": "data/images_v2/test/gorky_theater/gorky_theater_test_0002.jpg",
+  "src": "data/images/train/gorky_theater/gorky_theater_train_0002.jpg",
+  "sha": "c961e29fe7be3bdc923e2e86aba6c8dd28529838e4132f2f59626b807b87181a",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "gorky_theater",
+  "path": "data/images_v2/test/gorky_theater/gorky_theater_test_0003.jpg",
+  "src": "data/images/train/gorky_theater/gorky_theater_train_0003.jpg",
+  "sha": "e38e938e6bf2b5ad22681838f95f83e1a271e143b542c089189302d2c783d0ea",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "gorky_theater_fountain",
+  "path": "data/images_v2/test/gorky_theater_fountain/gorky_theater_fountain_test_0001.jpg",
+  "src": "data/images/test/gorky_theater_fountain/gorky_theater_fountain_test_0000.jpg",
+  "sha": "5da624bdc0f29724c3ff91055dee78c9cc02b2c4cb8138073d0e9d8b06769e2d",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "gorky_theater_fountain",
+  "path": "data/images_v2/test/gorky_theater_fountain/gorky_theater_fountain_test_0002.jpg",
+  "src": "data/images/test/gorky_theater_fountain/gorky_theater_fountain_test_0001.jpg",
+  "sha": "8fff82dae1492adfd55071a0301fb8c2509828b50d585bb5f8be575356e9c599",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "gorky_theater_fountain",
+  "path": "data/images_v2/test/gorky_theater_fountain/gorky_theater_fountain_test_0003.jpg",
+  "src": "data/images/train/gorky_theater_fountain/gorky_theater_fountain_train_0000.jpg",
+  "sha": "5d4173b506f51b441426d966102dd239fd3667bb577ab76f09c57fb07c1ca739",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "kirov_monument",
+  "path": "data/images_v2/test/kirov_monument/kirov_monument_test_0001.jpg",
+  "src": "data/images/train/kirov_monument/kirov_monument_train_0000.jpg",
+  "sha": "88aec17d5276f868c2b8e41f99e1de32f099629271612c40828335afee9ff9af",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "kirov_monument",
+  "path": "data/images_v2/test/kirov_monument/kirov_monument_test_0002.png",
+  "src": "data/images/train/kirov_monument/kirov_monument_train_0000.png",
+  "sha": "eb717271f77584dba0e5c0765e391c17711ce463f6b37104d9d598c455ee1517",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "kirov_monument",
+  "path": "data/images_v2/test/kirov_monument/kirov_monument_test_0003.jpg",
+  "src": "data/images/train/kirov_monument/kirov_monument_train_0002.jpg",
+  "sha": "87feef8d9d75847bd1afc96fe920c341c54d60dce4668fc28565ace8d2d6175c",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "kramer_estate",
+  "path": "data/images_v2/test/kramer_estate/kramer_estate_test_0001.jpg",
+  "src": "data/images/train/kramer_mansion/kramer_mansion_train_0000.jpg",
+  "sha": "565c47e48f0e2447b462471d5af082ff450dc765317cad9934e587d208bc5343",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "kramer_estate",
+  "path": "data/images_v2/test/kramer_estate/kramer_estate_test_0002.jpg",
+  "src": "data/images/train/kramer_mansion/kramer_mansion_train_0002.jpg",
+  "sha": "e60dcb8f391ba2bd5335051b1ab7cf741e0ef013af8108b3cc41f793936a35c9",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "kushnarev_house",
+  "path": "data/images_v2/test/kushnarev_house/kushnarev_house_test_0001.jpg",
+  "src": "data/images/train/kushnarev_house/kushnarev_house_train_0000.jpg",
+  "sha": "fba6a71e3220058902d2b81bd20821507cba500e89096c9c53dabb33cef87962",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "kushnarev_house",
+  "path": "data/images_v2/test/kushnarev_house/kushnarev_house_test_0002.jpg",
+  "src": "data/images/train/kushnarev_house/kushnarev_house_train_0007.jpg",
+  "sha": "972cc62ac85611da16882bcc2f0bfb6cef6f5245668bcf9cd305a85b6d324dff",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "library_fountain",
+  "path": "data/images_v2/test/library_fountain/library_fountain_test_0001.jpg",
+  "src": "data/images/train/library_fountain/library_fountain_train_0002.jpg",
+  "sha": "aa0cb609b7dc43e61841e159465d0ae5b40356fb0b350aa6e329212846ef9a2f",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "library_fountain",
+  "path": "data/images_v2/test/library_fountain/library_fountain_test_0002.jpg",
+  "src": "data/images/train/library_fountain/library_fountain_train_0008.jpg",
+  "sha": "eaf437c8d937c65c8893a277e74b1438e891a4f5ca030a35220e2e6d06c36eaa",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "memorial_nazi_victims",
+  "path": "data/images_v2/test/memorial_nazi_victims/memorial_nazi_victims_test_0001.jpg",
+  "src": "data/images/train/memorial_nazi_victims/memorial_nazi_victims_train_0000.jpg",
+  "sha": "00bfda45c2ad3339d1d4853034afc7486ecb53de5fafe4b04e01615fc704962b",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "memorial_nazi_victims",
+  "path": "data/images_v2/test/memorial_nazi_victims/memorial_nazi_victims_test_0002.jpg",
+  "src": "data/images/train/memorial_nazi_victims/memorial_nazi_victims_train_0002.jpg",
+  "sha": "32521ceb622df09ee29c09390a23b8f851c68468f58c60a2aa1dae9f80a112bb",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "memorial_nazi_victims",
+  "path": "data/images_v2/test/memorial_nazi_victims/memorial_nazi_victims_test_0003.jpg",
+  "src": "data/images/train/memorial_nazi_victims/memorial_nazi_victims_train_0003.jpg",
+  "sha": "7f0f937babb5cce303a4deaab9e5bc6a6f838d84d10fd6f3760f0debfe27f2dd",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "mnatsakanova_house",
+  "path": "data/images_v2/test/mnatsakanova_house/mnatsakanova_house_test_0001.jpg",
+  "src": "data/images/test/mnatsakanova_house/mnatsakanova_house_test_0000.jpg",
+  "sha": "973f0f5855987de4011940e985a0ca5be7bf578b25be139d215fe27b76301467",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "museum_fine_arts",
+  "path": "data/images_v2/test/museum_fine_arts/museum_fine_arts_test_0001.jpg",
+  "src": "data/images/train/museum_fine_arts/museum_fine_arts_train_0000.jpg",
+  "sha": "b557ae5c73abe6d4aad5ff561d8b0937284a7a9eecd243ef2c6f28aad55e8693",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "museum_fine_arts",
+  "path": "data/images_v2/test/museum_fine_arts/museum_fine_arts_test_0002.jpg",
+  "src": "data/images/train/museum_fine_arts/museum_fine_arts_train_0002.jpg",
+  "sha": "9ed3617b61a22b9365451ee4ee1bac5dfc9090b77ceb9bfc876053608404debb",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "museum_fine_arts",
+  "path": "data/images_v2/test/museum_fine_arts/museum_fine_arts_test_0003.jpg",
+  "src": "data/images/train/museum_fine_arts/museum_fine_arts_train_0003.jpg",
+  "sha": "f76d097a6ab0dd43054349bc7ab11d6611c0641ab711ee117b28590cf1a9497d",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "musical_theater",
+  "path": "data/images_v2/test/musical_theater/musical_theater_test_0001.jpg",
+  "src": "data/images/train/musical_theater/musical_theater_train_0005.jpg",
+  "sha": "fab863b2f090b2eca13174a0247198b6117032e9f169bc7d4d15d83204cc35ef",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "musical_theater",
+  "path": "data/images_v2/test/musical_theater/musical_theater_test_0002.jpg",
+  "src": "data/images/train/musical_theater/musical_theater_train_0006.jpg",
+  "sha": "5cc6af4ea3fe56b16bab3a4e4c2686bfb7f159db0c3192f37615593088e405bf",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "paramonov_mansion_sfeu",
+  "path": "data/images_v2/test/paramonov_mansion_sfeu/paramonov_mansion_sfeu_test_0001.jpg",
+  "src": "data/images/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0000.jpg",
+  "sha": "e04587bd31458bbea1513e60a92b9deeafdcb6387cc35409ebcade7401c538aa",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "paramonov_mansion_sfeu",
+  "path": "data/images_v2/test/paramonov_mansion_sfeu/paramonov_mansion_sfeu_test_0002.jpg",
+  "src": "data/images/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0006.jpg",
+  "sha": "d51166d612639e705be232a41602a82512d6e738bd371a772d43da69794bb759",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "paramonov_mansion_sfeu",
+  "path": "data/images_v2/test/paramonov_mansion_sfeu/paramonov_mansion_sfeu_test_0003.jpg",
+  "src": "data/images_enriched/paramonov_mansion_sfeu/commons_00.jpg",
+  "sha": "09d62392ecfff9d6d3322e019f6aa1fb45375afc696f18748959a2ccd2283db0",
+  "origin": "commons"
+ },
+ {
+  "split": "test",
+  "cls": "pushkin_monument",
+  "path": "data/images_v2/test/pushkin_monument/pushkin_monument_test_0001.jpg",
+  "src": "data/images/train/pushkin_monument/pushkin_monument_train_0003.jpg",
+  "sha": "6993059504fdc7def2b19f1c5cc77d97513e24114de9562032c082d878daaa44",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "pushkin_monument",
+  "path": "data/images_v2/test/pushkin_monument/pushkin_monument_test_0002.jpg",
+  "src": "data/images/train/pushkin_monument/pushkin_monument_train_0006.jpg",
+  "sha": "823678f984df53bf852b382c52d0a921ff4352137e047798f85322553227ec08",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "reznichenko_house",
+  "path": "data/images_v2/test/reznichenko_house/reznichenko_house_test_0001.jpg",
+  "src": "data/images/train/reznichenko_house/reznichenko_house_train_0000.jpg",
+  "sha": "9b55cacb93e002851c56edee41ad091ab20b7a1fb4ad121f36367b92bf9edc8c",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "reznichenko_house",
+  "path": "data/images_v2/test/reznichenko_house/reznichenko_house_test_0002.jpg",
+  "src": "data/images/train/reznichenko_house/reznichenko_house_train_0001.jpg",
+  "sha": "ee72559a74b9cd53821dead9d7a1f1958851db0f1a5a0c6844259f014eb56266",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "rostov_medical_university",
+  "path": "data/images_v2/test/rostov_medical_university/rostov_medical_university_test_0001.jpg",
+  "src": "data/images/train/rostov_medical_university/rostov_medical_university_train_0000.jpg",
+  "sha": "66d92cdc5e33cc3c7b6b2d800096ec3fd947dffae9b7fe3e02cf10b8a4263a24",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "sholokhov_monument",
+  "path": "data/images_v2/test/sholokhov_monument/sholokhov_monument_test_0001.png",
+  "src": "data/images/train/sholokhov_monument/sholokhov_monument_train_0003.png",
+  "sha": "28726dea97133e0d04c817ab246ecd894947cf022d0da1c7a398edcbf6ec931f",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "sholokhov_monument",
+  "path": "data/images_v2/test/sholokhov_monument/sholokhov_monument_test_0002.jpg",
+  "src": "data/images/train/sholokhov_monument/sholokhov_monument_train_0007.jpg",
+  "sha": "765d29b256615a20bcbe1b81b670a63c02cf475213b5e05baabba02639e4bdf3",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "spielrein_mansion",
+  "path": "data/images_v2/test/spielrein_mansion/spielrein_mansion_test_0001.jpg",
+  "src": "data/images/train/spielrein_mansion/spielrein_mansion_train_0000.jpg",
+  "sha": "e16bf4edd7e4160564671cd52a0324f066d65cdd22307a036845177d8135671f",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "spielrein_mansion",
+  "path": "data/images_v2/test/spielrein_mansion/spielrein_mansion_test_0002.jpg",
+  "src": "data/images/train/spielrein_mansion/spielrein_mansion_train_0002.jpg",
+  "sha": "bb8d6192b7ecd88cad1dbc5fbdf3768683e4f61dd2053cc7e24cf4bd7ee42efc",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "spielrein_mansion",
+  "path": "data/images_v2/test/spielrein_mansion/spielrein_mansion_test_0003.jpeg",
+  "src": "data/images/train/spielrein_mansion/spielrein_mansion_train_0003.jpeg",
+  "sha": "fa7ec2a102dbdd147c3d0f8a138aa3b127fbaed98907c72799ec2d7aa677ed97",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "suprunov_mansion",
+  "path": "data/images_v2/test/suprunov_mansion/suprunov_mansion_test_0001.jpg",
+  "src": "data/images/train/suprunov_mansion/suprunov_mansion_train_0004.jpg",
+  "sha": "828cd290bce1568483b5ed562dad8168971e6e2d538adf1bb7c3feba41d7b13d",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "underground_mosaics",
+  "path": "data/images_v2/test/underground_mosaics/underground_mosaics_test_0001.jpg",
+  "src": "data/images/train/underground_mosaics/underground_mosaics_train_0000.jpg",
+  "sha": "24cf261f22cbd87d5a7390e0a93d83389fd457ee1da13c2c084af537b429acf2",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "underground_mosaics",
+  "path": "data/images_v2/test/underground_mosaics/underground_mosaics_test_0002.jpg",
+  "src": "data/images/train/underground_mosaics/underground_mosaics_train_0001.jpg",
+  "sha": "67cc84bcf6c7648152597e1d81776a92bc1169d5dc62b5d0fc94a96042ff1c2b",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "underground_mosaics",
+  "path": "data/images_v2/test/underground_mosaics/underground_mosaics_test_0003.jpg",
+  "src": "data/images/train/underground_mosaics/underground_mosaics_train_0002.jpg",
+  "sha": "a11d31b7f620fb1c738bfa4386319ea6e752558576500d5397c6a3131278578d",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "zvorykin_house",
+  "path": "data/images_v2/test/zvorykin_house/zvorykin_house_test_0001.jpg",
+  "src": "data/images/train/zvorykin_house/zvorykin_house_train_0009.jpg",
+  "sha": "4dea490d9e2eebe2326ed5c21494b39d9d14716af0f4e70d14e89cb7cac2bd03",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "zvorykin_house",
+  "path": "data/images_v2/test/zvorykin_house/zvorykin_house_test_0002.jpg",
+  "src": "data/images/test/zvorykin_house/zvorykin_house_test_0000.jpg",
+  "sha": "7c6500b87ca5cde2c71a123c2082ff6df755c4377ae0de2f7080029b4197de16",
+  "origin": "dataset"
+ },
+ {
+  "split": "test",
+  "cls": "zvorykin_house",
+  "path": "data/images_v2/test/zvorykin_house/zvorykin_house_test_0003.jpg",
+  "src": "data/images/train/zvorykin_house/zvorykin_house_train_0000.jpg",
+  "sha": "bec07bec39c2f63688f8e93b19f2f335cc20bdfb7f3d0f8503bbca6378ea7bb6",
+  "origin": "dataset"
+ }
+]
