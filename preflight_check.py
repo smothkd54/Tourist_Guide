@@ -66,12 +66,32 @@ def main():
                      f"expected at {CLASS_NAMES_PATH}")
 
     if model_exists and classes_exist:
+        class_names: list = []
         try:
             class_names = json.loads(CLASS_NAMES_PATH.read_text())
             all_ok &= check(f"class_names.json parses, {len(class_names)} classes",
                             len(class_names) > 0)
         except Exception as e:
             all_ok &= check("class_names.json parses", False, str(e))
+
+        # Existence is not enough: a model that cannot be loaded, or whose
+        # output width disagrees with class_names.json, would start a server
+        # that answers every request with a 500 or a mislabelled landmark.
+        try:
+            from backend.tflite_model import TFLiteModel
+
+            model = TFLiteModel(MODEL_PATH)
+            all_ok &= check(
+                f"model loads in the TFLite runtime, {model.num_classes} outputs",
+                True,
+            )
+            all_ok &= check(
+                "model output width matches class_names.json",
+                model.num_classes == len(class_names),
+                f"{model.num_classes} outputs vs {len(class_names)} classes",
+            )
+        except Exception as e:
+            all_ok &= check("model loads in the TFLite runtime", False, str(e)[:200])
 
     all_ok &= check("frontend/index.html exists", FRONTEND_PATH.exists())
 

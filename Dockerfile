@@ -20,7 +20,7 @@ RUN pip uninstall -y setuptools wheel
 ENV PYTHONUNBUFFERED=1
 ENV CORS_ORIGINS=http://localhost:*|http://127.0.0.1:*
 ENV GUNICORN_WORKERS=2
-ENV MODEL_PATH=/app/models/landmark_classifier.keras
+ENV MODEL_PATH=/app/models/landmark_classifier.tflite
 ENV LOG_DIR=/app/logs
 EXPOSE 5000
 

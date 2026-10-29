@@ -81,6 +81,10 @@ class TFLiteModel:
     def input_shape(self) -> tuple[int, ...]:
         return tuple(self._input["shape"])
 
+    @property
+    def num_classes(self) -> int:
+        return int(self._output["shape"][-1])
+
     def predict(self, batch, verbose: int = 0):  # noqa: ARG002 - Keras-compatible
         batch = np.asarray(batch, dtype=np.float32)
         if batch.ndim == 3:
