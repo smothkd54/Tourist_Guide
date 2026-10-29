@@ -60,7 +60,14 @@ class TFLiteModel:
     """Thin wrapper giving a TFLite interpreter a Keras-like `.predict()`."""
 
     def __init__(self, model_path):
-        from ai_edge_litert.interpreter import Interpreter
+        try:
+            from ai_edge_litert.interpreter import Interpreter
+        except ImportError as exc:  # pragma: no cover - dependency guard
+            raise ImportError(
+                "The TFLite runtime is not installed, so the API cannot serve the "
+                "model. Install 'ai-edge-litert' (see requirements-serve.txt). "
+                "TensorFlow is not a substitute here: it is a training dependency."
+            ) from exc
 
         self._interpreter = Interpreter(model_path=str(model_path))
         self._interpreter.allocate_tensors()
