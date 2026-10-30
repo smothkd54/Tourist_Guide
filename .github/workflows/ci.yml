@@ -46,8 +46,11 @@ jobs:
           distribution: temurin
           java-version: "21"
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Check the preinstalled Android SDK
+        run: |
+          echo "ANDROID_HOME=${ANDROID_HOME:-/usr/local/lib/android/sdk}"
+          ls "${ANDROID_HOME:-/usr/local/lib/android/sdk}/platforms"
+          ls "${ANDROID_HOME:-/usr/local/lib/android/sdk}/build-tools"
 
       - name: Build and unit-test the app
         working-directory: android

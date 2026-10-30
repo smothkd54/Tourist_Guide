@@ -1,0 +1,55 @@
+name: Photo attribution audit
+
+# Wikimedia is unreachable from some networks (including the developer's), so
+# the audit runs on a GitHub runner and commits the result back. Pushes made
+# with GITHUB_TOKEN do not re-trigger workflows, so this cannot loop.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/audit_photo_licenses.py"
+      - "data/photo_sources.json"
+      - "data/photos/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests==2.34.2
+
+      - name: Fetch author and licence for every published photo
+        id: audit
+        continue-on-error: true
+        run: python scripts/audit_photo_licenses.py
+
+      - name: Commit the attribution file
+        run: |
+          git add data/photo_attribution.json
+          if git diff --cached --quiet; then
+            echo "attribution file unchanged"
+            exit 0
+          fi
+          git config user.name "photo-audit"
+          git config user.email "photo-audit@users.noreply.github.com"
+          git commit -m "Record author and licence for published photos"
+          git push
+
+      - name: Fail on unresolved attribution
+        if: steps.audit.outcome == 'failure'
+        run: |
+          echo "Some published photos are missing author, licence or source."
+          echo "The attribution file was committed above; inspect the empty fields."
+          exit 1
