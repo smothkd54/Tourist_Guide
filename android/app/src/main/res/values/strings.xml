@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pushkinskaya Explorer</string>
+    <string name="tab_explore">Explore</string>
+    <string name="tab_identify">Identify</string>
+    <string name="tab_routes">Routes</string>
+    <string name="tab_more">More</string>
+
+    <string name="search_hint">Search landmarks</string>
+    <string name="offline_banner">Showing saved data. %1$s</string>
+    <string name="back">Back</string>
+    <string name="add_to_route">Add to route</string>
+    <string name="remove_from_route">Remove from route</string>
+    <string name="listen">Listen</string>
+    <string name="stop">Stop</string>
+    <string name="year_built">Built: %1$d</string>
+    <string name="status_open">Open</string>
+    <string name="status_closed">Closed</string>
+    <string name="status_temporarily_closed">Temporarily closed</string>
+
+    <string name="take_photo">Take photo</string>
+    <string name="choose_photo">Choose from gallery</string>
+    <string name="identifying">Identifying…</string>
+    <string name="identified_as">%1$s (%2$d%%)</string>
+    <string name="not_sure">Not sure. Try another angle or browse the list.</string>
+    <string name="possible_matches">Possible matches</string>
+    <string name="open_details">Open details</string>
+
+    <string name="routes_empty">Your route is empty. Add landmarks from Explore.</string>
+    <string name="plan_route">Plan route</string>
+    <string name="optimize_order">Optimize order</string>
+    <string name="clear_route">Clear</string>
+    <string name="stop_line">%1$d. %2$s (%3$d min)</string>
+    <string name="plan_total">Total: %1$s min (%2$s walking + %3$s visiting)</string>
+    <string name="remind_me">Remind me to start</string>
+    <string name="remind_15">In 15 min</string>
+    <string name="remind_60">In 1 h</string>
+    <string name="remind_180">In 3 h</string>
+    <string name="reminder_set">Reminder set</string>
+    <string name="reminder_needs_permission">Allow notifications to get reminders.</string>
+
+    <string name="channel_reminders">Reminders</string>
+    <string name="channel_status">Place status</string>
+    <string name="reminder_title">Time to walk</string>
+    <string name="reminder_text">Your route starts at %1$s.</string>
+    <string name="status_title">Place status changed</string>
+    <string name="status_text">%1$s: %2$s</string>
+
+    <string name="language">Landmark names language</string>
+    <string name="refresh_now">Refresh data</string>
+    <string name="notification_settings">Notification settings</string>
+    <string name="photo_credits_note">Photo licenses are still being verified.</string>
+</resources>

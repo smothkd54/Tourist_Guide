@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Пушкинская: путеводитель</string>
+    <string name="tab_explore">Обзор</string>
+    <string name="tab_identify">Узнать</string>
+    <string name="tab_routes">Маршруты</string>
+    <string name="tab_more">Ещё</string>
+
+    <string name="search_hint">Поиск мест</string>
+    <string name="offline_banner">Показаны сохранённые данные. %1$s</string>
+    <string name="back">Назад</string>
+    <string name="add_to_route">Добавить в маршрут</string>
+    <string name="remove_from_route">Убрать из маршрута</string>
+    <string name="listen">Слушать</string>
+    <string name="stop">Стоп</string>
+    <string name="year_built">Построено: %1$d</string>
+    <string name="status_open">Открыто</string>
+    <string name="status_closed">Закрыто</string>
+    <string name="status_temporarily_closed">Временно закрыто</string>
+
+    <string name="take_photo">Сделать фото</string>
+    <string name="choose_photo">Выбрать из галереи</string>
+    <string name="identifying">Определяем…</string>
+    <string name="identified_as">%1$s (%2$d%%)</string>
+    <string name="not_sure">Не уверены. Попробуйте другой ракурс или откройте список.</string>
+    <string name="possible_matches">Возможные варианты</string>
+    <string name="open_details">Подробнее</string>
+
+    <string name="routes_empty">Маршрут пуст. Добавьте места на вкладке «Обзор».</string>
+    <string name="plan_route">Построить маршрут</string>
+    <string name="optimize_order">Оптимизировать порядок</string>
+    <string name="clear_route">Очистить</string>
+    <string name="stop_line">%1$d. %2$s (%3$d мин)</string>
+    <string name="plan_total">Всего: %1$s мин (%2$s пешком + %3$s осмотр)</string>
+    <string name="remind_me">Напомнить о начале</string>
+    <string name="remind_15">Через 15 мин</string>
+    <string name="remind_60">Через 1 ч</string>
+    <string name="remind_180">Через 3 ч</string>
+    <string name="reminder_set">Напоминание установлено</string>
+    <string name="reminder_needs_permission">Разрешите уведомления, чтобы получать напоминания.</string>
+
+    <string name="channel_reminders">Напоминания</string>
+    <string name="channel_status">Статус места</string>
+    <string name="reminder_title">Пора на прогулку</string>
+    <string name="reminder_text">Ваш маршрут начинается с места: %1$s.</string>
+    <string name="status_title">Статус места изменился</string>
+    <string name="status_text">%1$s: %2$s</string>
+
+    <string name="language">Язык названий мест</string>
+    <string name="refresh_now">Обновить данные</string>
+    <string name="notification_settings">Настройки уведомлений</string>
+    <string name="photo_credits_note">Лицензии на фото ещё проверяются.</string>
+</resources>
