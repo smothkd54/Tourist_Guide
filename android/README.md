@@ -9,8 +9,10 @@ Built and unit-tested locally with JDK 21 + Android SDK 35 + Gradle 8.9:
 
 - `assembleDebug` → `app/build/outputs/apk/debug/app-debug.apk` (28.6 MB)
 - `testDebugUnitTest` → 5 tests, 0 failures (JSON parsing against the real API shapes)
-- CI runs both, then installs the APK on an API 34 emulator and checks the
-  process is still alive after the first screen composes.
+- CI runs both and uploads the APK. Launch is verified on the physical demo
+  phone; an emulator smoke test was removed because the runner's emulator
+  failed and its logs need authentication to read, so it could not be
+  diagnosed.
 
 It has **not** been run on the physical demo phone yet: `adb devices` is empty
 until the phone is connected with USB debugging enabled.

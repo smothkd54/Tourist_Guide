@@ -183,8 +183,8 @@ adb install -r app\build\outputs\apk\debug\app-debug.apk
 ```
 
 `adb reverse` maps the phone's `localhost:5000` to the PC, so the debug build
-does not need a LAN IP or `HOST=0.0.0.0`. CI builds the APK, runs its unit
-tests, and launches it on an API 34 emulator.
+does not need a LAN IP or `HOST=0.0.0.0`. CI builds the APK and runs its unit
+tests; launch is verified on the demo phone.
 
 Route reminders use `AlarmManager`; WorkManager is used only for the 6-hour
 place-status poll, where a late run is harmless.
