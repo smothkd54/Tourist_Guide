@@ -47,7 +47,11 @@ class AppContainer(context: Context) {
         .build()
         .create(Api::class.java)
 
-    private val db = Room.databaseBuilder(context, AppDatabase::class.java, "pushkinskaya.db").build()
+    private val db = Room.databaseBuilder(context, AppDatabase::class.java, "pushkinskaya.db")
+        // Both tables are a cache of server data (visit list included), so on a
+        // schema change it is cheaper to refetch than to ship a migration.
+        .fallbackToDestructiveMigration()
+        .build()
 
     val settings = Settings(context)
     val landmarks = LandmarkRepository(api, db.landmarkDao(), db.routeDao())

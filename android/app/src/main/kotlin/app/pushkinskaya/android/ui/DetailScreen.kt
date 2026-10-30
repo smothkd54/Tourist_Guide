@@ -106,6 +106,14 @@ fun DetailScreen(container: AppContainer, id: String, onBack: () -> Unit) {
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxWidth().height(220.dp),
             )
+            // Credit is part of the publishing rule, not decoration.
+            lm.photoCredit?.let { credit ->
+                Text(
+                    text = stringResource(R.string.photo_credit, credit),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
             Text(displayName(lm, language), style = MaterialTheme.typography.headlineSmall)
             StatusBadge(lm.status)
             Text(lm.address, color = MaterialTheme.colorScheme.onSurfaceVariant)

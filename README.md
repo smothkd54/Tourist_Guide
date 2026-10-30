@@ -26,10 +26,13 @@ Tourist_Guide/
 │           ├── leaflet.js       ← self-hosted Leaflet (no CDN)
 │           └── leaflet.css
 │
+├── android/                     ← native Kotlin/Compose client (Gradle wrapper included)
+│   └── app/src/main/kotlin/     ← Explore, Detail, Identify, Routes, notifications
+│
 ├── tests/
 │   ├── __init__.py
 │   ├── conftest.py              ← shared fixtures (client, client_with_mock_model)
-│   └── test_api.py              ← 56 API tests
+│   └── test_api.py              ← 62 API tests
 │
 ├── scripts/
 │   └── backup.sh                ← daily backup (models, data, logs)
@@ -151,7 +154,6 @@ docker run -p 5000:5000 \
 **Swap model without rebuild:**
 ```bash
 python convert_tflite.py && docker compose restart
-docker compose restart
 ```
 
 **Environment variables (.env):**
@@ -166,6 +168,50 @@ docker compose restart
 | `METRICS_TOKEN` | *(required by compose)* | `/metrics` requires this value in the `X-Metrics-Token` header. Compose refuses to start without it |
 
 ---
+
+## Android app
+
+`android/` is a native Kotlin/Compose client for the same API: Explore, Detail
+(with photo credit), Identify (camera or gallery → `POST /predict`), Routes
+(`POST /plan-custom`) and local reminders.
+
+```bat
+cd android
+gradlew.bat assembleDebug
+adb reverse tcp:5000 tcp:5000
+adb install -r app\build\outputs\apk\debug\app-debug.apk
+```
+
+`adb reverse` maps the phone's `localhost:5000` to the PC, so the debug build
+does not need a LAN IP or `HOST=0.0.0.0`. CI builds the APK, runs its unit
+tests, and launches it on an API 34 emulator.
+
+Route reminders use `AlarmManager`; WorkManager is used only for the 6-hour
+place-status poll, where a late run is harmless.
+
+## Photo attribution
+
+`data/photo_attribution.json` records the author, licence, licence URL and
+source page for every published thumbnail. `scripts/audit_photo_licenses.py`
+rebuilds it from the Wikimedia Commons API and fails if any published photo
+lacks a free licence or a credit. The API attaches the credit to each landmark
+as `photo_attribution`, and both the web UI and the Android detail screen show
+it under the photo.
+
+Run the audit in CI (`.github/workflows/photo-audit.yml`), not locally:
+Wikimedia is unreachable from the developer's network.
+
+## Deployment
+
+The free-tier plan (Render + Neon) does not survive a network check from
+Rostov-on-Don: `render.com`, `api.render.com` and deployed `*.onrender.com`
+hosts reset the TLS connection, so the dashboard cannot be reached and a
+hosted demo cannot be verified from the venue. Yandex Cloud is reachable but
+needs an account and a payment method.
+
+The supervisor demo therefore runs locally: the Flask API on the laptop, the
+phone over USB with `adb reverse`, and the web UI at `http://127.0.0.1:5000/`.
+This has no external dependency and no cost.
 
 ## Frontend features
 
@@ -194,7 +240,7 @@ Additional features:
 | GET    | `/app`                | —                            | web UI (also `/app/`)                |
 | GET    | `/app/static/<path>`  | —                            | self-hosted static assets            |
 | GET    | `/favicon.ico`        | —                            | SVG favicon                          |
-| GET    | `/landmarks`          | —                            | array of all 46 landmark objects     |
+| GET    | `/landmarks`          | —                            | array of all 46 landmark objects (with `photo_attribution` when a photo is published) |
 | GET    | `/landmarks/<id>`     | —                            | single landmark object               |
 | GET    | `/nearby`             | `lat`, `lon`, `radius_m`     | landmarks within radius              |
 | GET    | `/plan`               | `start`, `minutes`, `visit`  | dynamic walking route via OSRM       |

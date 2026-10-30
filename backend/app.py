@@ -170,6 +170,7 @@ MODEL_PATH       = Path(os.environ.get("MODEL_PATH", str(PROJECT_ROOT / "models"
 CLASS_NAMES_PATH = MODELS_DIR / "class_names.json"
 LANDMARKS_PATH   = DATA_DIR / "landmarks.json"
 PHOTOS_DIR       = DATA_DIR / "photos"
+PHOTO_ATTRIBUTION_PATH = DATA_DIR / "photo_attribution.json"
 
 IMG_SIZE             = (224, 224)
 PORT                 = 5000
@@ -266,6 +267,31 @@ def load_resources():
         app.landmarks_by_id = {lm["id"]: lm for lm in data["landmarks"]}
     else:
         raise FileNotFoundError(f"landmarks.json not found at {LANDMARKS_PATH}")
+
+    # Publishing rule: a photo is only served if its author, licence and source
+    # are recorded. The audit script verifies that; here the credit is attached
+    # to the landmark so both clients can show it next to the photo.
+    if PHOTO_ATTRIBUTION_PATH.exists():
+        credit = json.loads(PHOTO_ATTRIBUTION_PATH.read_text())
+        attached = 0
+        for landmark_id, item in credit.items():
+            landmark = app.landmarks_by_id.get(landmark_id)
+            if landmark is None or not item.get("published"):
+                continue
+            landmark["photo_attribution"] = {
+                "author": item.get("author", ""),
+                "license": item.get("license", ""),
+                "license_url": item.get("license_url", ""),
+                "source_url": item.get("source_url", ""),
+            }
+            attached += 1
+        logger.info("Photo credits attached: %d", attached)
+    else:
+        logger.warning(
+            "%s not found — photos will be served without a credit line. "
+            "Run scripts/audit_photo_licenses.py.",
+            PHOTO_ATTRIBUTION_PATH,
+        )
 
     logger.info("Classes loaded: %d", len(app.class_names))
     logger.info("Landmarks in DB: %d", len(app.landmarks_by_id))

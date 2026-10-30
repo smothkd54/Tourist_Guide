@@ -49,5 +49,6 @@
     <string name="language">Landmark names language</string>
     <string name="refresh_now">Refresh data</string>
     <string name="notification_settings">Notification settings</string>
-    <string name="photo_credits_note">Photo licenses are still being verified.</string>
+    <string name="photo_credit">Photo: %1$s</string>
+    <string name="photo_credits_note">All photos are from Wikimedia Commons. The author and licence are shown under each photo.</string>
 </resources>

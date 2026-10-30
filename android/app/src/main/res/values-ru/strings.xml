@@ -49,5 +49,6 @@
     <string name="language">Язык названий мест</string>
     <string name="refresh_now">Обновить данные</string>
     <string name="notification_settings">Настройки уведомлений</string>
-    <string name="photo_credits_note">Лицензии на фото ещё проверяются.</string>
+    <string name="photo_credit">Фото: %1$s</string>
+    <string name="photo_credits_note">Все фотографии взяты с Wikimedia Commons. Автор и лицензия указаны под каждой фотографией.</string>
 </resources>

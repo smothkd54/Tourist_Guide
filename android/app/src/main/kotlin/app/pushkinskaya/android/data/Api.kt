@@ -23,6 +23,17 @@ data class LandmarkDto(
     val architect: String = "",
     /** Not sent by the Flask API yet. The place-status badge and alerts need the server to add it. */
     val status: String? = null,
+    /** Required by the publishing rule: no photo is shown without its credit. */
+    @SerialName("photo_attribution") val photoAttribution: PhotoAttribution? = null,
+)
+
+/** Author, licence and source of the published thumbnail, from Wikimedia Commons. */
+@Serializable
+data class PhotoAttribution(
+    val author: String = "",
+    val license: String = "",
+    @SerialName("license_url") val licenseUrl: String = "",
+    @SerialName("source_url") val sourceUrl: String = "",
 )
 
 @Serializable

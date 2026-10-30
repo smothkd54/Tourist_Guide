@@ -509,3 +509,33 @@ class TestResizeParity:
             theirs = tf.image.resize(img, (224, 224), method="bilinear", antialias=False).numpy()
             # float32 accumulation differences only; 0.1/255 is far below one pixel step
             assert np.abs(ours - theirs).max() < 0.1
+
+# ── photo attribution ────────────────────────────────────────────────────────
+
+class TestPhotoAttribution:
+    """The publishing rule: no photo without author, licence and source."""
+
+    def test_every_published_photo_is_credited(self):
+        import json
+        from pathlib import Path
+
+        root = Path(__file__).resolve().parent.parent
+        credit = json.loads((root / "data" / "photo_attribution.json").read_text())
+        published = {
+            p.stem for p in (root / "data" / "photos").glob("*")
+            if p.suffix.lower() in (".jpg", ".jpeg", ".png", ".webp")
+        }
+
+        assert published, "no photos found to check"
+        for landmark_id in published:
+            record = credit.get(landmark_id)
+            assert record, f"{landmark_id}: photo is published without an attribution entry"
+            assert record["author"], f"{landmark_id}: missing author"
+            assert record["license"], f"{landmark_id}: missing licence"
+            assert record["source_url"], f"{landmark_id}: missing source URL"
+
+    def test_landmark_response_carries_the_credit(self, client):
+        resp = client.get("/landmarks/annunciation_church")
+        assert resp.status_code == 200
+        credit = resp.get_json()["photo_attribution"]
+        assert credit["author"] and credit["license"] and credit["source_url"]

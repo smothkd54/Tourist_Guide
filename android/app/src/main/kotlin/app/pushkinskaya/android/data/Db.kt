@@ -26,6 +26,9 @@ data class LandmarkEntity(
     val style: String,
     val architect: String,
     val status: String?,
+    /** "Author · CC BY-SA 4.0" for the published thumbnail, or null if uncredited. */
+    val photoCredit: String?,
+    val photoCreditUrl: String?,
 )
 
 /** The visit list: one row per landmark, in the order the user added them. */
@@ -71,7 +74,7 @@ interface RouteDao {
     suspend fun clear()
 }
 
-@Database(entities = [LandmarkEntity::class, RouteItemEntity::class], version = 1, exportSchema = false)
+@Database(entities = [LandmarkEntity::class, RouteItemEntity::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun landmarkDao(): LandmarkDao
     abstract fun routeDao(): RouteDao

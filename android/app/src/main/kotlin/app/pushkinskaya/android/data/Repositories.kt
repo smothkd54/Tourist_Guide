@@ -13,6 +13,10 @@ private fun LandmarkDto.toEntity() = LandmarkEntity(
     id = id, name = name, nameRu = nameRu, type = type, lat = lat, lon = lon,
     address = address, description = description, funFact = funFact, yearBuilt = yearBuilt,
     style = style, architect = architect, status = status,
+    photoCredit = photoAttribution?.let { credit ->
+        listOfNotNull(credit.author.ifBlank { null }, credit.license.ifBlank { null }).joinToString(" · ")
+    }?.ifBlank { null },
+    photoCreditUrl = photoAttribution?.sourceUrl?.ifBlank { null },
 )
 
 class LandmarkRepository(
