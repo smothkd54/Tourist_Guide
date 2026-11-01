@@ -4,7 +4,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0001.jpg",
   "src": "data/images_enriched/annunciation_church/commons_02.jpg",
-  "sha": "863d1999a58f5d9d2844f233515297d825b37edf6fc5ee94fa43e8e9115e4e94",
+  "sha": "9a322cc80f88822a037c2e22fc3d35d42401cd0892ee1f0af3248ef7fe72d603",
   "origin": "commons"
  },
  {
@@ -12,7 +12,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0002.jpg",
   "src": "data/images_enriched/annunciation_church/commons_04.jpg",
-  "sha": "ebed6c22616da4689c7251bec058d68b8904adae31b3e84687558b02a06848e8",
+  "sha": "4c13091210f4b4d9f9b62c1ce2a641f0ff1af8a115a0eb22598f2914711112e4",
   "origin": "commons"
  },
  {
@@ -20,7 +20,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0003.jpg",
   "src": "data/images_enriched/annunciation_church/commons_05.jpg",
-  "sha": "08d0c402722b1168cd04548bf94cd1c30824cf0d3d27140b34e6afd038a602f6",
+  "sha": "e0b80dda4f3835a9f8b98ee0f52ef6829a94049b49062f8d97a06d864201e0c3",
   "origin": "commons"
  },
  {
@@ -28,7 +28,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0004.jpg",
   "src": "data/images_enriched/annunciation_church/commons_08.jpg",
-  "sha": "5f5ed1941fe0ddf3b94b5ff623ac617e66e1f5aba19faf5beaffa192a45929e1",
+  "sha": "8263f8944bea78547754b9c2d405ea7e7e3b9844381b1bc04b24757274bf7b21",
   "origin": "commons"
  },
  {
@@ -36,7 +36,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0005.jpg",
   "src": "data/images_enriched/annunciation_church/commons_09.jpg",
-  "sha": "697ded5f2870f8700438ce1fac351b91cecacb4920870f10efa007cfea485a38",
+  "sha": "d04eb7e998fd301ab31ddb79f0659f72b4f7bd5ec85088479b45e6bf52063407",
   "origin": "commons"
  },
  {
@@ -44,7 +44,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0006.jpg",
   "src": "data/images_enriched/annunciation_church/commons_10.jpg",
-  "sha": "d33d587a0b3771d69d1beb11c6dc5e79c32aec760821d07928858b2d5c506713",
+  "sha": "70e5b6edbf016808458e122e7fdb737d15d725b921c18cd68fa908695f29e6b0",
   "origin": "commons"
  },
  {
@@ -52,7 +52,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0007.jpg",
   "src": "data/images_enriched/annunciation_church/commons_11.jpg",
-  "sha": "1e50e418c4168e0db9679f25d5863d20abca050193c97153d56519e089404034",
+  "sha": "93bad4b12e891982623a30e30e8780f2dea036570ee71e50de13115b8c264295",
   "origin": "commons"
  },
  {
@@ -60,7 +60,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0008.jpg",
   "src": "data/images_enriched/annunciation_church/commons_14.jpg",
-  "sha": "99378a5866dde2ca4055b4509edaae5043abbb06cf26d78ad45a0d73bdf087a2",
+  "sha": "9b58fbf0ae3fb512c484c102de04503ada61fd171d1e3d6163736d9a5f3e7974",
   "origin": "commons"
  },
  {
@@ -68,7 +68,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0009.jpg",
   "src": "data/images_enriched/annunciation_church/commons_15.jpg",
-  "sha": "1568c468421509505c1330a030cae3b9eafbd302056f5f7d5a97df568abf114c",
+  "sha": "ee8bde3d970ace5be68104d55eddef70fc22d24e0760b1d9c10716ac4bf599dc",
   "origin": "commons"
  },
  {
@@ -76,7 +76,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0010.jpg",
   "src": "data/images_enriched/annunciation_church/commons_16.jpg",
-  "sha": "56a34bdf15a2c08aad085644d22de1a01c50d33559f07ada4cf9033dcb28433c",
+  "sha": "ffc6169e425f84af471ba036d3b03b202b4adda5bdf4b50b4b8bf11a3eaa5ba5",
   "origin": "commons"
  },
  {
@@ -84,7 +84,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0011.jpg",
   "src": "data/images_enriched/annunciation_church/commons_17.jpg",
-  "sha": "413100de3e23fbf38809e511e081698ce4244bd3e7b8ee2b8e7a75ad762ee106",
+  "sha": "f79bcf7305c48dd3b7e21397317c525995106bf9e0d443bd7d1e5be365a21b96",
   "origin": "commons"
  },
  {
@@ -92,7 +92,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/train/annunciation_church/annunciation_church_train_0012.jpg",
   "src": "data/images_enriched/annunciation_church/commons_18.jpg",
-  "sha": "dbc75ca181e0d0414598c7a361860f463a35a9983c7d0bdb5fa1f33c0ac5bd85",
+  "sha": "fb16d361b4462943c3de32ad0be285d93b8e85cbcf13f530c35d576b1dfffc99",
   "origin": "commons"
  },
  {
@@ -396,7 +396,7 @@
   "cls": "gavala_house",
   "path": "data/images_v2/train/gavala_house/gavala_house_train_0001.jpg",
   "src": "data/images_enriched/gavala_house/commons_01.jpg",
-  "sha": "0b80f753894f591914e74c7dc1897897dad85aa2b156322c997aca41de470c4d",
+  "sha": "c1206f897c28ae8da2b8ceb9cdee8f5c53f9b1fed8902adbf7cdecec26ae7319",
   "origin": "commons"
  },
  {
@@ -404,7 +404,7 @@
   "cls": "gavala_house",
   "path": "data/images_v2/train/gavala_house/gavala_house_train_0002.jpg",
   "src": "data/images_enriched/gavala_house/commons_02.jpg",
-  "sha": "d18c53afd5679fff6fb8f293883f85a0a39d36ba17d3f541ffe6219372bdbcac",
+  "sha": "09b7cc8ada427aba71b6af6028cc9c9c60a031322b0e651aa15807f45319a6d2",
   "origin": "commons"
  },
  {
@@ -412,7 +412,7 @@
   "cls": "gavala_house",
   "path": "data/images_v2/train/gavala_house/gavala_house_train_0003.jpg",
   "src": "data/images_enriched/gavala_house/commons_03.jpg",
-  "sha": "de05d4fadc4c262ad608655decc5d159643edb1f30d2786e8b49277c6012ab35",
+  "sha": "83b68d861d1f3a2c0a915199123b8f5ce4148a302d39552f4e89c0a2022f3a32",
   "origin": "commons"
  },
  {
@@ -420,7 +420,7 @@
   "cls": "gavala_house",
   "path": "data/images_v2/train/gavala_house/gavala_house_train_0004.jpg",
   "src": "data/images_enriched/gavala_house/commons_04.jpg",
-  "sha": "8df5c844d1c33957653c3ddcc398be76c6fbafc1c8c404d3767d8328417a67dc",
+  "sha": "e8742478de126ee6c97c996f3741f75408c3acb7102b8e35c3c258d49c769d06",
   "origin": "commons"
  },
  {
@@ -428,7 +428,7 @@
   "cls": "gavala_house",
   "path": "data/images_v2/train/gavala_house/gavala_house_train_0005.jpg",
   "src": "data/images_enriched/gavala_house/commons_05.jpg",
-  "sha": "10d32683f63ae3df00ee3c096313cc5419b88c5ecc6beeef27979c0b57df4868",
+  "sha": "15412def37cca6a7d421d7b8bb8d1ce0917235f697be9e1eb4add353a4db3a4b",
   "origin": "commons"
  },
  {
@@ -764,7 +764,7 @@
   "cls": "kramer_estate",
   "path": "data/images_v2/train/kramer_estate/kramer_estate_train_0009.jpg",
   "src": "data/images_enriched/kramer_revenue_house/commons_01.jpg",
-  "sha": "1acfcf236c810333d4d9a01a3c60a5fb25d0e2d9b3609ef623708fb9a7b9a35b",
+  "sha": "8e0acf15658687566012dbebe44b41731fbaf84ecf3d79147978f38dab06441f",
   "origin": "commons"
  },
  {
@@ -772,7 +772,7 @@
   "cls": "kramer_estate",
   "path": "data/images_v2/train/kramer_estate/kramer_estate_train_0010.jpg",
   "src": "data/images_enriched/kramer_revenue_house/commons_02.jpg",
-  "sha": "330114245674af613d5f9a78b845aad7134ef66ba86d6521663ca8fa01992d76",
+  "sha": "90eeb56ffc7bb3cbadc17d4a2d5de3f896e63edf0a7ab883537f819cace76e9b",
   "origin": "commons"
  },
  {
@@ -1156,7 +1156,7 @@
   "cls": "paramonov_mansion_sfeu",
   "path": "data/images_v2/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0003.jpg",
   "src": "data/images_enriched/paramonov_mansion_sfeu/commons_02.jpg",
-  "sha": "7f95dbdce8b6ea7fe89d5d2fb26406e76a59ffdca1f4440c07033012012d1c03",
+  "sha": "24bc7030a78e3de85dafd7cebaa237e28fd05bcefd4f33a03f1079e3f7459687",
   "origin": "commons"
  },
  {
@@ -1164,7 +1164,7 @@
   "cls": "paramonov_mansion_sfeu",
   "path": "data/images_v2/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0004.jpg",
   "src": "data/images_enriched/paramonov_mansion_sfeu/commons_03.jpg",
-  "sha": "4e68c11482bbb44674cf6cb67c7f444624b182d20ff0874ae49f39ca7904900e",
+  "sha": "8516e6ce9a3e9ffdea8187342c0345069bf9dddeb23c4551a8a47cc6a950dbd5",
   "origin": "commons"
  },
  {
@@ -1172,7 +1172,7 @@
   "cls": "paramonov_mansion_sfeu",
   "path": "data/images_v2/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0005.jpg",
   "src": "data/images_enriched/paramonov_mansion_sfeu/commons_04.jpg",
-  "sha": "692e4f14ac278983fd4aed9b9df9a5e57e1dda7c5eee57429ddb4a5209fe0ac8",
+  "sha": "27a9d5b04ca6fe86852ed45118ffd636f6876978ad9dc653e1c5117d981239c4",
   "origin": "commons"
  },
  {
@@ -1180,7 +1180,7 @@
   "cls": "paramonov_mansion_sfeu",
   "path": "data/images_v2/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0006.jpg",
   "src": "data/images_enriched/paramonov_mansion_sfeu/commons_05.jpg",
-  "sha": "28e7d7257311c2ff482ff1211be2531f14e4d2861116dcfed44263ae6fce9062",
+  "sha": "389ca6c079964343bdeb80ec3bcfca3151c241130fb85f8fad2a6c3b683c0b11",
   "origin": "commons"
  },
  {
@@ -1188,7 +1188,7 @@
   "cls": "paramonov_mansion_sfeu",
   "path": "data/images_v2/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0007.jpg",
   "src": "data/images_enriched/paramonov_mansion_sfeu/commons_06.jpg",
-  "sha": "b05c3f9c6392b481130fcab0f38757e3b6369011aa3565856fd4098b6d0a0fb6",
+  "sha": "8b064517f3c00a85dba654badff0169370d0c3ff77a836b1f637a879e63cb24f",
   "origin": "commons"
  },
  {
@@ -1196,7 +1196,7 @@
   "cls": "paramonov_mansion_sfeu",
   "path": "data/images_v2/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0008.jpg",
   "src": "data/images_enriched/paramonov_mansion_sfeu/commons_07.jpg",
-  "sha": "b15d89c5703d1926c706fedb0db7ccc147e64b1dcc7449e9bd6ef2bb31d371cb",
+  "sha": "c259b2d13cc494872d6a7a138e350dc710492f8260bab5abd896574fdbf31ad2",
   "origin": "commons"
  },
  {
@@ -1204,7 +1204,7 @@
   "cls": "paramonov_mansion_sfeu",
   "path": "data/images_v2/train/paramonov_mansion_sfeu/paramonov_mansion_sfeu_train_0009.jpg",
   "src": "data/images_enriched/paramonov_mansion_sfeu/commons_08.jpg",
-  "sha": "b6371766cb4cca90815e9d77be9ac3ef5dcddb604dd2cce4437a28b3297a87b2",
+  "sha": "02eae61706e2f4d42497b7c545d25efd77a661d401e28f9260d8ce6ac27016b9",
   "origin": "commons"
  },
  {
@@ -1668,7 +1668,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/val/annunciation_church/annunciation_church_val_0001.jpg",
   "src": "data/images_enriched/annunciation_church/commons_12.jpg",
-  "sha": "6cc2554ec87f11a31e841a6639e0f1de276eb82a633ab8d3ea7c6381e754db7f",
+  "sha": "2209b1cba85bffa2869f637f8904e156af53a7e7b645b8eef6c2a6f080d722be",
   "origin": "commons"
  },
  {
@@ -1676,7 +1676,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/val/annunciation_church/annunciation_church_val_0002.jpg",
   "src": "data/images_enriched/annunciation_church/commons_13.jpg",
-  "sha": "a16dabb247f4f4623733ccfd5c461755f8bb082c411908aa57848aefe6db0f8c",
+  "sha": "27cf93b8e5ced52d68c39c7e26f1528d01003135b80ccc0e931693b9b9df1d99",
   "origin": "commons"
  },
  {
@@ -1684,7 +1684,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/val/annunciation_church/annunciation_church_val_0003.jpg",
   "src": "data/images_enriched/annunciation_church/commons_01.jpg",
-  "sha": "9381dcfdf77e28c033f0ed68e59ef8e9fb93b9d0abaa58dff7731b87bbf0f5ad",
+  "sha": "b480874ce45c3e85ef12a5214737c6026f054c693c8eeda7d64a44b55723d82b",
   "origin": "commons"
  },
  {
@@ -1780,7 +1780,7 @@
   "cls": "gavala_house",
   "path": "data/images_v2/val/gavala_house/gavala_house_val_0001.jpg",
   "src": "data/images_enriched/gavala_house/commons_00.jpg",
-  "sha": "0bb0da0553a41ff54e62a8d377ee4225d19e757e1ed783e564b64925ee0621cb",
+  "sha": "5e0b71c8c59ceffd395f76440f68a8a452d51aa7c391be79179952b7819031fc",
   "origin": "commons"
  },
  {
@@ -1884,7 +1884,7 @@
   "cls": "kramer_estate",
   "path": "data/images_v2/val/kramer_estate/kramer_estate_val_0001.jpg",
   "src": "data/images_enriched/kramer_revenue_house/commons_00.jpg",
-  "sha": "808b750525e9f05258c62ca4652da1b633312e4ade53983c888373de1b3948ef",
+  "sha": "9acf86dabbdf5715894adbba69b1345ee70efc798a2a4dfc5c0c1ad11047b867",
   "origin": "commons"
  },
  {
@@ -1988,7 +1988,7 @@
   "cls": "paramonov_mansion_sfeu",
   "path": "data/images_v2/val/paramonov_mansion_sfeu/paramonov_mansion_sfeu_val_0003.jpg",
   "src": "data/images_enriched/paramonov_mansion_sfeu/commons_01.jpg",
-  "sha": "798fd4461d2b9fbd202b84ccb3b7ac9af95ad15aa2b82fc2f6928fe2c663f529",
+  "sha": "eac68497864f1436d6dae9772b89558e1482c673fe0772e4ce7c68abff686b1b",
   "origin": "commons"
  },
  {
@@ -2108,7 +2108,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/test/annunciation_church/annunciation_church_test_0001.jpg",
   "src": "data/images_enriched/annunciation_church/commons_06.jpg",
-  "sha": "e6674cd4641bba80678d8cec835efd62a6d0f8e24da2c8733893f2db9c72a62c",
+  "sha": "503cd207e39066e68fe094430a630a6ade74b5dd733932b1943c0bcf3a066e92",
   "origin": "commons"
  },
  {
@@ -2116,7 +2116,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/test/annunciation_church/annunciation_church_test_0002.jpg",
   "src": "data/images_enriched/annunciation_church/commons_07.jpg",
-  "sha": "00620203a6fccf11863dac59af00aecacd37f8b3e71a8cfc9df511538554cdc9",
+  "sha": "4a908deddf871f91fd9381310a3428d6273c9fd6502f007e67e555aa76bce815",
   "origin": "commons"
  },
  {
@@ -2124,7 +2124,7 @@
   "cls": "annunciation_church",
   "path": "data/images_v2/test/annunciation_church/annunciation_church_test_0003.jpg",
   "src": "data/images_enriched/annunciation_church/commons_00.jpg",
-  "sha": "bf30ecf9e36397a721ddf83f354fc1476d46301c8ff6444515a9af290ed7e69b",
+  "sha": "51a7ac40b65cbd23c859caa6c7f04a73782a0edf6f1f7a514b53bebc57c18bcd",
   "origin": "commons"
  },
  {
@@ -2484,7 +2484,7 @@
   "cls": "paramonov_mansion_sfeu",
   "path": "data/images_v2/test/paramonov_mansion_sfeu/paramonov_mansion_sfeu_test_0003.jpg",
   "src": "data/images_enriched/paramonov_mansion_sfeu/commons_00.jpg",
-  "sha": "09d62392ecfff9d6d3322e019f6aa1fb45375afc696f18748959a2ccd2283db0",
+  "sha": "8e5255db171aa8e741cc34d57df9ceb7f1ed71ea158cde5f0bcee71bc8d09e76",
   "origin": "commons"
  },
  {

@@ -201,6 +201,31 @@ it under the photo.
 Run the audit in CI (`.github/workflows/photo-audit.yml`), not locally:
 Wikimedia is unreachable from the developer's network.
 
+### Known issue: some published photos show the wrong subject
+
+The licence audit proves every thumbnail is legally publishable; it does not
+prove the thumbnail shows the landmark. `data/photo_sources.json` was filled
+from one photographer's 2020 Rostov walk, and the assignment is partly
+positional rather than content-based:
+
+- `annunciation_church`, `lyre_fountain` and `underground_mosaics` are three
+  consecutive frames (`DSC 0214`–`DSC 0216`) of the same courtyard gate.
+- `sholokhov_monument`, `vysotsky_monument`, `writers_busts`, `budyonny_bust`,
+  `cinema_house`, `sorge_bust` and `pushkin_spheres` are frames
+  `IMG 20200704 053415`–`053517`, all showing the same lion sculpture.
+
+Measured effect: of the 28 published photos whose landmark is one of the 29
+model classes, 11 are classified correctly and 7 clear the 0.35 threshold
+(against 60% on the held-out test split). That gap is mostly the photos, not
+the model — the library "test" images are interiors, and the church thumbnail
+is a gate.
+
+Re-sourcing is a content task, not a code fix: each replacement has to be a
+Commons file that actually depicts the landmark. Wikimedia is reachable through
+the in-app browser even though it is blocked from PowerShell, so replacements
+can be fetched by hand; `photo_sources.json` + the CI audit then regenerate the
+attribution.
+
 ## Deployment
 
 The free-tier plan (Render + Neon) does not survive a network check from
@@ -276,6 +301,26 @@ python collect_data.py
 ```
 
 Splits photos 80% train / 10% val / 10% test. Use `--source PATH` to read from a directory other than `data/raw`.
+
+### Step 2b — Rebuild the dataset from the manifest
+
+The images are not in git, but the split is. `data/images_v2/manifests/split.json`
+records, for each of the 328 images, its source file, its destination path and
+its sha256:
+
+```bash
+python scripts/build_dataset.py --verify          # report what exists, change nothing
+python scripts/build_dataset.py                   # copy the missing files
+python scripts/build_dataset.py --force           # rebuild every file
+python scripts/build_dataset.py --update-manifest # rewrite sha256 values that drifted
+```
+
+Sources live in `data/images/` and `data/images_enriched/`, which are also not
+committed; restore them from the project archive first. `tests/test_dataset_manifest.py`
+fails CI if the manifest becomes internally inconsistent: one source photo in
+two splits, a model class without training images, or a class order that no
+longer matches `models/class_names.json` (Keras derives labels from directory
+names, so a reordering would silently remap every prediction).
 
 ### Step 3 — Train
 
