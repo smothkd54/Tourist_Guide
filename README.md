@@ -211,7 +211,7 @@ and seven frames of one lion sculpture became seven different monuments.
 
 All 46 thumbnails have since been checked against the landmark record, its
 coordinates and a Commons category or Wikidata item that is specifically about
-the object. 31 were re-sourced and verified; the other 15 were already correct.
+the object. 30 were re-sourced and verified; 8 were already correct.
 Eight landmarks are now **text-only** because no free-licensed photo of the
 actual object exists on Commons or Wikipedia:
 `bakulin_house`, `budyonny_bust`, `cinema_house`, `lanterns_1904`,
