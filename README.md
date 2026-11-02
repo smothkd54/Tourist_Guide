@@ -201,30 +201,35 @@ it under the photo.
 Run the audit in CI (`.github/workflows/photo-audit.yml`), not locally:
 Wikimedia is unreachable from the developer's network.
 
-### Known issue: some published photos show the wrong subject
+### Photo verification status
 
 The licence audit proves every thumbnail is legally publishable; it does not
-prove the thumbnail shows the landmark. `data/photo_sources.json` was filled
-from one photographer's 2020 Rostov walk, and the assignment is partly
-positional rather than content-based:
+prove the thumbnail shows the landmark. The original `photo_sources.json` was
+filled from one photographer's 2020 Rostov walk, and part of the assignment was
+positional: three frames of a courtyard gate became three different landmarks,
+and seven frames of one lion sculpture became seven different monuments.
 
-- `annunciation_church`, `lyre_fountain` and `underground_mosaics` are three
-  consecutive frames (`DSC 0214`–`DSC 0216`) of the same courtyard gate.
-- `sholokhov_monument`, `vysotsky_monument`, `writers_busts`, `budyonny_bust`,
-  `cinema_house`, `sorge_bust` and `pushkin_spheres` are frames
-  `IMG 20200704 053415`–`053517`, all showing the same lion sculpture.
+All 46 thumbnails have since been checked against the landmark record, its
+coordinates and a Commons category or Wikidata item that is specifically about
+the object. 31 were re-sourced and verified; the other 15 were already correct.
+Eight landmarks are now **text-only** because no free-licensed photo of the
+actual object exists on Commons or Wikipedia:
+`bakulin_house`, `budyonny_bust`, `cinema_house`, `lanterns_1904`,
+`lyre_fountain`, `sorge_bust`, `vysotsky_monument`, `writers_busts`
+(the Vysotsky monument photograph on ru.wikipedia is fair use, so it cannot be
+republished). A missing photo is better than a wrong one: the clients hide the
+image and its credit when `data/photos/<id>.jpg` is absent.
 
-Measured effect: of the 28 published photos whose landmark is one of the 29
-model classes, 11 are classified correctly and 7 clear the 0.35 threshold
-(against 60% on the held-out test split). That gap is mostly the photos, not
-the model — the library "test" images are interiors, and the church thumbnail
-is a gate.
+Measured effect: of the 25 published photos whose landmark is one of the 29
+model classes, 11 are classified correctly and 8 clear the 0.35 threshold
+(against 60% on the held-out test split). The remaining gap is the photos —
+several monuments have very few training examples — and is a known limitation,
+not a licensing issue.
 
 Re-sourcing is a content task, not a code fix: each replacement has to be a
 Commons file that actually depicts the landmark. Wikimedia is reachable through
-the in-app browser even though it is blocked from PowerShell, so replacements
-can be fetched by hand; `photo_sources.json` + the CI audit then regenerate the
-attribution.
+the in-app browser even though it is blocked from PowerShell; `photo_sources.json`
+plus the CI audit then regenerate the attribution.
 
 ## Deployment
 
@@ -243,7 +248,7 @@ This has no external dependency and no cost.
 | Tab | Description |
 |-----|-------------|
 | **Identify** | Upload a photo, get landmark identification with confidence scores |
-| **Browse Sites** | Grid of all 46 landmarks with photos, descriptions, fun facts |
+| **Browse Sites** | Grid of all 46 landmarks (photo where a verified one exists), descriptions, fun facts |
 | **Near Me** | Uses browser geolocation to find nearby landmarks (with fallback) |
 | **Plan a Walk** | Shows OSRM walking route on an interactive Leaflet.js map |
 | **Manage Photos** | Upload photos per angle for each landmark (session-only) |
