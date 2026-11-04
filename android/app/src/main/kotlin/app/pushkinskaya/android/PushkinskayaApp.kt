@@ -7,6 +7,7 @@ import app.pushkinskaya.android.data.Api
 import app.pushkinskaya.android.data.AppDatabase
 import app.pushkinskaya.android.data.IdentifyRepository
 import app.pushkinskaya.android.data.LandmarkRepository
+import app.pushkinskaya.android.data.ReportRepository
 import app.pushkinskaya.android.data.RouteRepository
 import app.pushkinskaya.android.data.Settings
 import app.pushkinskaya.android.notify.Notifications
@@ -57,6 +58,7 @@ class AppContainer(context: Context) {
     val landmarks = LandmarkRepository(api, db.landmarkDao(), db.routeDao())
     val routes = RouteRepository(api, db.routeDao())
     val identify = IdentifyRepository(api, context.applicationContext)
+    val reports = ReportRepository(api)
 
     fun photoUrl(landmarkId: String): String = "${baseUrl}photo/$landmarkId"
 }

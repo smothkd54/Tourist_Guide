@@ -51,4 +51,22 @@
     <string name="notification_settings">Notification settings</string>
     <string name="photo_credit">Photo: %1$s</string>
     <string name="photo_credits_note">All photos are from Wikimedia Commons. The author and licence are shown under each photo.</string>
+
+    <string name="report_problem">Report a problem</string>
+    <string name="report_title">Report a problem</string>
+    <string name="report_sent_title">Report sent</string>
+    <string name="report_category">What is wrong?</string>
+    <string name="report_wrong_photo">Wrong or missing photo</string>
+    <string name="report_wrong_info">Incorrect information</string>
+    <string name="report_closed">Temporarily closed or inaccessible</string>
+    <string name="report_other">Something else</string>
+    <string name="report_message_hint">Describe the problem (10–2000 characters)</string>
+    <string name="report_min_length">Please write at least 10 characters.</string>
+    <string name="report_send">Send</string>
+    <string name="report_sending">Sending…</string>
+    <string name="report_cancel">Cancel</string>
+    <string name="report_close">Close</string>
+    <string name="report_thanks">Thank you — the report was received.</string>
+    <string name="report_failed">Could not send the report. Check your connection and try again.</string>
+    <string name="report_anonymous_note">Reports are anonymous: no account or personal data is stored.</string>
 </resources>

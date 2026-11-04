@@ -51,4 +51,22 @@
     <string name="notification_settings">Настройки уведомлений</string>
     <string name="photo_credit">Фото: %1$s</string>
     <string name="photo_credits_note">Все фотографии взяты с Wikimedia Commons. Автор и лицензия указаны под каждой фотографией.</string>
+
+    <string name="report_problem">Сообщить о проблеме</string>
+    <string name="report_title">Сообщить о проблеме</string>
+    <string name="report_sent_title">Сообщение отправлено</string>
+    <string name="report_category">Что не так?</string>
+    <string name="report_wrong_photo">Неверное или отсутствующее фото</string>
+    <string name="report_wrong_info">Неверная информация</string>
+    <string name="report_closed">Временно закрыто или недоступно</string>
+    <string name="report_other">Другое</string>
+    <string name="report_message_hint">Опишите проблему (10–2000 символов)</string>
+    <string name="report_min_length">Напишите хотя бы 10 символов.</string>
+    <string name="report_send">Отправить</string>
+    <string name="report_sending">Отправляем…</string>
+    <string name="report_cancel">Отмена</string>
+    <string name="report_close">Закрыть</string>
+    <string name="report_thanks">Спасибо — сообщение получено.</string>
+    <string name="report_failed">Не удалось отправить сообщение. Проверьте соединение и попробуйте снова.</string>
+    <string name="report_anonymous_note">Сообщения анонимны: аккаунт и личные данные не сохраняются.</string>
 </resources>

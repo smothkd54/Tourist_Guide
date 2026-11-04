@@ -61,6 +61,18 @@ class RouteRepository(
     }
 }
 
+class ReportRepository(private val api: Api) {
+    /**
+     * Sends an anonymous report. Returns the server's stored record on success;
+     * the caller shows a generic failure message, because an HTTP code is not
+     * useful to someone standing in front of the building.
+     */
+    suspend fun submit(landmarkId: String, category: String, message: String): Result<ReportResponse> =
+        runCatching {
+            api.report(ReportRequest(landmarkId = landmarkId, category = category, message = message))
+        }
+}
+
 class IdentifyRepository(
     private val api: Api,
     private val context: Context,

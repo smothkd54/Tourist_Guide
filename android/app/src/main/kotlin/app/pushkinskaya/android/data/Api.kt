@@ -79,6 +79,21 @@ data class PlanResponse(
     @SerialName("total_minutes") val totalMinutes: Double,
 )
 
+/** Anonymous problem report; the server stores no account or personal data. */
+@Serializable
+data class ReportRequest(
+    @SerialName("landmark_id") val landmarkId: String? = null,
+    val category: String,
+    val message: String,
+)
+
+@Serializable
+data class ReportResponse(
+    val id: String,
+    val status: String = "open",
+    @SerialName("created_at") val createdAt: String = "",
+)
+
 interface Api {
     @GET("landmarks")
     suspend fun landmarks(): List<LandmarkDto>
@@ -88,4 +103,7 @@ interface Api {
 
     @POST("plan-custom")
     suspend fun planCustom(@Body body: PlanRequest): PlanResponse
+
+    @POST("reports")
+    suspend fun report(@Body body: ReportRequest): ReportResponse
 }
