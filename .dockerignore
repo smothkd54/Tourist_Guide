@@ -22,6 +22,11 @@ build/
 # Training data (not needed in production)
 data/raw/
 data/images/
+data/images_enriched/
+data/images_v2/**
+# Keep the manifest: the seed script derives per-class split counts from it.
+!data/images_v2/manifests/
+!data/images_v2/manifests/**
 data/planned_route.json
 
 # Model training artifacts (not needed in serving)

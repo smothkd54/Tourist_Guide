@@ -40,9 +40,21 @@ if [ -d "$PROJECT_DIR/logs" ]; then
     echo "  Logs backed up: logs_$DATE.tar.gz"
 fi
 
+# Backup PostgreSQL (skipped when DATABASE_URL is not set, e.g. JSON-only dev)
+if [ -n "${DATABASE_URL:-}" ]; then
+    if command -v pg_dump >/dev/null 2>&1; then
+        pg_dump --format=custom --no-owner --dbname "$DATABASE_URL" \
+            > "$BACKUP_DIR/db_$DATE.dump"
+        echo "  Database backed up: db_$DATE.dump"
+    else
+        echo "  WARNING: DATABASE_URL is set but pg_dump is not installed; database not backed up." >&2
+    fi
+fi
+
 # Clean up old backups
 find "$BACKUP_DIR" -name "*.tar.gz" -mtime +$KEEP_DAYS -delete 2>/dev/null || true
-REMAINING=$(find "$BACKUP_DIR" -name "*.tar.gz" | wc -l)
+find "$BACKUP_DIR" -name "*.dump" -mtime +$KEEP_DAYS -delete 2>/dev/null || true
+REMAINING=$(find "$BACKUP_DIR" \( -name "*.tar.gz" -o -name "*.dump" \) | wc -l)
 echo "  Backups retained: $REMAINING (keeping $KEEP_DAYS days)"
 
 echo "[$(date)] Backup complete."

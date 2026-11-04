@@ -25,14 +25,18 @@ import io
 import math
 import os
 import re
+import secrets
 import time
 from pathlib import Path
+from uuid import UUID
 
 import numpy as np
 from flask import Flask, jsonify, request, send_from_directory, current_app
 from flask_cors import CORS
 from PIL import Image
 
+from backend import db
+from backend.constants import CLASS_LANDMARK_ALIASES, CONFIDENCE_THRESHOLD, UNVALIDATED_CLASSES
 from backend.route_planner import plan_route, plan_custom_route
 from backend.logging_setup import setup_logging
 from backend.artifacts import is_lfs_pointer
@@ -177,13 +181,8 @@ PORT                 = 5000
 # Dev server only (gunicorn in Docker binds via -b 0.0.0.0:5000).
 # Loopback by default so `python backend/app.py` isn't exposed on the LAN.
 HOST                 = os.environ.get("HOST", "127.0.0.1")
-CONFIDENCE_THRESHOLD = 0.35   # predictions below this are reported as "unknown"
-
-# Classes that exist only in the training split: so few photos survive that no
-# validation or test images could be held out, so their accuracy is unknown and
-# they must never be returned as an identification. They stay in landmarks.json,
-# on the map and in browse/search — they are simply not camera-recognised.
-UNVALIDATED_CLASSES = frozenset({"lashch_revenue_house", "tkachenko_revenue_house"})
+# Confidence threshold and publishable classes live in backend/constants.py so
+# the seed script and the API cannot disagree about which classes are masked.
 MAX_CONTENT_MB       = 10     # max request body size in MB
 # ────────────────────────────────────────────────────────────────────────────
 
@@ -233,6 +232,37 @@ def request_entity_too_large(e):
 app.model           = None
 app.class_names     = []
 app.landmarks_by_id = {}
+app.data_source     = "json"
+app.db_error        = None
+
+
+def _attach_json_credits():
+    """Attach photo credits from photo_attribution.json (JSON mode only).
+
+    In PostgreSQL mode the LEFT JOIN in db.fetch_landmarks() does this, which
+    keeps a single definition of "published": a row exists and is_published.
+    """
+    if not PHOTO_ATTRIBUTION_PATH.exists():
+        logger.warning(
+            "%s not found — photos will be served without a credit line. "
+            "Run scripts/audit_photo_licenses.py.",
+            PHOTO_ATTRIBUTION_PATH,
+        )
+        return
+    credit = json.loads(PHOTO_ATTRIBUTION_PATH.read_text())
+    attached = 0
+    for landmark_id, item in credit.items():
+        landmark = app.landmarks_by_id.get(landmark_id)
+        if landmark is None or not item.get("published"):
+            continue
+        landmark["photo_attribution"] = {
+            "author": item.get("author", ""),
+            "license": item.get("license", ""),
+            "license_url": item.get("license_url", ""),
+            "source_url": item.get("source_url", ""),
+        }
+        attached += 1
+    logger.info("Photo credits attached: %d", attached)
 
 
 def load_resources():
@@ -262,39 +292,33 @@ def load_resources():
     else:
         logger.warning("%s not found. Run train.py first.", CLASS_NAMES_PATH)
 
-    if LANDMARKS_PATH.exists():
+    # PostgreSQL is the deployment source of truth. If it is configured but
+    # unreachable, log loudly and fall back to the committed JSON catalogue:
+    # reads keep working, while writes return 503 until the database is back.
+    if db.is_configured():
+        try:
+            records = db.fetch_landmarks()
+            app.landmarks_by_id = {lm["id"]: lm for lm in records}
+            app.data_source = "postgres"
+            logger.info("Landmarks loaded from PostgreSQL: %d", len(records))
+        except Exception as exc:
+            app.db_error = str(exc)[:300]
+            logger.error(
+                "PostgreSQL is configured but unreachable (%s). Falling back to "
+                "the JSON catalogue; reports and itineraries will return 503.",
+                exc,
+            )
+
+    if not app.landmarks_by_id:
+        if not LANDMARKS_PATH.exists():
+            raise FileNotFoundError(f"landmarks.json not found at {LANDMARKS_PATH}")
         data = json.loads(LANDMARKS_PATH.read_text())
         app.landmarks_by_id = {lm["id"]: lm for lm in data["landmarks"]}
-    else:
-        raise FileNotFoundError(f"landmarks.json not found at {LANDMARKS_PATH}")
-
-    # Publishing rule: a photo is only served if its author, licence and source
-    # are recorded. The audit script verifies that; here the credit is attached
-    # to the landmark so both clients can show it next to the photo.
-    if PHOTO_ATTRIBUTION_PATH.exists():
-        credit = json.loads(PHOTO_ATTRIBUTION_PATH.read_text())
-        attached = 0
-        for landmark_id, item in credit.items():
-            landmark = app.landmarks_by_id.get(landmark_id)
-            if landmark is None or not item.get("published"):
-                continue
-            landmark["photo_attribution"] = {
-                "author": item.get("author", ""),
-                "license": item.get("license", ""),
-                "license_url": item.get("license_url", ""),
-                "source_url": item.get("source_url", ""),
-            }
-            attached += 1
-        logger.info("Photo credits attached: %d", attached)
-    else:
-        logger.warning(
-            "%s not found — photos will be served without a credit line. "
-            "Run scripts/audit_photo_licenses.py.",
-            PHOTO_ATTRIBUTION_PATH,
-        )
+        _attach_json_credits()
 
     logger.info("Classes loaded: %d", len(app.class_names))
     logger.info("Landmarks in DB: %d", len(app.landmarks_by_id))
+    logger.info("Data source: %s", app.data_source)
 
 
 # Load at import time, not under __main__. gunicorn (Docker) imports this
@@ -360,19 +384,28 @@ def haversine_m(lat1, lon1, lat2, lon2):
 def health():
     model_ok = current_app.model is not None
     landmarks_ok = len(current_app.landmarks_by_id) > 0
+    database = db.health() if db.is_configured() else {"status": "not_configured"}
 
     body = {
         "status": "ok" if (model_ok and landmarks_ok) else "degraded",
         "model_loaded": model_ok,
         "classes": len(current_app.class_names),
         "landmarks": len(current_app.landmarks_by_id),
+        "data_source": current_app.data_source,
+        "database": database,
     }
+    if current_app.db_error:
+        body["database_error"] = current_app.db_error
 
     # A health check that always returns 200 is invisible to load
     # balancers and orchestrators — they only look at the status code,
     # not the body. If the model failed to load, this needs to fail
     # loudly (503) so a deployment gets flagged or rolled back instead
     # of silently serving broken /predict requests.
+    #
+    # A database outage does not return 503 while the JSON fallback is
+    # serving reads: the site still works, and reporting the degradation in
+    # the body is more useful than taking a working service out of rotation.
     status_code = 200 if (model_ok and landmarks_ok) else 503
     return jsonify(body), status_code
 
@@ -512,6 +545,66 @@ def dynamic_plan():
     return jsonify(route_data)
 
 
+class ApiError(Exception):
+    """Validation failure carrying the HTTP status to return."""
+
+    def __init__(self, message: str, status: int = 400):
+        super().__init__(message)
+        self.message = message
+        self.status = status
+
+
+def _parse_custom_plan(body):
+    """Validate a custom-route request body; raise ApiError on bad input."""
+    if not body or "landmarks" not in body or "start" not in body:
+        raise ApiError("Send JSON with 'landmarks' (list of IDs) and 'start' (landmark ID)")
+
+    landmark_ids = body["landmarks"]
+    start_id = body["start"]
+    optimize = body.get("optimize", True)
+
+    if not isinstance(landmark_ids, list) or len(landmark_ids) == 0:
+        raise ApiError("'landmarks' must be a non-empty list of landmark IDs")
+    if not isinstance(start_id, str):
+        raise ApiError("'start' must be a landmark ID string")
+    if not all(isinstance(lid, str) for lid in landmark_ids):
+        raise ApiError("'landmarks' must contain only landmark ID strings")
+    if not isinstance(optimize, bool):
+        raise ApiError("'optimize' must be true or false")
+
+    landmark_ids = list(dict.fromkeys(landmark_ids))
+    if len(landmark_ids) > len(current_app.landmarks_by_id):
+        raise ApiError("Too many landmarks requested")
+
+    unknown = [lid for lid in landmark_ids if lid not in current_app.landmarks_by_id]
+    if unknown:
+        raise ApiError(f"Unknown landmark IDs: {unknown}")
+    if start_id not in current_app.landmarks_by_id or start_id not in landmark_ids:
+        raise ApiError(f"Start landmark '{start_id}' must be one of the provided landmark IDs")
+
+    landmarks = [current_app.landmarks_by_id[lid] for lid in landmark_ids]
+    geocoded = [lm for lm in landmarks if lm.get("lat") is not None]
+    if len(geocoded) < 1:
+        raise ApiError("Selected landmarks need GPS coordinates")
+
+    return start_id, optimize, geocoded
+
+
+def _custom_route_or_error(geocoded, start_id, optimize):
+    if not _osrm_limiter.is_allowed(_client_key()):
+        return None, (jsonify({"error": "Rate limit exceeded. Try again in a minute."}), 429)
+    try:
+        route_data = plan_custom_route(geocoded, start_id, optimize_order=optimize)
+    except ValueError as e:
+        return None, (jsonify({"error": str(e)}), 400)
+    except Exception as e:
+        _metrics.record_osrm(False)
+        logger.error("OSRM routing failed for custom route: %s", e)
+        return None, (jsonify({"error": "OSRM routing failed"}), 503)
+    _metrics.record_osrm(True)
+    return route_data, None
+
+
 @app.route("/plan-custom", methods=["POST"])
 def plan_custom():
     """
@@ -524,53 +617,191 @@ def plan_custom():
         "optimize": true                    (optional, default true)
       }
     """
-    body = request.get_json(silent=True)
-    if not body or "landmarks" not in body or "start" not in body:
-        return jsonify({"error": "Send JSON with 'landmarks' (list of IDs) and 'start' (landmark ID)"}), 400
+    try:
+        start_id, optimize, geocoded = _parse_custom_plan(request.get_json(silent=True))
+    except ApiError as exc:
+        return jsonify({"error": exc.message}), exc.status
 
-    landmark_ids = body["landmarks"]
-    start_id = body["start"]
-    optimize = body.get("optimize", True)
+    route_data, error = _custom_route_or_error(geocoded, start_id, optimize)
+    if error:
+        return error
+    return jsonify(route_data)
 
-    if not isinstance(landmark_ids, list) or len(landmark_ids) == 0:
-        return jsonify({"error": "'landmarks' must be a non-empty list of landmark IDs"}), 400
-    if not isinstance(start_id, str):
-        return jsonify({"error": "'start' must be a landmark ID string"}), 400
-    if not all(isinstance(lid, str) for lid in landmark_ids):
-        return jsonify({"error": "'landmarks' must contain only landmark ID strings"}), 400
-    if not isinstance(optimize, bool):
-        return jsonify({"error": "'optimize' must be true or false"}), 400
 
-    landmark_ids = list(dict.fromkeys(landmark_ids))
-    if len(landmark_ids) > len(current_app.landmarks_by_id):
-        return jsonify({"error": "Too many landmarks requested"}), 400
+# ── anonymous reports and shared itineraries ─────────────────────────────────
+REPORT_CATEGORIES = ("wrong_photo", "wrong_info", "closed", "other")
+REPORT_STATUSES = ("open", "resolved", "dismissed")
+_report_limiter = RateLimiter(max_requests=5, window_seconds=60)
 
-    unknown = [lid for lid in landmark_ids if lid not in current_app.landmarks_by_id]
-    if unknown:
-        return jsonify({"error": f"Unknown landmark IDs: {unknown}"}), 400
-    if start_id not in current_app.landmarks_by_id or start_id not in landmark_ids:
-        return jsonify({"error": f"Start landmark '{start_id}' must be one of the provided landmark IDs"}), 400
 
-    landmarks = [current_app.landmarks_by_id[lid] for lid in landmark_ids]
+def _db_unavailable():
+    """Return a 503 response when writes cannot be stored."""
+    if current_app.data_source != "postgres":
+        return jsonify({
+            "error": "This feature needs the database. Set DATABASE_URL, "
+                     "run `alembic upgrade head` and `python scripts/seed_db.py`."
+        }), 503
+    return None
 
-    geocoded = [lm for lm in landmarks if lm.get("lat") is not None]
-    if len(geocoded) < 1:
-        return jsonify({"error": "Selected landmarks need GPS coordinates"}), 400
 
-    if not _osrm_limiter.is_allowed(_client_key()):
-        return jsonify({"error": "Rate limit exceeded. Try again in a minute."}), 429
+def _admin_error():
+    """Header-token guard shared by every /admin endpoint."""
+    token = os.environ.get("ADMIN_TOKEN", "")
+    if not token:
+        return jsonify({"error": "Admin API disabled: ADMIN_TOKEN is not set."}), 503
+    supplied = request.headers.get("X-Admin-Token", "")
+    if not secrets.compare_digest(supplied.encode("utf-8"), token.encode("utf-8")):
+        return jsonify({"error": "Unauthorized"}), 401
+    return None
+
+
+@app.route("/reports", methods=["POST"])
+def create_report():
+    """Store an anonymous problem report about a landmark or its photo."""
+    body = request.get_json(silent=True) or {}
+    category = body.get("category")
+    message = body.get("message")
+    landmark_id = body.get("landmark_id")
+
+    if category not in REPORT_CATEGORIES:
+        return jsonify({"error": f"'category' must be one of {list(REPORT_CATEGORIES)}"}), 400
+    if not isinstance(message, str):
+        return jsonify({"error": "'message' must be a string"}), 400
+    message = message.strip()
+    if not 10 <= len(message) <= 2000:
+        return jsonify({"error": "'message' must be between 10 and 2000 characters"}), 400
+    if landmark_id is not None:
+        if not isinstance(landmark_id, str) or landmark_id not in current_app.landmarks_by_id:
+            return jsonify({"error": "Unknown landmark_id"}), 400
+
+    if not _report_limiter.is_allowed(_client_key()):
+        return jsonify({"error": "Too many reports. Try again in a minute."}), 429
+
+    unavailable = _db_unavailable()
+    if unavailable:
+        return unavailable
 
     try:
-        route_data = plan_custom_route(geocoded, start_id, optimize_order=optimize)
-    except ValueError as e:
-        return jsonify({"error": str(e)}), 400
-    except Exception as e:
-        _metrics.record_osrm(False)
-        logger.error("OSRM routing failed for custom route: %s", e)
-        return jsonify({"error": "OSRM routing failed"}), 503
+        report = db.create_report(landmark_id, category, message)
+    except Exception as exc:
+        logger.error("Could not store report for %s: %s", landmark_id, exc)
+        return jsonify({"error": "Could not store the report. Try again later."}), 503
 
-    _metrics.record_osrm(True)
-    return jsonify(route_data)
+    logger.info("Report %s stored for landmark %s (%s)", report["id"], landmark_id, category)
+    return jsonify(report), 201
+
+
+@app.route("/itineraries", methods=["POST"])
+def create_itinerary():
+    """Plan a custom walk and persist it so the link can be shared."""
+    try:
+        start_id, optimize, geocoded = _parse_custom_plan(request.get_json(silent=True))
+    except ApiError as exc:
+        return jsonify({"error": exc.message}), exc.status
+
+    unavailable = _db_unavailable()
+    if unavailable:
+        return unavailable
+
+    route_data, error = _custom_route_or_error(geocoded, start_id, optimize)
+    if error:
+        return error
+
+    try:
+        itinerary_id = db.create_itinerary(start_id, "custom", route_data)
+    except Exception as exc:
+        logger.error("Could not store itinerary: %s", exc)
+        return jsonify({"error": "Could not store the itinerary. Try again later."}), 503
+
+    return jsonify({"id": itinerary_id, "route": route_data}), 201
+
+
+@app.route("/itineraries/<itinerary_id>")
+def get_itinerary(itinerary_id: str):
+    """Return a shared itinerary by id."""
+    try:
+        UUID(itinerary_id)
+    except (ValueError, AttributeError):
+        return jsonify({"error": "Invalid itinerary id"}), 400
+
+    unavailable = _db_unavailable()
+    if unavailable:
+        return unavailable
+
+    itinerary = db.get_itinerary(itinerary_id)
+    if itinerary is None:
+        return jsonify({"error": "Itinerary not found"}), 404
+    return jsonify(itinerary)
+
+
+@app.route("/admin/stats")
+def admin_stats():
+    """Operational counters. Requires X-Admin-Token."""
+    error = _admin_error()
+    if error:
+        return error
+    unavailable = _db_unavailable()
+    if unavailable:
+        return unavailable
+
+    stats = db.count_stats()
+    stats["data_source"] = current_app.data_source
+    stats["model"] = {
+        "path": str(MODEL_PATH),
+        "loaded": current_app.model is not None,
+        "classes": len(current_app.class_names),
+    }
+    return jsonify(stats)
+
+
+@app.route("/admin/reports")
+def admin_reports():
+    """List reports, newest first. Requires X-Admin-Token."""
+    error = _admin_error()
+    if error:
+        return error
+    unavailable = _db_unavailable()
+    if unavailable:
+        return unavailable
+
+    status = request.args.get("status")
+    if status is not None and status not in REPORT_STATUSES:
+        return jsonify({"error": f"'status' must be one of {list(REPORT_STATUSES)}"}), 400
+    try:
+        limit = int(request.args.get("limit", 50))
+        offset = int(request.args.get("offset", 0))
+    except ValueError:
+        return jsonify({"error": "limit and offset must be integers"}), 400
+    if not 1 <= limit <= 200 or offset < 0:
+        return jsonify({"error": "limit must be 1-200 and offset >= 0"}), 400
+
+    return jsonify(db.list_reports(status=status, limit=limit, offset=offset))
+
+
+@app.route("/admin/reports/<report_id>", methods=["PATCH"])
+def admin_update_report(report_id: str):
+    """Change a report's status. Requires X-Admin-Token."""
+    error = _admin_error()
+    if error:
+        return error
+    unavailable = _db_unavailable()
+    if unavailable:
+        return unavailable
+
+    try:
+        UUID(report_id)
+    except (ValueError, AttributeError):
+        return jsonify({"error": "Invalid report id"}), 400
+
+    body = request.get_json(silent=True) or {}
+    status = body.get("status")
+    if status not in REPORT_STATUSES:
+        return jsonify({"error": f"'status' must be one of {list(REPORT_STATUSES)}"}), 400
+
+    updated = db.update_report_status(report_id, status)
+    if updated is None:
+        return jsonify({"error": "Report not found"}), 404
+    return jsonify(updated)
 
 
 @app.route("/route")
@@ -628,10 +859,11 @@ def predict():
             "top5": top5,
         })
 
-    info = current_app.landmarks_by_id.get(best_id, {})
+    info = current_app.landmarks_by_id.get(CLASS_LANDMARK_ALIASES.get(best_id, best_id), {})
     return jsonify({
         "identified": True,
-        "landmark_id": best_id,
+        "landmark_id": CLASS_LANDMARK_ALIASES.get(best_id, best_id),
+        "class_id": best_id,
         "name": info.get("name", best_id),
         "confidence": best_conf,
         "confidence_pct": f"{best_conf * 100:.1f}%",

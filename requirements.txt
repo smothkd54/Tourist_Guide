@@ -28,5 +28,10 @@ requests==2.34.2
 # Production WSGI server (also in requirements-serve.txt)
 gunicorn==22.0.0
 
+# PostgreSQL: runtime access, migrations, and the seed/admin scripts
+psycopg[binary,pool]==3.3.6
+alembic==1.20.1
+SQLAlchemy==2.1.6
+
 # Testing (not needed in production)
 pytest==8.2.2

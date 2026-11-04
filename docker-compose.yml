@@ -1,4 +1,24 @@
 services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-pushkinskaya}
+      POSTGRES_USER: ${POSTGRES_USER:-pushkinskaya}
+      # Required: compose refuses to start with an empty password.
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env (see .env.example)}
+    # Loopback only: the API reaches the database over the compose network,
+    # and a local `alembic`/`psql` can use the same port from the host.
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    restart: unless-stopped
+
   caddy:
     image: caddy:2
     ports:
@@ -20,13 +40,22 @@ services:
       # Fail fast if unset: /metrics must never be served without a token
       # in a composed deployment. Caddy forwards the header unchanged.
       METRICS_TOKEN: ${METRICS_TOKEN:?Set METRICS_TOKEN in .env (see .env.example)}
+      # Fail fast if unset: /admin/* must never be reachable without a token.
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?Set ADMIN_TOKEN in .env (see .env.example)}
+      # `environment` wins over `env_file`, so the container always talks to
+      # the compose database even when .env holds a host-side DATABASE_URL.
+      DATABASE_URL: postgresql://${POSTGRES_USER:-pushkinskaya}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-pushkinskaya}
     env_file:
       - .env
     volumes:
       - ./models:/app/models
       - ./logs:/app/logs
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
 
 volumes:
   caddy_data:
   caddy_config:
+  db_data:
