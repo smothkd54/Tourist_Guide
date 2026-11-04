@@ -9,6 +9,20 @@ on:
 jobs:
   lint-and-test:
     runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: pushkinskaya
+          POSTGRES_PASSWORD: pushkinskaya
+          POSTGRES_DB: pushkinskaya_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U pushkinskaya"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 12
     steps:
       - uses: actions/checkout@v7
         with:
@@ -32,7 +46,19 @@ jobs:
           pip install ruff==0.15.18
           ruff check .
 
-      - name: Run tests
+      - name: Run tests (JSON fallback)
+        run: pytest tests/ -v
+
+      - name: Migrate and seed PostgreSQL
+        env:
+          DATABASE_URL: postgresql://pushkinskaya:pushkinskaya@127.0.0.1:5432/pushkinskaya_test
+        run: |
+          alembic upgrade head
+          python scripts/seed_db.py
+
+      - name: Run tests (PostgreSQL)
+        env:
+          DATABASE_URL: postgresql://pushkinskaya:pushkinskaya@127.0.0.1:5432/pushkinskaya_test
         run: pytest tests/ -v
 
   android:

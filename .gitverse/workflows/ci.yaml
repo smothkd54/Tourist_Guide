@@ -1,0 +1,112 @@
+# GitVerse CI — primary pipeline.
+#
+# Two jobs, both under the 30-minute cloud-runner cap:
+#   1. backend: lint, JSON-mode tests, then PostgreSQL migrate/seed + tests.
+#   2. docker:  build the serving image and probe the running container.
+#
+# The Android build is intentionally on GitHub (see .github/workflows/ci.yml):
+# a cold Gradle build does not reliably fit 30 minutes. The APK is built there
+# and sideloaded to the demo phone.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend:
+    name: Backend — lint, JSON and PostgreSQL tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install ruff==0.15.18
+
+      - name: Lint with ruff
+        run: ruff check .
+
+      # DATABASE_URL is unset here on purpose: this run proves the JSON
+      # fallback still serves reads when PostgreSQL is absent.
+      - name: Tests — JSON fallback
+        run: pytest tests -q
+
+      - name: Install and start PostgreSQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql
+          sudo service postgresql start || sudo pg_ctlcluster 16 main start
+          for i in $(seq 1 30); do
+            if sudo -u postgres pg_isready > /dev/null 2>&1; then break; fi
+            sleep 1
+          done
+          sudo -u postgres psql -v ON_ERROR_STOP=1 \
+            -c "CREATE USER pushkinskaya WITH PASSWORD 'pushkinskaya';"
+          sudo -u postgres psql -v ON_ERROR_STOP=1 \
+            -c "CREATE DATABASE pushkinskaya_test OWNER pushkinskaya;"
+
+      - name: Apply migrations and seed the catalogue
+        env:
+          DATABASE_URL: postgresql://pushkinskaya:pushkinskaya@127.0.0.1:5432/pushkinskaya_test
+        run: |
+          alembic upgrade head
+          python scripts/seed_db.py
+
+      - name: Tests — PostgreSQL
+        env:
+          DATABASE_URL: postgresql://pushkinskaya:pushkinskaya@127.0.0.1:5432/pushkinskaya_test
+        run: pytest tests -q
+
+  docker:
+    name: Docker image smoke test
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: backend
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Build the serving image
+        run: docker build -t pushkinskaya-explorer .
+
+      # The container is started without DATABASE_URL: the entrypoint skips
+      # migrations and serves the committed JSON catalogue. This checks the
+      # image itself (model, static frontend, gunicorn, preflight).
+      - name: Start the container and probe it
+        run: |
+          docker run -d --name web -p 5000:5000 pushkinskaya-explorer
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:5000/ > /dev/null 2>&1; then
+              break
+            fi
+            sleep 2
+          done
+          curl -fsS http://localhost:5000/ | python -c \
+            "import json,sys; d=json.load(sys.stdin); assert d['status']=='ok', d; assert d['data_source']=='json', d; print(d)"
+          curl -fsS http://localhost:5000/landmarks | python -c \
+            "import json,sys; n=len(json.load(sys.stdin)); assert n==46, n; print('landmarks', n)"
+
+      - name: Container logs
+        if: always()
+        run: docker logs web || true
+
+      - name: Stop the container
+        if: always()
+        run: docker rm -f web || true
