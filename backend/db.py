@@ -17,8 +17,10 @@ from __future__ import annotations
 
 import os
 import time
+from contextlib import contextmanager
 from typing import Any
 
+from psycopg import OperationalError
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 from psycopg_pool import ConnectionPool
@@ -29,10 +31,45 @@ _POOL_MAX = int(os.environ.get("DB_POOL_MAX", "4"))
 _POOL_MIN = int(os.environ.get("DB_POOL_MIN", "1"))
 
 _pool: ConnectionPool | None = None
+# After a failed connection, do not make every request wait for the same
+# timeout again: GET / probes the database, and a five-second stall per health
+# check is worse than reporting the outage immediately. The flag covers both a
+# pool that never opened and an open pool whose server went away.
+_pool_failed_until = 0.0
+_POOL_RETRY_SECONDS = float(os.environ.get("DB_POOL_RETRY_SECONDS", "30"))
 
 
 class DatabaseUnavailable(RuntimeError):
     """Raised when PostgreSQL is configured but cannot be reached."""
+
+
+def _check_backoff() -> None:
+    now = time.monotonic()
+    if now < _pool_failed_until:
+        raise DatabaseUnavailable(
+            f"database unavailable; retrying in {_pool_failed_until - now:.0f}s"
+        )
+
+
+def _record_failure() -> None:
+    global _pool_failed_until
+    _pool_failed_until = time.monotonic() + _POOL_RETRY_SECONDS
+
+
+@contextmanager
+def connection():
+    """Check out a connection, failing fast while an outage backoff is active.
+
+    Operational errors (server down, pool timeout) arm the backoff; SQL errors
+    such as constraint violations pass through untouched.
+    """
+    _check_backoff()
+    try:
+        with get_pool().connection() as conn:
+            yield conn
+    except OperationalError as exc:
+        _record_failure()
+        raise DatabaseUnavailable(str(exc)) from exc
 
 
 def dsn() -> str:
@@ -57,6 +94,7 @@ def get_pool() -> ConnectionPool:
     """
     global _pool
     if _pool is None:
+        _check_backoff()
         pool = ConnectionPool(
             dsn(),
             min_size=_POOL_MIN,
@@ -69,6 +107,7 @@ def get_pool() -> ConnectionPool:
             pool.open(wait=True, timeout=10)
         except Exception as exc:  # pragma: no cover - environment dependent
             pool.close()
+            _record_failure()
             raise DatabaseUnavailable(str(exc)) from exc
         _pool = pool
     return _pool
@@ -76,17 +115,18 @@ def get_pool() -> ConnectionPool:
 
 def close_pool() -> None:
     """Close the pool (tests and shutdown)."""
-    global _pool
+    global _pool, _pool_failed_until
     if _pool is not None:
         _pool.close()
         _pool = None
+    _pool_failed_until = 0.0
 
 
 def health() -> dict[str, Any]:
     """Cheap liveness probe used by GET /."""
     started = time.perf_counter()
     try:
-        with get_pool().connection() as conn:
+        with connection() as conn:
             row = conn.execute("SELECT current_setting('server_version') AS version").fetchone()
         return {
             "status": "ok",
@@ -118,7 +158,7 @@ def fetch_landmarks() -> list[dict[str, Any]]:
     The published photo credit is attached as `photo_attribution`, matching
     what the JSON loader and both clients already expect.
     """
-    with get_pool().connection() as conn:
+    with connection() as conn:
         rows = conn.execute(_LANDMARKS_SQL).fetchall()
 
     landmarks: list[dict[str, Any]] = []
@@ -167,7 +207,7 @@ def count_stats() -> dict[str, Any]:
           WHERE created_at > now() - interval '7 days')::int           AS itineraries_last_7_days,
         pg_database_size(current_database())::bigint                   AS database_bytes
     """
-    with get_pool().connection() as conn:
+    with connection() as conn:
         return conn.execute(sql).fetchone()
 
 
@@ -179,7 +219,7 @@ def create_report(landmark_id: str | None, category: str, message: str) -> dict[
     VALUES (%s, %s, %s)
     RETURNING id::text AS id, status, created_at
     """
-    with get_pool().connection() as conn:
+    with connection() as conn:
         row = conn.execute(sql, (landmark_id, category, message)).fetchone()
     row["created_at"] = row["created_at"].isoformat()
     return row
@@ -201,7 +241,7 @@ def list_reports(status: str | None = None, limit: int = 50, offset: int = 0) ->
     ORDER BY r.created_at DESC
     LIMIT %s OFFSET %s
     """
-    with get_pool().connection() as conn:
+    with connection() as conn:
         rows = conn.execute(sql, params).fetchall()
     for row in rows:
         row["created_at"] = row["created_at"].isoformat()
@@ -218,7 +258,7 @@ def update_report_status(report_id: str, status: str) -> dict[str, Any] | None:
      WHERE id = %s
     RETURNING id::text AS id, status, resolved_at
     """
-    with get_pool().connection() as conn:
+    with connection() as conn:
         row = conn.execute(sql, (status, status, report_id)).fetchone()
     if row is None:
         return None
@@ -243,7 +283,7 @@ def create_itinerary(
     VALUES (%s, %s, %s, %s, %s)
     RETURNING id::text AS id
     """
-    with get_pool().connection() as conn:
+    with connection() as conn:
         row = conn.execute(
             sql,
             (
@@ -280,7 +320,7 @@ def get_itinerary(itinerary_id: str) -> dict[str, Any] | None:
     FROM itineraries
     WHERE id = %s
     """
-    with get_pool().connection() as conn:
+    with connection() as conn:
         row = conn.execute(sql, (itinerary_id,)).fetchone()
     if row is None:
         return None

@@ -237,6 +237,7 @@ python convert_tflite.py && docker compose restart web
 | `POSTGRES_PASSWORD` | *(required by compose)* | Database password; also embedded in `DATABASE_URL` |
 | `DATABASE_URL` | *(empty)* | PostgreSQL connection string. Unset = JSON fallback; set = PostgreSQL |
 | `DB_POOL_MIN` / `DB_POOL_MAX` | `1` / `4` | Per-worker psycopg pool size |
+| `DB_POOL_RETRY_SECONDS` | `30` | Backoff after a failed pool open, so health checks fail fast instead of stalling |
 | `ADMIN_TOKEN` | *(required by compose)* | `/admin/*` requires this value in `X-Admin-Token`; unset = admin API disabled (503) |
 | `METRICS_TOKEN` | *(required by compose)* | `/metrics` requires this value in the `X-Metrics-Token` header |
 
@@ -583,10 +584,10 @@ the one the deployment uses.
 ```bash
 pip install -e ".[dev]"
 
-# 1. JSON fallback — 66 passed, 11 skipped
+# 1. JSON fallback — 68 passed, 11 skipped
 pytest tests/ -v
 
-# 2. PostgreSQL — 76 passed, 1 skipped
+# 2. PostgreSQL — 78 passed, 1 skipped
 createdb pushkinskaya_test        # once
 export DATABASE_URL=postgresql://pushkinskaya:<password>@127.0.0.1:5432/pushkinskaya_test
 alembic upgrade head
@@ -594,7 +595,7 @@ python scripts/seed_db.py
 pytest tests/ -v
 ```
 
-77 tests covering:
+79 tests covering:
 - **Health** — model status, data source, LFS pointer detection, degraded health returns 503
 - **CORS** — localhost/loopback allowed, lookalike origins rejected
 - **Landmarks** — list, single, filter, invalid ID
@@ -604,6 +605,7 @@ pytest tests/ -v
 - **Reports & admin** — category/message/landmark validation, token guard, resolve flow
 - **Itineraries** — save, fetch, invalid/unknown UUIDs
 - **Database schema** — credit check constraint, coordinate/year ranges, unique class index, `_test` database guard
+- **Database outage** — a failed connection backs off instead of stalling every health check; the app recovers when the server returns
 - **Photos** — serve, available list
 - **Frontend** — serve index.html, favicon
 - **Model info** — metadata endpoint (404 when metadata absent)
