@@ -317,7 +317,7 @@ def load_resources():
         _attach_json_credits()
 
     logger.info("Classes loaded: %d", len(app.class_names))
-    logger.info("Landmarks in DB: %d", len(app.landmarks_by_id))
+    logger.info("Landmarks loaded: %d", len(app.landmarks_by_id))
     logger.info("Data source: %s", app.data_source)
 
 
