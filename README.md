@@ -200,8 +200,8 @@ docker compose up -d --build
 
 This starts:
 - **db** (`postgres:16-alpine`, loopback `127.0.0.1:5432`) — catalogue, reports, itineraries
-- **web** (port 5000 internal) — Flask + gunicorn; the entrypoint applies migrations, seeds an empty database, runs preflight, then serves
-- **caddy** (ports 80/443) — reverse proxy with auto-HTTPS via Let's Encrypt
+- **web** (loopback `127.0.0.1:5000`, also reachable by Caddy over the compose network) — Flask + gunicorn; the entrypoint applies migrations, seeds an empty database, runs preflight, then serves
+- **caddy** (ports 80/443) — reverse proxy on plain HTTP `:80`; the HTTPS site block is commented out in `Caddyfile` until a domain points at the host
 
 **Manual (docker run):**
 ```bash
@@ -588,7 +588,8 @@ pip install -e ".[dev]"
 pytest tests/ -v
 
 # 2. PostgreSQL — 78 passed, 1 skipped
-createdb pushkinskaya_test        # once
+# With the compose database (PowerShell: $env:DATABASE_URL = "..."):
+docker compose exec db createdb -U pushkinskaya pushkinskaya_test   # once
 export DATABASE_URL=postgresql://pushkinskaya:<password>@127.0.0.1:5432/pushkinskaya_test
 alembic upgrade head
 python scripts/seed_db.py

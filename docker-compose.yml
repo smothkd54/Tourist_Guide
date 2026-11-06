@@ -34,8 +34,11 @@ services:
 
   web:
     build: .
-    expose:
-      - "5000"
+    # Loopback only: the phone reaches this through `adb reverse tcp:5000`,
+    # and Caddy reaches it over the compose network. Nothing is exposed to
+    # the LAN.
+    ports:
+      - "127.0.0.1:5000:5000"
     environment:
       # Fail fast if unset: /metrics must never be served without a token
       # in a composed deployment. Caddy forwards the header unchanged.
