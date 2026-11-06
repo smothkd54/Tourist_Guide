@@ -49,7 +49,7 @@ jobs:
       - name: Install and start PostgreSQL
         run: |
           sudo apt-get update
-          sudo apt-get install -y postgresql
+          sudo apt-get install -y postgresql postgresql-contrib
           sudo service postgresql start || sudo pg_ctlcluster 16 main start
           for i in $(seq 1 30); do
             if sudo -u postgres pg_isready > /dev/null 2>&1; then break; fi
@@ -59,6 +59,10 @@ jobs:
             -c "CREATE USER pushkinskaya WITH PASSWORD 'pushkinskaya';"
           sudo -u postgres psql -v ON_ERROR_STOP=1 \
             -c "CREATE DATABASE pushkinskaya_test OWNER pushkinskaya;"
+          # The migration also has `IF NOT EXISTS`, but creating the trusted
+          # extension as the superuser removes any doubt on a fresh cluster.
+          sudo -u postgres psql -v ON_ERROR_STOP=1 -d pushkinskaya_test \
+            -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
 
       - name: Apply migrations and seed the catalogue
         env:
