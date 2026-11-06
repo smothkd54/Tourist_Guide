@@ -385,7 +385,7 @@ Parameter details:
 - `/itineraries` — same validation as `/plan-custom`; the response `id` is a UUID used in `?itinerary=<id>`.
 - `/admin/*` — `ADMIN_TOKEN` must be set (otherwise `503`); the request must carry it in `X-Admin-Token` (otherwise `401`). Report statuses are `open`, `resolved`, `dismissed`.
 
-Health check returns `503` (not `200`) when the model is missing or is a Git LFS pointer stub. A database outage does not fail the health check while the JSON fallback is serving reads; the body then reports `data_source: "json"` and a `database_error`.
+Health check returns `503` (not `200`) when the model is missing or is a Git LFS pointer stub. A database outage does not fail the health check while the JSON fallback is serving reads; the body then reports `data_source: "json"` and a `database_error`. If PostgreSQL was up at boot and goes away, `GET /` still answers immediately: the first failed connection arms a `DB_POOL_RETRY_SECONDS` backoff, writes return `503` in milliseconds, and the API reconnects once the backoff expires.
 
 ---
 
