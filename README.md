@@ -726,8 +726,8 @@ docker compose up -d --build
 
 Services:
 - **db** — `postgres:16-alpine`, loopback `127.0.0.1:5432`, named volume, `pg_isready` healthcheck
-- **web** — port 5000 (internal), Flask + gunicorn; starts only after the database is healthy
-- **caddy** — ports 80/443, reverse proxy
+- **web** — loopback `127.0.0.1:5000` (and the compose network for Caddy), Flask + gunicorn; starts only after the database is healthy
+- **caddy** — ports 80/443, reverse proxy on plain `:80`
 
 The web entrypoint is idempotent on every boot: `alembic upgrade head` →
 `scripts/seed_db.py --if-empty` → `preflight_check.py` → gunicorn. A fresh

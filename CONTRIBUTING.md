@@ -1,7 +1,8 @@
 # Contributing
 
-The primary repository is on GitVerse (see `docs/gitverse.md`); GitHub is a
-mirror. This file covers the local workflow that both CIs enforce.
+GitVerse is the intended primary repository and CI (see `docs/gitverse.md`).
+Until the account and import are done, GitHub is the upstream. This file
+covers the local workflow that both CIs enforce.
 
 ## Prerequisites
 
