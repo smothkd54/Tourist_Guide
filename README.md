@@ -813,10 +813,19 @@ Retains 7 days of backups. Cron example (daily at 3 AM):
 
 GitVerse is the primary pipeline (`.gitverse/workflows/ci.yaml`):
 
-1. **Backend** — `ruff check .`; the suite in JSON mode; PostgreSQL 16 installed
-   with `apt`, migrated and seeded; the suite again in PostgreSQL mode
-2. **Docker** — builds the serving image, starts it without `DATABASE_URL`,
-   checks preflight, `/` (`data_source: json`) and all 46 landmarks
+1. **Backend** — `ruff check .`; the suite in JSON mode; the distribution's
+   PostgreSQL installed with `apt`, migrated and seeded; the suite again in
+   PostgreSQL mode
+2. **Docker** — fetches the TFLite model over Git LFS, builds the serving image,
+   starts it without `DATABASE_URL`, checks preflight, `/` (`data_source: json`)
+   and all 46 landmarks
+
+The workflow can also be started by hand from the repository's CI/CD tab
+(`workflow_dispatch`). Its checkout deliberately skips Git LFS: the 33 MB
+`landmark_classifier.keras` is not needed for CI and can only be uploaded over
+GitVerse's SSH LFS path (see
+[`docs/gitverse.md`](docs/gitverse.md#large-lfs-objects)), so the Docker job
+pulls only the 8.8 MB TFLite file that `preflight_check.py` loads.
 
 The GitHub mirror (`.github/workflows/ci.yml`) runs the same backend checks with
 a PostgreSQL service container, and adds the jobs that do not fit GitVerse's

@@ -115,8 +115,23 @@ for the demo. Keep the CI requirement in place either way.
 
 | Job | What it proves |
 |-----|----------------|
-| `backend` | ruff is clean; the suite passes in JSON fallback mode; PostgreSQL 16 installs, migrates and seeds; the suite passes again in PostgreSQL mode |
-| `docker` | the serving image builds; the entrypoint runs preflight; the container answers `/` with `data_source: json` and serves all 46 landmarks |
+| `backend` | ruff is clean; the suite passes in JSON fallback mode; the distribution's PostgreSQL installs, migrates and seeds; the suite passes again in PostgreSQL mode |
+| `docker` | the TFLite model downloads over LFS; the serving image builds; the entrypoint runs preflight; the container answers `/` with `data_source: json` and serves all 46 landmarks |
+
+The workflow has a `workflow_dispatch` trigger as well, so a run can be started
+from the CI/CD tab without an empty commit.
+
+Two runner details are handled explicitly:
+
+- **No assumed `sudo`.** GitVerse cloud runners are containers and often run as
+  root with no `sudo` binary, so the PostgreSQL step detects the uid and uses
+  `runuser -u postgres --` when it is root. The cluster version is read from
+  `/etc/postgresql` instead of hardcoding `pg_ctlcluster 16 main`.
+- **No full LFS checkout.** `actions/checkout` runs without `lfs: true`; the
+  Docker job pulls only `models/landmark_classifier.tflite` with
+  `git lfs pull -I`. The 33 MB `.keras` is not needed by any test and can only
+  be uploaded to GitVerse over SSH, so requiring it would tie every run to the
+  LFS endpoint and add 33 MB for no benefit.
 
 GitVerse also scans `.github/workflows/*.yaml`, but this repository's GitHub
 workflow uses `.yml`, so it is not executed here. The GitVerse workflow is

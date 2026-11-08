@@ -7,6 +7,15 @@
 # The Android build is intentionally on GitHub (see .github/workflows/ci.yml):
 # a cold Gradle build does not reliably fit 30 minutes. The APK is built there
 # and sideloaded to the demo phone.
+#
+# Two GitVerse specifics shape this file:
+#   - Cloud runners are containers. They may run as root (no sudo at all), so
+#     every privileged command detects root vs sudo instead of assuming sudo.
+#   - The checkout is deliberately made WITHOUT `lfs: true`. The 33 MB
+#     models/landmark_classifier.keras is not needed by any test, and uploading
+#     it to GitVerse only succeeds over SSH; fetching it would add 33 MB and a
+#     dependency on the LFS endpoint to every run. Only the 8.8 MB TFLite file
+#     is fetched, and only by the Docker job that loads it.
 
 name: CI
 
@@ -15,6 +24,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   backend:
@@ -22,10 +32,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      - name: Runner diagnostics
+        run: |
+          id
+          . /etc/os-release && echo "$PRETTY_NAME"
+          python --version || true
+          docker version --format '{{.Server.Version}}' || true
+
       - name: Check out the repository
         uses: actions/checkout@v4
-        with:
-          lfs: true
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
@@ -46,22 +61,65 @@ jobs:
       - name: Tests — JSON fallback
         run: pytest tests -q
 
+      # The runner container is not a VM: systemd is usually absent and the
+      # user is often root with no `sudo` binary. Detect both, start the
+      # distro's default cluster (not a hardcoded major version), and wait
+      # for it to accept connections before touching it.
       - name: Install and start PostgreSQL
         run: |
-          sudo apt-get update
-          sudo apt-get install -y postgresql postgresql-contrib
-          sudo service postgresql start || sudo pg_ctlcluster 16 main start
-          for i in $(seq 1 30); do
-            if sudo -u postgres pg_isready > /dev/null 2>&1; then break; fi
+          set -euo pipefail
+          export DEBIAN_FRONTEND=noninteractive
+
+          if [ "$(id -u)" -eq 0 ]; then
+            SUDO=""
+          elif command -v sudo >/dev/null 2>&1; then
+            SUDO="sudo"
+          else
+            echo "error: not root and sudo is unavailable" >&2
+            exit 1
+          fi
+
+          as_root() {
+            if [ -n "$SUDO" ]; then "$SUDO" "$@"; else "$@"; fi
+          }
+          as_postgres() {
+            if [ -n "$SUDO" ]; then "$SUDO" -u postgres "$@"; else runuser -u postgres -- "$@"; fi
+          }
+
+          as_root apt-get update
+          as_root apt-get install -y --no-install-recommends \
+            postgresql postgresql-contrib
+
+          # Whichever cluster the package created (16, 17, ...), start it.
+          as_root service postgresql start || true
+          if ! as_postgres pg_isready >/dev/null 2>&1; then
+            version="$(ls /etc/postgresql 2>/dev/null | sort -V | tail -n 1)"
+            if [ -n "$version" ]; then
+              as_root pg_ctlcluster "$version" main start || true
+            fi
+          fi
+
+          for _ in $(seq 1 60); do
+            if as_postgres pg_isready >/dev/null 2>&1; then break; fi
             sleep 1
           done
-          sudo -u postgres psql -v ON_ERROR_STOP=1 \
-            -c "CREATE USER pushkinskaya WITH PASSWORD 'pushkinskaya';"
-          sudo -u postgres psql -v ON_ERROR_STOP=1 \
-            -c "CREATE DATABASE pushkinskaya_test OWNER pushkinskaya;"
+          as_postgres pg_isready
+
+          # Idempotent, in case the image ships a partially initialised cluster.
+          as_postgres psql -v ON_ERROR_STOP=1 -tAc \
+            "SELECT 1 FROM pg_roles WHERE rolname = 'pushkinskaya'" \
+            | grep -q 1 \
+            || as_postgres psql -v ON_ERROR_STOP=1 \
+                 -c "CREATE ROLE pushkinskaya LOGIN PASSWORD 'pushkinskaya';"
+
+          as_postgres psql -v ON_ERROR_STOP=1 -tAc \
+            "SELECT 1 FROM pg_database WHERE datname = 'pushkinskaya_test'" \
+            | grep -q 1 \
+            || as_postgres createdb -O pushkinskaya pushkinskaya_test
+
           # The migration also has `IF NOT EXISTS`, but creating the trusted
           # extension as the superuser removes any doubt on a fresh cluster.
-          sudo -u postgres psql -v ON_ERROR_STOP=1 -d pushkinskaya_test \
+          as_postgres psql -v ON_ERROR_STOP=1 -d pushkinskaya_test \
             -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
 
       - name: Apply migrations and seed the catalogue
@@ -84,8 +142,31 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
-        with:
-          lfs: true
+
+      # Only the TFLite artifact is needed by preflight_check.py inside the
+      # image. The 33 MB .keras is intentionally skipped: see the note at the
+      # top of this file. Downloading over HTTPS also scales to a fresh runner
+      # with no GitVerse SSH key.
+      - name: Fetch the serving model over Git LFS
+        run: |
+          set -euo pipefail
+          if ! command -v git-lfs >/dev/null 2>&1; then
+            if [ "$(id -u)" -eq 0 ]; then
+              apt-get update && apt-get install -y --no-install-recommends git-lfs
+            elif command -v sudo >/dev/null 2>&1; then
+              sudo apt-get update && sudo apt-get install -y --no-install-recommends git-lfs
+            else
+              echo "error: git-lfs is missing and cannot be installed" >&2
+              exit 1
+            fi
+          fi
+          git lfs pull -I "models/landmark_classifier.tflite"
+          size="$(wc -c < models/landmark_classifier.tflite)"
+          if [ "$size" -le 1024 ]; then
+            echo "error: the model is still an LFS pointer ($size bytes)" >&2
+            exit 1
+          fi
+          echo "TFLite model: $size bytes"
 
       - name: Build the serving image
         run: docker build -t pushkinskaya-explorer .
