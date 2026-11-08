@@ -1,8 +1,9 @@
 # Contributing
 
-GitVerse is the intended primary repository and CI (see `docs/gitverse.md`).
-Until the account and import are done, GitHub is the upstream. This file
-covers the local workflow that both CIs enforce.
+The primary repository is on GitVerse at
+`git@gitverse.ru:smothkd/Tourist_Guide.git`; GitHub is a mirror
+(`docs/gitverse.md`). This file covers the local workflow that both CIs
+enforce.
 
 ## Prerequisites
 

@@ -4,10 +4,11 @@ GitVerse is the primary home for this project; GitHub stays as a mirror while
 the demo is being prepared. This page records the setup steps and the parts
 that have **not** been done yet.
 
-> **Status:** the workflow and documentation are in the repository, but the
-> GitVerse account, the repository import and the first push have not happened.
-> They need the account owner's browser session. Replace `<login>` with the
-> GitVerse username once the account exists.
+> **Status:** the account is `smothkd`, the repository is imported at
+> <https://gitverse.ru/smothkd/Tourist_Guide>, and this clone uses
+> `origin` = GitVerse (SSH) and `github` = the GitHub mirror. The first
+> GitVerse pipeline run is still pending. The import did not carry the Git LFS
+> objects; they were uploaded separately (see “Large LFS objects” below).
 
 ## Why GitVerse
 
@@ -20,51 +21,81 @@ that have **not** been done yet.
 
 ## 1. Create the account and import the repository
 
+Completed on 2026-11-08 with the login `smothkd`. The steps are kept as a
+record:
+
 1. Sign up at <https://gitverse.ru> and confirm the email address.
 2. Choose **Import repository** (Импорт репозитория) and paste the GitHub URL:
    `https://github.com/smothkd54/Tourist_Guide.git`.
-3. Import **full history**, not a snapshot, and keep Git LFS enabled. The
-   `.gitattributes` file already declares `data/photos/*` and `models/*.tflite`
-   as LFS paths.
-4. Name the repository `Tourist_Guide` (the exact name is not important; the
-   commands below assume it).
-5. Do **not** enable GitVerse-side mirroring from GitHub yet. Push once from
-   the working copy first, then decide which direction mirrors.
+3. Import **full history**, not a snapshot. The `.gitattributes` file already
+   declares `data/photos/*` and `models/*` as LFS paths — but the import does
+   **not** copy the LFS objects themselves (see section 2).
+4. Name the repository `Tourist_Guide`.
+5. Do **not** enable GitVerse-side mirroring from GitHub: this clone pushes to
+   both remotes explicitly.
 
 ## 2. Point the local clone at both remotes
 
-The current clone still has `origin` on GitHub. Rename it to `github`, then add
-GitVerse as `origin` so the primary push goes to the right place:
-
-```bash
-git remote rename origin github
-git remote add origin https://gitverse.ru/<login>/Tourist_Guide.git
-git remote -v
-```
-
-Expected:
+This clone is already configured:
 
 ```
 github  https://github.com/smothkd54/Tourist_Guide.git (fetch)
 github  https://github.com/smothkd54/Tourist_Guide.git (push)
-origin  https://gitverse.ru/<login>/Tourist_Guide.git (fetch)
-origin  https://gitverse.ru/<login>/Tourist_Guide.git (push)
+origin  git@gitverse.ru:smothkd/Tourist_Guide.git (fetch)
+origin  git@gitverse.ru:smothkd/Tourist_Guide.git (push)
 ```
 
-Push the current history and the LFS objects:
+For reference, that was set up with:
+
+```bash
+git remote rename origin github
+git remote add origin git@gitverse.ru:smothkd/Tourist_Guide.git
+git fetch origin
+git branch --set-upstream-to=origin/main main
+```
+
+Authentication is SSH: the key `kadeiemi@sfedu.ru` is registered on GitVerse as
+`smothkd`. The local, gitignored `.gitconfig-gitverse` file carries the commit
+identity, a Windows Credential Manager helper for a possible HTTPS fallback,
+and the LFS setting described below. It is included with:
+
+```bash
+git config --local include.path ../.gitconfig-gitverse
+```
+
+The imported `main` already matched the local `HEAD` (`c95edd2`), so no rebase
+was needed. Pushing this clone updates GitVerse; pushing `github` updates the
+mirror.
+
+### Large LFS objects
+
+The import copied the commits but not the LFS blobs, so a clone initially
+failed its checkout. Uploading repaired it:
 
 ```bash
 git lfs push --all origin
-git push -u origin main
 ```
 
-GitVerse asks for a username and a personal access token, not the account
-password. Create the token under **Settings → Access tokens** with `repo`
-scope.
+The photos and the 8.8 MB TFLite model went through the hybrid HTTPS path, but
+the 33 MB `models/landmark_classifier.keras` returned `403 Forbidden` from the
+storage CDN. GitVerse accepts it over the pure SSH transfer, so the clone
+forces that protocol for GitVerse only:
 
-If the import already brought the history in, the first push will be rejected
-as non-fast-forward. That is expected: check out the imported branch, rebase
-the local commits on it, then push again.
+```bash
+git config lfs.https://gitverse.ru/.sshtransfer always
+```
+
+The same setting lives in `.gitconfig-gitverse`. Do not set it globally: GitHub
+does not implement the pure SSH protocol and its LFS uploads would break.
+
+Verification was a fresh `--depth 1` clone of `main`; it checked out 40 LFS
+files and produced the real sizes:
+
+```
+models/landmark_classifier.tflite   8,797,436
+models/landmark_classifier.keras   33,004,242
+data/photos/chekhov_monument.jpg      749,587
+```
 
 ## 3. Branch protection
 
@@ -125,15 +156,17 @@ The GitHub workflow is deliberately kept until the first green GitVerse run.
 
 ## 6. Verification checklist
 
-- [ ] Account created and email confirmed.
-- [ ] Repository imported with full history and LFS objects.
-- [ ] `origin` points at GitVerse; `github` points at the mirror.
-- [ ] `git lfs ls-files` lists the model and thumbnails on both remotes.
+- [x] Account created and email confirmed (`smothkd`).
+- [x] Repository imported with full history; LFS objects uploaded separately.
+- [x] `origin` points at GitVerse; `github` points at the mirror.
+- [x] `git lfs ls-files` lists the model and thumbnails, and a fresh clone
+      resolves all 40 LFS files to their real sizes.
 - [ ] First `CI` run is green in the GitVerse UI.
-- [ ] `/` on the deployed instance reports `data_source: postgres`.
+- [x] `/` on the local composed instance reports `data_source: postgres`.
 - [ ] Branch protection requires the `CI` workflow.
-- [ ] README clone URL and CI section no longer claim GitHub is primary.
+- [x] README clone URL and CI section no longer claim GitHub is primary.
 
-After the checklist is complete, remove `.github/workflows/ci.yml` and keep
+After the checklist is complete, remove the duplicate backend job from
+`.github/workflows/ci.yml` (keep the Android build and Trivy jobs) and keep
 `photo-audit.yml` (Wikimedia is unreachable from the developer's network, so
 the audit still needs a runner with outbound access).

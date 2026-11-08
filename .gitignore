@@ -3,6 +3,8 @@ __pycache__/
 *.pyo
 *.zip
 .env
+# Machine-local GitVerse identity/credential settings (see docs/gitverse.md)
+.gitconfig-gitverse
 data/images/
 # Dataset images are never committed: data/images/ was already ignored, and
 # data/images_v2/ is a derived 316 MB tree rebuilt from it plus the Commons

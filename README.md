@@ -107,15 +107,19 @@ Tourist_Guide/
 
 ### 1. Clone with Git LFS (for images and the model)
 
-GitVerse is the primary remote. The account and repository import are still
-pending, so the URL below is a placeholder — see
-[`docs/gitverse.md`](docs/gitverse.md) for the import and first-push steps.
+GitVerse is the primary remote: `smothkd/Tourist_Guide`. Cloning over SSH is
+recommended on this machine because it is the transport registered for the
+demo; see [`docs/gitverse.md`](docs/gitverse.md) for the remote setup and the
+Git LFS caveat.
 
 ```bash
 git lfs install
-git clone https://gitverse.ru/<login>/Tourist_Guide.git
+git clone git@gitverse.ru:smothkd/Tourist_Guide.git
 cd Tourist_Guide
 ```
+
+If SSH is not available, clone over HTTPS instead:
+`git clone https://gitverse.ru/smothkd/Tourist_Guide.git`.
 
 The GitHub mirror is `https://github.com/smothkd54/Tourist_Guide.git`.
 
