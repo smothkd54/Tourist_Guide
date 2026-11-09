@@ -147,6 +147,10 @@ jobs:
       # image. The 33 MB .keras is intentionally skipped: see the note at the
       # top of this file. Downloading over HTTPS also scales to a fresh runner
       # with no GitVerse SSH key.
+      #
+      # The pull is traced (with Authorization headers filtered out) because
+      # GitVerse's LFS endpoint has returned an opaque `Client error` here; the
+      # HTTP status line is what identifies the cause.
       - name: Fetch the serving model over Git LFS
         run: |
           set -euo pipefail
@@ -160,7 +164,19 @@ jobs:
               exit 1
             fi
           fi
-          git lfs pull -I "models/landmark_classifier.tflite"
+
+          log=/tmp/lfs-pull.log
+          if ! GIT_TRACE=1 GIT_CURL_VERBOSE=1 \
+               git lfs pull -I "models/landmark_classifier.tflite" >"$log" 2>&1; then
+            echo "---- git lfs pull failed ----"
+            grep -iv 'authorization' "$log" \
+              | grep -E '< HTTP|^> (GET|POST)|batch|Client error|Fatal' \
+              | tail -n 40 || true
+            echo "---- git lfs env ----"
+            git lfs env || true
+            exit 1
+          fi
+
           size="$(wc -c < models/landmark_classifier.tflite)"
           if [ "$size" -le 1024 ]; then
             echo "error: the model is still an LFS pointer ($size bytes)" >&2
