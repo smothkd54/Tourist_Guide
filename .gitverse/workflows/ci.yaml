@@ -168,13 +168,59 @@ jobs:
           log=/tmp/lfs-pull.log
           if ! GIT_TRACE=1 GIT_CURL_VERBOSE=1 \
                git lfs pull -I "models/landmark_classifier.tflite" >"$log" 2>&1; then
-            echo "---- git lfs pull failed ----"
+            echo "---- git lfs pull failed; HTTP exchange ----"
             grep -iv 'authorization' "$log" \
               | grep -E '< HTTP|^> (GET|POST)|batch|Client error|Fatal' \
-              | tail -n 40 || true
-            echo "---- git lfs env ----"
-            git lfs env || true
-            exit 1
+              | tail -n 20 || true
+
+            # GitVerse answers the batch request with 200 but returns 400 for
+            # the object GET when it comes from its own CI runners. Fetching
+            # the signed href with curl works, so use the LFS batch API
+            # directly instead of git-lfs.
+            oid="$(sed -n 's/^oid sha256://p' models/landmark_classifier.tflite)"
+            size="$(sed -n 's/^size //p' models/landmark_classifier.tflite)"
+            endpoint="https://gitverse.ru/smothkd/Tourist_Guide.git/info/lfs"
+            echo "---- curl fallback: oid=$oid size=$size ----"
+
+            batch="$(curl -sS \
+              -H 'Accept: application/vnd.git-lfs+json' \
+              -H 'Content-Type: application/vnd.git-lfs+json' \
+              -d "{\"operation\":\"download\",\"transfers\":[\"basic\"],\"objects\":[{\"oid\":\"$oid\",\"size\":$size}]}" \
+              "$endpoint/objects/batch" || true)"
+
+            if command -v python3 >/dev/null 2>&1; then
+              href="$(printf '%s' "$batch" | python3 -c \
+                'import json,sys; d=json.load(sys.stdin); o=d["objects"][0]; print(o.get("actions",{}).get("download",{}).get("href") or o.get("href",""))' \
+                2>/dev/null || true)"
+            else
+              href="$(printf '%s' "$batch" | grep -o '"href":"[^"]*"' | head -n1 | cut -d'"' -f4)"
+            fi
+            echo "batch href: ${href:-<none>}"
+            if [ -z "$href" ]; then
+              printf '%s' "$batch" | head -c 400; echo
+              exit 1
+            fi
+
+            try_download() {
+              label="$1"; shift
+              code="$(curl -sS -L "$@" -o /tmp/model.tflite -w '%{http_code}' "$href" || true)"
+              bytes="$(wc -c < /tmp/model.tflite 2>/dev/null || echo 0)"
+              echo "$label -> HTTP $code, $bytes bytes"
+              [ "$code" = "200" ] && [ "$bytes" -gt 1024 ]
+            }
+
+            if try_download "lfs Accept header" \
+                 -H 'Accept: application/vnd.git-lfs+json'; then
+              :
+            elif try_download "browser User-Agent" \
+                   -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36' \
+                   -H 'Accept: */*'; then
+              :
+            else
+              echo "error: curl could not download the model either" >&2
+              exit 1
+            fi
+            cp /tmp/model.tflite models/landmark_classifier.tflite
           fi
 
           size="$(wc -c < models/landmark_classifier.tflite)"
