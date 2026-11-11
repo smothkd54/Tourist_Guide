@@ -1,21 +1,19 @@
-# GitVerse CI — primary pipeline.
+﻿# GitVerse CI — primary pipeline.
 #
-# Two jobs, both under the 30-minute cloud-runner cap:
-#   1. backend: lint, JSON-mode tests, then PostgreSQL migrate/seed + tests.
-#   2. docker:  build the serving image and probe the running container.
+# One job, under the 30-minute cloud-runner cap: lint, JSON-mode tests, then
+# PostgreSQL migrate/seed + tests.
 #
-# The Android build is intentionally on GitHub (see .github/workflows/ci.yml):
-# a cold Gradle build does not reliably fit 30 minutes. The APK is built there
-# and sideloaded to the demo phone.
+# The Docker image build/smoke test runs on the GitHub mirror instead. GitVerse
+# cloud runners are themselves containers and do not mount a Docker daemon
+# (`/var/run/docker.sock` is absent), so `docker build` cannot run there. The
+# GitHub workflow also builds the Android APK, which does not fit 30 minutes.
 #
-# Two GitVerse specifics shape this file:
-#   - Cloud runners are containers. They may run as root (no sudo at all), so
-#     every privileged command detects root vs sudo instead of assuming sudo.
-#   - The checkout is deliberately made WITHOUT `lfs: true`. The 33 MB
-#     models/landmark_classifier.keras is not needed by any test, and uploading
-#     it to GitVerse only succeeds over SSH; fetching it would add 33 MB and a
-#     dependency on the LFS endpoint to every run. Only the 8.8 MB TFLite file
-#     is fetched, and only by the Docker job that loads it.
+# GitVerse-specific detail: cloud runners may run as root with no `sudo`, so
+# every privileged command detects root vs sudo instead of assuming sudo.
+#
+# The checkout is deliberately made WITHOUT `lfs: true`: no test needs the
+# 33 MB Keras artefact and the TFLite model is only required inside the Docker
+# image, which is now built on GitHub where LFS checkout is supported.
 
 name: CI
 
@@ -133,127 +131,3 @@ jobs:
         env:
           DATABASE_URL: postgresql://pushkinskaya:pushkinskaya@127.0.0.1:5432/pushkinskaya_test
         run: pytest tests -q
-
-  docker:
-    name: Docker image smoke test
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    needs: backend
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4
-
-      # Only the TFLite artifact is needed by preflight_check.py inside the
-      # image. The 33 MB .keras is intentionally skipped: see the note at the
-      # top of this file. Downloading over HTTPS also scales to a fresh runner
-      # with no GitVerse SSH key.
-      #
-      # The pull is traced (with Authorization headers filtered out) because
-      # GitVerse's LFS endpoint has returned an opaque `Client error` here; the
-      # HTTP status line is what identifies the cause.
-      - name: Fetch the serving model over Git LFS
-        run: |
-          set -euo pipefail
-          if ! command -v git-lfs >/dev/null 2>&1; then
-            if [ "$(id -u)" -eq 0 ]; then
-              apt-get update && apt-get install -y --no-install-recommends git-lfs
-            elif command -v sudo >/dev/null 2>&1; then
-              sudo apt-get update && sudo apt-get install -y --no-install-recommends git-lfs
-            else
-              echo "error: git-lfs is missing and cannot be installed" >&2
-              exit 1
-            fi
-          fi
-
-          log=/tmp/lfs-pull.log
-          if ! GIT_TRACE=1 GIT_CURL_VERBOSE=1 \
-               git lfs pull -I "models/landmark_classifier.tflite" >"$log" 2>&1; then
-            echo "---- git lfs pull failed; HTTP exchange ----"
-            grep -iv 'authorization' "$log" \
-              | grep -E '< HTTP|^> (GET|POST)|batch|Client error|Fatal' \
-              | tail -n 20 || true
-
-            # GitVerse answers the batch request with 200 but returns 400 for
-            # the object GET when it comes from its own CI runners. Fetching
-            # the signed href with curl works, so use the LFS batch API
-            # directly instead of git-lfs.
-            oid="$(sed -n 's/^oid sha256://p' models/landmark_classifier.tflite)"
-            size="$(sed -n 's/^size //p' models/landmark_classifier.tflite)"
-            endpoint="https://gitverse.ru/smothkd/Tourist_Guide.git/info/lfs"
-            echo "---- curl fallback: oid=$oid size=$size ----"
-
-            batch="$(curl -sS \
-              -H 'Accept: application/vnd.git-lfs+json' \
-              -H 'Content-Type: application/vnd.git-lfs+json' \
-              -d "{\"operation\":\"download\",\"transfers\":[\"basic\"],\"objects\":[{\"oid\":\"$oid\",\"size\":$size}]}" \
-              "$endpoint/objects/batch" || true)"
-
-            if command -v python3 >/dev/null 2>&1; then
-              href="$(printf '%s' "$batch" | python3 -c \
-                'import json,sys; d=json.load(sys.stdin); o=d["objects"][0]; print(o.get("actions",{}).get("download",{}).get("href") or o.get("href",""))' \
-                2>/dev/null || true)"
-            else
-              href="$(printf '%s' "$batch" | grep -o '"href":"[^"]*"' | head -n1 | cut -d'"' -f4)"
-            fi
-            echo "batch href: ${href:-<none>}"
-            if [ -z "$href" ]; then
-              printf '%s' "$batch" | head -c 400; echo
-              exit 1
-            fi
-
-            try_download() {
-              label="$1"; shift
-              code="$(curl -sS -L "$@" -o /tmp/model.tflite -w '%{http_code}' "$href" || true)"
-              bytes="$(wc -c < /tmp/model.tflite 2>/dev/null || echo 0)"
-              echo "$label -> HTTP $code, $bytes bytes"
-              [ "$code" = "200" ] && [ "$bytes" -gt 1024 ]
-            }
-
-            if try_download "lfs Accept header" \
-                 -H 'Accept: application/vnd.git-lfs+json'; then
-              :
-            elif try_download "browser User-Agent" \
-                   -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36' \
-                   -H 'Accept: */*'; then
-              :
-            else
-              echo "error: curl could not download the model either" >&2
-              exit 1
-            fi
-            cp /tmp/model.tflite models/landmark_classifier.tflite
-          fi
-
-          size="$(wc -c < models/landmark_classifier.tflite)"
-          if [ "$size" -le 1024 ]; then
-            echo "error: the model is still an LFS pointer ($size bytes)" >&2
-            exit 1
-          fi
-          echo "TFLite model: $size bytes"
-
-      - name: Build the serving image
-        run: docker build -t pushkinskaya-explorer .
-
-      # The container is started without DATABASE_URL: the entrypoint skips
-      # migrations and serves the committed JSON catalogue. This checks the
-      # image itself (model, static frontend, gunicorn, preflight).
-      - name: Start the container and probe it
-        run: |
-          docker run -d --name web -p 5000:5000 pushkinskaya-explorer
-          for i in $(seq 1 60); do
-            if curl -fsS http://localhost:5000/ > /dev/null 2>&1; then
-              break
-            fi
-            sleep 2
-          done
-          curl -fsS http://localhost:5000/ | python -c \
-            "import json,sys; d=json.load(sys.stdin); assert d['status']=='ok', d; assert d['data_source']=='json', d; print(d)"
-          curl -fsS http://localhost:5000/landmarks | python -c \
-            "import json,sys; n=len(json.load(sys.stdin)); assert n==46, n; print('landmarks', n)"
-
-      - name: Container logs
-        if: always()
-        run: docker logs web || true
-
-      - name: Stop the container
-        if: always()
-        run: docker rm -f web || true
