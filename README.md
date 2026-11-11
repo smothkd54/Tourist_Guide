@@ -73,14 +73,15 @@ Tourist_Guide/
 │   └── confusion_matrix.png     ← written by evaluate.py
 │
 ├── .gitverse/workflows/
-│   └── ci.yaml                  ← primary CI: JSON + PostgreSQL tests, Docker smoke
+│   └── ci.yaml                  ← primary CI: lint + JSON and PostgreSQL tests
 │
 ├── .github/workflows/
-│   ├── ci.yml                   ← mirror CI: same backend checks + Android build + Trivy
+│   ├── ci.yml                   ← mirror CI: Android build + Docker/Trivy
 │   └── photo-audit.yml          ← re-fetch photo attribution from Wikimedia
 │
 ├── docs/
-│   └── gitverse.md              ← import, remotes, branch protection, CI limits
+│   ├── gitverse.md              ← import, remotes, branch protection, CI limits
+│   └── technical-specification.md ← 90-question technical specification
 │
 ├── CONTRIBUTING.md              ← local setup, dual-mode tests, migration workflow
 ├── sw.js                        ← service worker (root scope, offline cache + predict queue)
@@ -267,9 +268,10 @@ adb install -r app\build\outputs\apk\debug\app-debug.apk
 
 `adb reverse` maps the phone's `localhost:5000` to the PC, so the debug build
 does not need a LAN IP or `HOST=0.0.0.0`. The GitHub mirror builds the APK and
-runs its unit tests; launch is verified on the demo phone. The GitVerse pipeline
-does not build Android because a cold Gradle build does not reliably fit the
-30-minute job cap.
+runs its unit tests; on-device launch is checked on the demo phone when it is
+attached (currently pending, see `docs/technical-specification.md`). The
+GitVerse pipeline does not build Android because a cold Gradle build does not
+reliably fit the 30-minute job cap.
 
 Route reminders use `AlarmManager`; WorkManager is used only for the 6-hour
 place-status poll, where a late run is harmless.
@@ -382,10 +384,10 @@ Additional features:
 
 Parameter details:
 - `/nearby` — `lat`/`lon` must be finite and in range; `radius_m` is 1–50000 (default 500).
-- `/plan` — `minutes` is 15–480 (default 60); `visit` is 0–120 and optional (per-landmark dwell is estimated when omitted). Limited to 30 requests/minute per client.
+- `/plan` — `minutes` is 15–480 (default 60); `visit` is 0–120 and optional (per-landmark dwell is estimated when omitted). The in-memory limiter allows `max(1, 10 // GUNICORN_WORKERS)` requests per 60 s **per worker** — about 10/minute across the default two workers.
 - `/plan-custom` — `landmarks` is a non-empty list of known landmark ID strings (duplicates are removed); `start` must be one of them; `optimize` must be a boolean.
 - `/predict` — JSON body up to 10 MB; base64 or data-URI JPEG/PNG. Returns `landmark_id` (the landmark detail card to open) and `class_id` (the raw model class; they differ only for the merged `kramer_estate` class).
-- `/reports` — `category` is `wrong_photo`, `wrong_info`, `closed` or `other`; `message` is 10–2000 characters; `landmark_id` is optional but must exist. Limited to 5 reports/minute per client.
+- `/reports` — `category` is `wrong_photo`, `wrong_info`, `closed` or `other`; `message` is 10–2000 characters; `landmark_id` is optional but must exist. Limited to 5 reports per 60 s per worker.
 - `/itineraries` — same validation as `/plan-custom`; the response `id` is a UUID used in `?itinerary=<id>`.
 - `/admin/*` — `ADMIN_TOKEN` must be set (otherwise `503`); the request must carry it in `X-Admin-Token` (otherwise `401`). Report statuses are `open`, `resolved`, `dismissed`.
 
@@ -811,33 +813,31 @@ Retains 7 days of backups. Cron example (daily at 3 AM):
 
 ## CI/CD
 
-GitVerse is the primary pipeline (`.gitverse/workflows/ci.yaml`):
+GitVerse is the primary pipeline (`.gitverse/workflows/ci.yaml`) and runs one
+job:
 
 1. **Backend** — `ruff check .`; the suite in JSON mode; the distribution's
    PostgreSQL installed with `apt`, migrated and seeded; the suite again in
    PostgreSQL mode
-2. **Docker** — fetches the TFLite model over Git LFS, builds the serving image,
-   starts it without `DATABASE_URL`, checks preflight, `/` (`data_source: json`)
-   and all 46 landmarks
 
 The workflow can also be started by hand from the repository's CI/CD tab
-(`workflow_dispatch`). Its checkout deliberately skips Git LFS: the 33 MB
-`landmark_classifier.keras` is not needed for CI and can only be uploaded over
-GitVerse's SSH LFS path (see
-[`docs/gitverse.md`](docs/gitverse.md#large-lfs-objects)), so the Docker job
-pulls only the 8.8 MB TFLite file that `preflight_check.py` loads.
+(`workflow_dispatch`). Its checkout deliberately skips Git LFS: nothing in the
+backend job needs the 33 MB `landmark_classifier.keras`, and the 8.8 MB TFLite
+model is only loaded inside the Docker image, which is built on GitHub.
 
-The GitHub mirror (`.github/workflows/ci.yml`) runs the same backend checks with
-a PostgreSQL service container, and adds the jobs that do not fit GitVerse's
-30-minute cap:
+GitVerse cloud runners are containers with no Docker daemon —
+`/var/run/docker.sock` is absent, so `docker build` cannot run there. The image
+checks therefore run on the GitHub mirror (`.github/workflows/ci.yml`), which
+also runs the jobs that do not fit GitVerse's 30-minute cap:
 
-3. **Android build** — `assembleDebug testDebugUnitTest`, APK and test report artifacts
-4. **Docker build** — image build, container smoke test, Trivy scan (fails on fixable CRITICAL/HIGH)
-5. **Photo audit** (`.github/workflows/photo-audit.yml`) — re-fetches author and licence from Wikimedia, because Wikimedia is unreachable from the developer's network
+2. **Android build** — `assembleDebug testDebugUnitTest`, APK and test report artifacts
+3. **Docker build** — image build, container smoke test, Trivy scan (fails on fixable CRITICAL/HIGH)
+4. **Photo audit** (`.github/workflows/photo-audit.yml`) — re-fetches author and licence from Wikimedia, because Wikimedia is unreachable from the developer's network
 
-The GitHub CI workflow is kept until the first green GitVerse run; after that it
-can be removed except for the Android and photo-audit jobs. See
-[`docs/gitverse.md`](docs/gitverse.md) for the remote setup.
+The duplicate GitHub backend job was removed once the GitVerse backend job went
+green, so each platform runs the checks it can actually support. See
+[`docs/gitverse.md`](docs/gitverse.md) for the remote setup and the runner
+limitations.
 
 ---
 

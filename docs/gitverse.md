@@ -6,9 +6,12 @@ that have **not** been done yet.
 
 > **Status:** the account is `smothkd`, the repository is imported at
 > <https://gitverse.ru/smothkd/Tourist_Guide>, and this clone uses
-> `origin` = GitVerse (SSH) and `github` = the GitHub mirror. The first
-> GitVerse pipeline run is still pending. The import did not carry the Git LFS
-> objects; they were uploaded separately (see “Large LFS objects” below).
+> `origin` = GitVerse (SSH) and `github` = the GitHub mirror. The pipeline is
+> green: run `2068018` for `c7aad1e` finished successfully in 2m56s after the
+> Docker job moved to GitHub. (Earlier runs failed only in their Docker job;
+> their backend jobs passed.) The import did not carry the Git LFS objects;
+> they were uploaded separately (see “Large LFS objects” below). Branch
+> protection is the one setup step still outstanding.
 
 ## Why GitVerse
 
@@ -111,27 +114,38 @@ for the demo. Keep the CI requirement in place either way.
 
 ## 4. CI pipeline
 
-`.gitverse/workflows/ci.yaml` has two jobs:
+`.gitverse/workflows/ci.yaml` has one job:
 
 | Job | What it proves |
 |-----|----------------|
 | `backend` | ruff is clean; the suite passes in JSON fallback mode; the distribution's PostgreSQL installs, migrates and seeds; the suite passes again in PostgreSQL mode |
-| `docker` | the TFLite model downloads over LFS; the serving image builds; the entrypoint runs preflight; the container answers `/` with `data_source: json` and serves all 46 landmarks |
 
 The workflow has a `workflow_dispatch` trigger as well, so a run can be started
 from the CI/CD tab without an empty commit.
 
-Two runner details are handled explicitly:
+Three runner details are handled explicitly:
 
 - **No assumed `sudo`.** GitVerse cloud runners are containers and often run as
   root with no `sudo` binary, so the PostgreSQL step detects the uid and uses
   `runuser -u postgres --` when it is root. The cluster version is read from
   `/etc/postgresql` instead of hardcoding `pg_ctlcluster 16 main`.
-- **No full LFS checkout.** `actions/checkout` runs without `lfs: true`; the
-  Docker job pulls only `models/landmark_classifier.tflite` with
-  `git lfs pull -I`. The 33 MB `.keras` is not needed by any test and can only
-  be uploaded to GitVerse over SSH, so requiring it would tie every run to the
-  LFS endpoint and add 33 MB for no benefit.
+- **No LFS checkout.** `actions/checkout` runs without `lfs: true`. No backend
+  test needs the 33 MB `.keras` or the 8.8 MB TFLite file, and the `.keras` can
+  only be uploaded to GitVerse over SSH, so requiring LFS would tie every run to
+  the LFS endpoint for no benefit.
+- **No Docker daemon.** GitVerse cloud runners are themselves containers and do
+  not mount `/var/run/docker.sock`. Run `2046662`, job `4030942` proved it:
+
+  ```
+  ERROR: failed to connect to the docker API at unix:///var/run/docker.sock
+  ```
+
+  The same run downloaded the model successfully (curl fallback: HTTP 200,
+  8,797,436 bytes), so the limitation is Docker, not LFS. The image build and
+  container smoke test moved to the GitHub mirror
+  (`.github/workflows/ci.yml`), which has a Docker daemon and the longer job
+  budget the Android build needs. The GitVerse Docker job was removed rather
+  than left permanently red.
 
 GitVerse also scans `.github/workflows/*.yaml`, but this repository's GitHub
 workflow uses `.yml`, so it is not executed here. The GitVerse workflow is
@@ -141,11 +155,12 @@ self-contained; the GitHub file only runs on GitHub.
 
 | Limit | Value | Consequence |
 |-------|-------|-------------|
-| Job time | 30 minutes | The Android Gradle build is not in the GitVerse pipeline; it stays on GitHub |
-| Cloud runner default timeout | 15 minutes | Every job sets `timeout-minutes: 30` explicitly |
-| Public CI minutes | 1000 per month | One push runs both jobs; do not add a matrix of Python versions |
+| Job time | 30 minutes | The Android Gradle build and Docker image stay on GitHub |
+| Cloud runner default timeout | 15 minutes | The job sets `timeout-minutes: 30` explicitly |
+| Public CI minutes | 1000 per month | One push runs one job; do not add a matrix of Python versions |
 | Artifacts | 500 MB | No APK or model artifacts are uploaded |
 | Git LFS | 2 GB/month, 100 MB/file over HTTP | The model and thumbnails fit; training images stay untracked |
+| Docker | no daemon on cloud runners | Image build and Trivy scan run on GitHub |
 
 The backend job installs PostgreSQL with `apt` instead of `services:`. The
 service-container syntax is GitHub-specific and is not documented for GitVerse.
@@ -166,8 +181,10 @@ mirroring to the GitHub URL with a GitHub personal access token. This keeps the
 mirror current without a second push, but it makes GitHub a downstream copy:
 issues and pull requests must stay on GitVerse.
 
-Either way, GitHub keeps the Android build job and the photo-attribution audit.
-The GitHub workflow is deliberately kept until the first green GitVerse run.
+Either way, GitHub keeps the Android build, the Docker/Trivy check and the
+photo-attribution audit, none of which can run on GitVerse's runners. The
+duplicate GitHub backend job was removed after the GitVerse backend job went
+green, so the two pipelines no longer run the same tests twice.
 
 ## 6. Verification checklist
 
@@ -176,12 +193,16 @@ The GitHub workflow is deliberately kept until the first green GitVerse run.
 - [x] `origin` points at GitVerse; `github` points at the mirror.
 - [x] `git lfs ls-files` lists the model and thumbnails, and a fresh clone
       resolves all 40 LFS files to their real sizes.
-- [ ] First `CI` run is green in the GitVerse UI.
+- [x] `CI` run is green in the GitVerse UI (run `2068018` for `c7aad1e`,
+      2m56s; the backend job had already passed in `2038908`, `2046652` and
+      `2046662`).
 - [x] `/` on the local composed instance reports `data_source: postgres`.
+- [x] GitVerse Docker limitation diagnosed and the job moved to GitHub
+      (run `2046662`, job `4030942`: no `/var/run/docker.sock`).
 - [ ] Branch protection requires the `CI` workflow.
 - [x] README clone URL and CI section no longer claim GitHub is primary.
 
-After the checklist is complete, remove the duplicate backend job from
-`.github/workflows/ci.yml` (keep the Android build and Trivy jobs) and keep
-`photo-audit.yml` (Wikimedia is unreachable from the developer's network, so
-the audit still needs a runner with outbound access).
+Branch protection is the only remaining item. It needs the authenticated
+GitVerse web UI (**Settings → Branches**), so it cannot be enabled from the CLI
+in this clone. Until it is on, the policy above is documented rather than
+enforced.
